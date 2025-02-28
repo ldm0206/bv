@@ -49,7 +49,7 @@ data class AppSeasonData(
     val playStrategy: PlayStrategy? = null,
     @SerialName("player_icon")
     val playerIcon: PlayerIcon? = null,
-    val premieres: JsonArray,
+    val premieres: JsonArray? = null,
     @SerialName("producer_title")
     val producerTitle: String? = null,
     val publish: Publish,
