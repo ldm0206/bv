@@ -8,6 +8,7 @@ import "google/protobuf/any.proto";
 import "bilibili/app/archive/middleware/v1/preload.proto";
 import "bilibili/app/archive/v1/archive.proto";
 import "bilibili/pagination/pagination.proto";
+import "bilibili/app/viewunite/common.proto";
 
 service View {
   // 视频页详情页
@@ -811,6 +812,16 @@ message Episode {
     bool free_watch = 15;
     //
     string first_frame = 16;
+    //
+    ArchiveStat stat_v2 = 17;
+    //
+    repeated bilibili.app.archive.v1.Page pages = 18;
+}
+
+//
+message ArchiveStat {
+    //
+    bilibili.app.viewunite.common.StatInfo view_vt = 11;
 }
 
 // 播放器卡片曝光-请求

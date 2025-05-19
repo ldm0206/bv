@@ -3,6 +3,7 @@ package dev.aaa1115910.biliapi.entity.ugc.region
 import dev.aaa1115910.biliapi.entity.CarouselData
 import dev.aaa1115910.biliapi.entity.ugc.UgcItem
 
+@Deprecated("User region v2 instead")
 data class UgcRegionData(
     val carouselData: CarouselData?,
     val items: List<UgcItem>,

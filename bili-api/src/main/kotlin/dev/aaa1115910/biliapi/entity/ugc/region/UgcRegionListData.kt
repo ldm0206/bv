@@ -2,6 +2,7 @@ package dev.aaa1115910.biliapi.entity.ugc.region
 
 import dev.aaa1115910.biliapi.entity.ugc.UgcItem
 
+@Deprecated("User region v2 instead")
 data class UgcRegionListData(
     val items: List<UgcItem>,
     val next: UgcRegionPage

@@ -90,6 +90,17 @@ data class UgcItem(
                 play = item.play ?: -1,
                 danmaku = item.danmaku ?: -1
             )
+
+        fun fromRegionRcmdArchive(archive: dev.aaa1115910.biliapi.http.entity.region.RegionFeedRcmd.Archive) =
+            UgcItem(
+                aid = archive.aid,
+                title = archive.title,
+                duration = archive.duration,
+                author = archive.author.name,
+                cover = archive.cover,
+                play = archive.stat.view,
+                danmaku = archive.stat.danmaku
+            )
     }
 }
 

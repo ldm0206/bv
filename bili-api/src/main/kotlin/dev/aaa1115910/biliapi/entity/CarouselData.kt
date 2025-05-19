@@ -64,6 +64,24 @@ data class CarouselData(
             }
             return CarouselData(result)
         }
+
+        fun fromRegionBanner(data: dev.aaa1115910.biliapi.http.entity.region.RegionBanner): CarouselData {
+            val result = mutableListOf<CarouselItem>()
+            data.regionBannerList.forEach { item ->
+                if (!UrlUtil.isVideoUrl(item.url)) return@forEach
+                val avid = UrlUtil.parseAidFromUrl(item.url)
+                val bvid = avid.toBv()
+                result.add(
+                    CarouselItem(
+                        cover = item.image,
+                        title = item.title,
+                        avid = avid,
+                        bvid = bvid
+                    )
+                )
+            }
+            return CarouselData(result)
+        }
     }
 
     data class CarouselItem(

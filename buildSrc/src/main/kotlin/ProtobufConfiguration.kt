@@ -15,6 +15,7 @@ object ProtobufConfiguration {
         "bilibili/app/playerunite/v1/playerunite.proto",
         "bilibili/app/show/popular/v1/popular.proto",
         "bilibili/app/view/v1/view.proto",
+        "bilibili/app/viewunite/common.proto",
         "bilibili/community/service/dm/v1/dm.proto",
         "bilibili/dagw/component/avatar/common/common.proto",
         "bilibili/dagw/component/avatar/v1/avatar.proto",
@@ -38,8 +39,7 @@ object ProtobufConfiguration {
         val protoFiles = mutableSetOf<String>()
         rootDir.walk().forEach {
             if (it.isFile && it.extension == "proto") {
-                val path = it.relativeTo(rootDir).invariantSeparatorsPath
-                protoFiles.add(path)
+                protoFiles.add(it.relativeTo(rootDir).invariantSeparatorsPath)
             }
         }
         return protoFiles

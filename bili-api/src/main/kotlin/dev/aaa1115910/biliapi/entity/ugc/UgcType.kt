@@ -1,5 +1,6 @@
 package dev.aaa1115910.biliapi.entity.ugc
 
+@Deprecated("Use dev.aaa1115910.biliapi.entity.ugc.UgcTypeV2 instead")
 enum class UgcType(val rid: Int, val codename: String, val locId: Int = -1) {
     Douga(1, "douga", 4973),
     DougaMad(24, "mad"),

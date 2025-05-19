@@ -1,7 +1,5 @@
 package dev.aaa1115910.biliapi.entity.video
 
-import bilibili.app.view.v1.ViewPage
-
 data class VideoPage(
     var cid: Long,
     val index: Int,
@@ -10,7 +8,7 @@ data class VideoPage(
     val dimension: Dimension
 ) {
     companion object {
-        fun fromViewPage(viewPage: ViewPage) = VideoPage(
+        fun fromViewPage(viewPage: bilibili.app.view.v1.ViewPage) = VideoPage(
             cid = viewPage.page.cid,
             index = viewPage.page.page,
             title = viewPage.page.part,
@@ -26,5 +24,13 @@ data class VideoPage(
                 duration = videoPage.duration,
                 dimension = Dimension.fromDimension(videoPage.dimension)
             )
+
+        fun fromPage(page: bilibili.app.archive.v1.Page) = VideoPage(
+            cid = page.cid,
+            index = page.page,
+            title = page.part,
+            duration = page.duration.toInt(),
+            dimension = Dimension.fromDimension(page.dimension)
+        )
     }
 }

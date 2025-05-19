@@ -94,6 +94,168 @@ data class PlayUrlData(
     val recordInfo: RecordInfo? = null
 )
 
+@Serializable
+data class PlayUrlV2Data(
+    @SerialName("exp_info")
+    val expInfo: ExpInfo,
+    @SerialName("play_check")
+    val playCheck: PlayCheck,
+    @SerialName("play_view_business_info")
+    val playViewBusinessInfo: PlayViewBusinessInfo,
+    @SerialName("video_info")
+    val videoInfo: PlayUrlData,
+    @SerialName("view_info")
+    val viewInfo: ViewInfo
+) {
+    @Serializable
+    data class ExpInfo(
+        @SerialName("buy_vip_donated_season")
+        val buyVipDonatedSeason: Int
+    )
+
+    @Serializable
+    data class PlayCheck(
+        @SerialName("play_detail")
+        val playDetail: String
+    )
+
+    @Serializable
+    data class PlayViewBusinessInfo(
+        @SerialName("episode_info")
+        val episodeInfo: EpisodeInfo,
+        @SerialName("season_info")
+        val seasonInfo: SeasonInfo,
+        @SerialName("user_status")
+        val userStatus: UserStatus
+    ) {
+        @Serializable
+        data class EpisodeInfo(
+            val aid: Long,
+            val bvid: String,
+            val cid: Long,
+            @SerialName("delivery_business_fragment_video")
+            val deliveryBusinessFragmentVideo: Boolean,
+            @SerialName("delivery_fragment_video")
+            val deliveryFragmentVideo: Boolean,
+            @SerialName("ep_id")
+            val epId: Int,
+            @SerialName("ep_status")
+            val epStatus: Int,
+            val interaction: Interaction,
+            @SerialName("long_title")
+            val longTitle: String,
+            val title: String
+        ) {
+            @Serializable
+            data class Interaction(
+                val interaction: Boolean
+            )
+        }
+
+        @Serializable
+        data class SeasonInfo(
+            @SerialName("season_id")
+            val seasonId: Int,
+            @SerialName("season_type")
+            val seasonType: Int,
+        )
+
+        @Serializable
+        data class UserStatus(
+            @SerialName("follow_info")
+            val followInfo: FollowInfo,
+            @SerialName("is_login")
+            val isLogin: Int,
+            @SerialName("pay_info")
+            val payInfo: PayInfo,
+            @SerialName("vip_info")
+            val vipInfo: VipInfo,
+            @SerialName("watch_progress")
+            val watchProgress: WatchProgress
+        ) {
+            @Serializable
+            data class FollowInfo(
+                val follow: Int,
+                @SerialName("follow_status")
+                val followStatus: Int
+            )
+
+            @Serializable
+            data class PayInfo(
+                @SerialName("pay_check")
+                val payCheck: Int,
+                @SerialName("pay_pack_paid")
+                val payPackPaid: Int,
+                val sponsor: Int
+            )
+
+            @Serializable
+            data class VipInfo(
+                @SerialName("real_vip")
+                val realVip: Boolean
+            )
+
+            @Serializable
+            data class WatchProgress(
+                @SerialName("current_watch_progress")
+                val currentWatchProgress: Int,
+                @SerialName("last_ep_id")
+                val lastEpId: Int,
+                @SerialName("last_time")
+                val lastTime: Int
+            )
+        }
+    }
+
+    @Serializable
+    data class ViewInfo(
+        @SerialName("ai_repair_qn_trial_info")
+        val aiRepairQnTrialInfo: AiRepairQnTrialInfo,
+        @SerialName("end_page")
+        val endPage: EndPage,
+        @SerialName("ext_toast")
+        val extToast: JsonElement,
+        @SerialName("qn_trial_info")
+        val qnTrialInfo: QnTrialInfo,
+        val report: Report
+    ) {
+        @Serializable
+        data class AiRepairQnTrialInfo(
+            @SerialName("trial_able")
+            val trialAble: Boolean
+        )
+
+        @Serializable
+        data class EndPage(
+            val hide: Boolean
+        )
+
+        @Serializable
+        data class QnTrialInfo(
+            @SerialName("trial_able")
+            val trialAble: Boolean
+        )
+
+        @Serializable
+        data class Report(
+            @SerialName("ep_id")
+            val epId: String,
+            @SerialName("ep_status")
+            val epStatus: String,
+            @SerialName("season_id")
+            val seasonId: String,
+            @SerialName("season_status")
+            val seasonStatus: String,
+            @SerialName("season_type")
+            val seasonType: String,
+            @SerialName("vip_status")
+            val vipStatus: String,
+            @SerialName("vip_type")
+            val vipType: String
+        )
+    }
+}
+
 /**
  * 视频播放地址
  *

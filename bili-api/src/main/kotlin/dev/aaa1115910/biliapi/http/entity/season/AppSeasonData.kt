@@ -232,7 +232,7 @@ data class AppSeasonData(
     @Serializable
     data class Module(
         val data: ModuleData,
-        val id: Int,
+        val id: Long,
         @SerialName("module_style")
         val moduleStyle: ModuleStyle,
         val more: String = "",
@@ -325,12 +325,12 @@ data class AppSeasonData(
         val ctime: Int,
         @SerialName("drag_data")
         val dragData: JsonElement? = null,
-        val hash1: String,
-        val hash2: String,
+        val hash1: String? = null,
+        val hash2: String? = null,
         @SerialName("no_drag_data")
         val noDragData: JsonElement? = null,
-        val url1: String,
-        val url2: String
+        val url1: String? = null,
+        val url2: String? = null
     )
 
     @Serializable

@@ -100,6 +100,21 @@ internal class BiliHttpApiTest {
     }
 
     @Test
+    fun `get pgc video play url v2`() {
+        runBlocking {
+            println(
+                BiliHttpApi.getPgcVideoPlayUrlV2(
+                    av = 672676070,
+                    cid = 331748015,
+                    fnval = 4048,
+                    qn = 127,
+                    sessData = SESSDATA
+                )
+            )
+        }
+    }
+
+    @Test
     fun `get video danmaku from xml`() {
         assertDoesNotThrow {
             runBlocking {

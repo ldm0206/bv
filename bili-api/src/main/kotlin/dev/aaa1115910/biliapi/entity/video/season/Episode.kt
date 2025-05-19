@@ -1,6 +1,7 @@
 package dev.aaa1115910.biliapi.entity.video.season
 
 import dev.aaa1115910.biliapi.entity.video.Dimension
+import dev.aaa1115910.biliapi.entity.video.VideoPage
 
 /**
  * 剧集视频
@@ -27,7 +28,8 @@ data class Episode(
     val longTitle: String,
     val cover: String,
     val duration: Int,
-    val dimension: Dimension?
+    val dimension: Dimension?,
+    val pages: List<VideoPage>
 ) {
     companion object {
         fun fromEpisode(episode: bilibili.app.view.v1.Episode) = Episode(
@@ -39,7 +41,8 @@ data class Episode(
             longTitle = episode.title,
             cover = episode.cover,
             duration = episode.page.duration.toInt(),
-            dimension = Dimension.fromDimension(episode.page.dimension)
+            dimension = Dimension.fromDimension(episode.page.dimension),
+            pages = episode.pagesList.map { VideoPage.fromPage(it) }
         )
 
         fun fromEpisode(episode: dev.aaa1115910.biliapi.http.entity.video.UgcSeason.Section.Episode) =
@@ -52,7 +55,8 @@ data class Episode(
                 longTitle = episode.title,
                 cover = episode.arc.pic,
                 duration = episode.arc.duration,
-                dimension = Dimension.fromDimension(episode.page.dimension)
+                dimension = Dimension.fromDimension(episode.page.dimension),
+                pages = episode.pages.map { VideoPage.fromVideoPage(it) }
             )
 
         fun fromEpisode(episode: dev.aaa1115910.biliapi.http.entity.season.Episode) = Episode(
@@ -65,7 +69,8 @@ data class Episode(
             longTitle = episode.longTitle,
             epid = episode.epId,
             duration = episode.duration,
-            dimension = episode.dimension?.let { Dimension.fromDimension(it) }
+            dimension = episode.dimension?.let { Dimension.fromDimension(it) },
+            pages = emptyList()
         )
     }
 }

@@ -116,7 +116,7 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig = true
+        //buildConfig = true
     }
     packaging {
         resources {
@@ -171,69 +171,9 @@ java {
     }
 }
 
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-}
-
 dependencies {
-    annotationProcessor(androidx.room.compiler)
-    ksp(androidx.room.compiler)
-    implementation(platform("${libs.firebase.bom.get()}"))
-    implementation(androidx.activity.compose)
-    implementation(androidx.core.ktx)
-    implementation(androidx.core.splashscreen)
-    implementation(androidx.compose.constraintlayout)
-    implementation(androidx.compose.ui)
-    implementation(androidx.compose.ui.util)
-    implementation(androidx.compose.ui.tooling.preview)
-    implementation(androidx.compose.material.icons)
-    implementation(androidx.compose.material3)
-    implementation(androidx.compose.tv.foundation)
-    implementation(androidx.compose.tv.material)
-    implementation(androidx.datastore.typed)
-    implementation(androidx.datastore.preferences)
-    implementation(androidx.lifecycle.runtime.ktx)
-    implementation(androidx.media3.common)
-    implementation(androidx.media3.decoder)
-    implementation(androidx.media3.exoplayer)
-    implementation(androidx.media3.ui)
-    implementation(androidx.room.ktx)
-    implementation(androidx.room.runtime)
-    implementation(androidx.webkit)
-    implementation(libs.akdanmaku)
-    implementation(libs.androidSvg)
-    implementation(libs.coil.compose)
-    implementation(libs.coil.gif)
-    implementation(libs.coil.svg)
-    implementation(libs.firebase.analytics.ktx)
-    implementation(libs.firebase.crashlytics.ktx)
-    implementation(libs.geetest.sensebot)
-    implementation(libs.koin.android)
-    implementation(libs.koin.compose)
-    implementation(libs.kotlinx.serialization)
-    implementation(libs.ktor.client.cio)
-    implementation(libs.koin.core)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.encoding)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.serialization.kotlinx)
-    implementation(libs.ktor.server.cio)
-    implementation(libs.ktor.server.core)
-    implementation(libs.logging)
-    implementation(libs.lottie)
-    implementation(libs.material)
-    implementation(libs.qrcode)
-    implementation(libs.rememberPreference)
-    implementation(libs.slf4j.android.mvysny)
-    implementation(project(mapOf("path" to ":bili-api")))
-    implementation(project(mapOf("path" to ":bili-subtitle")))
-    implementation(project(mapOf("path" to ":bv-player")))
-    testImplementation(androidx.room.testing)
-    testImplementation(libs.kotlin.test)
-    androidTestImplementation(androidx.compose.ui.test.junit4)
-    debugImplementation(androidx.compose.ui.test.manifest)
-    debugImplementation(androidx.compose.ui.tooling)
+    implementation(project(":app:mobile"))
+    implementation(project(":app:tv"))
 }
 
 tasks.withType<Test> {
