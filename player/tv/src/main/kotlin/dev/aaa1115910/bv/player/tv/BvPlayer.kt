@@ -1,6 +1,9 @@
 package dev.aaa1115910.bv.player.tv
 
 import android.os.CountDownTimer
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -128,8 +131,16 @@ fun BvPlayer(
     var currentVideoAspectRatio by remember { mutableStateOf(VideoAspectRatio.Default) }
     var currentPosition by remember { mutableLongStateOf(0L) }
     //var currentPlaySpeed by remember { mutableFloatStateOf(Prefs.defaultPlaySpeed) }
-    var aspectRatio by remember { mutableFloatStateOf(16f / 9f) }
+    var aspectRatioValue by remember { mutableFloatStateOf(16f / 9f) }
+    val aspectRatio by animateFloatAsState(
+        targetValue = aspectRatioValue,
+        animationSpec = spring(
+            stiffness = Spring.StiffnessMediumLow
+        ),
+        label = "aspectRatio",
+    )
     var lastPlayed by remember { mutableLongStateOf(0L) }
+    var defaultAspectRatio by remember { mutableFloatStateOf(16 / 9f) }
 
     var clock: Triple<Int, Int, Int> by remember { mutableStateOf(Triple(0, 0, 0)) }
 
@@ -203,17 +214,12 @@ fun BvPlayer(
     }
 
     val updateVideoAspectRatio: () -> Unit = {
-        aspectRatio = when (currentVideoAspectRatio) {
-            VideoAspectRatio.Default -> {
-                val aspectRatioValue =
-                    videoPlayerVideoInfoData.width / videoPlayerVideoInfoData.height.toFloat()
-                if (aspectRatioValue > 0) aspectRatioValue else 16 / 9f
-            }
-
+        aspectRatioValue = when (currentVideoAspectRatio) {
+            VideoAspectRatio.Default -> defaultAspectRatio
             VideoAspectRatio.FourToThree -> 4 / 3f
             VideoAspectRatio.SixteenToNine -> 16 / 9f
         }
-        logger.info { "Update video player aspectRatio: $aspectRatio" }
+        logger.info { "Update video player aspectRatio: $aspectRatioValue" }
     }
 
     val sendHeartbeat: () -> Unit = {
@@ -231,6 +237,13 @@ fun BvPlayer(
     // updateBackToHistory() 中使用 videoPlayerHistoryData.lastPlayed 无法获取到新值
     LaunchedEffect(videoPlayerHistoryData.lastPlayed) {
         lastPlayed = videoPlayerHistoryData.lastPlayed.toLong()
+    }
+
+    LaunchedEffect(videoPlayerVideoInfoData.width, videoPlayerVideoInfoData.height) {
+        val newAspectRatio =
+            videoPlayerVideoInfoData.width / videoPlayerVideoInfoData.height.toFloat()
+        defaultAspectRatio = newAspectRatio.takeIf { it > 0 } ?: (16 / 9f)
+        updateVideoAspectRatio()
     }
 
     val updateBackToHistory: () -> Unit = {
@@ -625,7 +638,7 @@ fun BvPlayer(
                 modifier = Modifier
                     .fillMaxHeight()
                     .aspectRatio(aspectRatio)
-                    .alpha(0.1f),
+                    .align(Alignment.Center),
                 videoPlayer = videoPlayer,
                 playerListener = videoPlayerListener,
             )
