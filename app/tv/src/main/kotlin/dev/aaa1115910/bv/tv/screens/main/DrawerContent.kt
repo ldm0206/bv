@@ -23,6 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,7 +44,6 @@ import androidx.tv.material3.Text
 import androidx.tv.material3.rememberDrawerState
 import coil.compose.AsyncImage
 import dev.aaa1115910.bv.ui.theme.BVTheme
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.ifElse
 import dev.aaa1115910.bv.util.isDpadRight
 import dev.aaa1115910.bv.util.isKeyDown
@@ -59,7 +61,7 @@ fun NavigationDrawerScope.DrawerContent(
     onLogin: () -> Unit = {}
 ) {
     var selectedItem by remember { mutableStateOf(DrawerItem.Home) }
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+    val centerFocusRequester = remember { FocusRequester() }
 
     LaunchedEffect(selectedItem) {
         onDrawerItemChanged(selectedItem)
@@ -127,8 +129,7 @@ fun NavigationDrawerScope.DrawerContent(
             )
         }
         LazyColumn(
-            modifier = Modifier
-                .then(focusRestorerModifiers.parentModifier),
+            modifier = Modifier.focusRestorer(centerFocusRequester),
             verticalArrangement = Arrangement.Center
         ) {
             listOf(
@@ -143,7 +144,7 @@ fun NavigationDrawerScope.DrawerContent(
                             .onFocusChanged { if (it.hasFocus) selectedItem = item }
                             .ifElse(
                                 item == DrawerItem.Home,
-                                focusRestorerModifiers.childModifier
+                                Modifier.focusRequester(centerFocusRequester)
                             ),
                         onClick = { selectedItem = item },
                         selected = selectedItem == item,

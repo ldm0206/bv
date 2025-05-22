@@ -11,17 +11,20 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun SettingsScreen() {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator()
 
     var selectedSettings by rememberSaveable { mutableStateOf<MobileSettings?>(null) }
@@ -29,7 +32,7 @@ fun SettingsScreen() {
         .contains(currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass)
 
     BackHandler(scaffoldNavigator.canNavigateBack()) {
-        scaffoldNavigator.navigateBack()
+        scope.launch { scaffoldNavigator.navigateBack() }
     }
 
     ListDetailPaneScaffold(
@@ -44,7 +47,9 @@ fun SettingsScreen() {
                         ?: MobileSettings.Play,
                     onSelectedSettings = {
                         selectedSettings = it
-                        scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
+                        scope.launch {
+                            scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
+                        }
                     },
                     showNavBack = !scaffoldNavigator.canNavigateBack(),
                     onBack = { (context as Activity).finish() },
@@ -57,7 +62,7 @@ fun SettingsScreen() {
                 SettingsDetails(
                     selectedSettings = selectedSettings ?: MobileSettings.Play,
                     showNavBack = scaffoldNavigator.canNavigateBack(),
-                    onBack = { scaffoldNavigator.navigateBack() }
+                    onBack = { scope.launch { scaffoldNavigator.navigateBack() } }
                 )
             }
         }

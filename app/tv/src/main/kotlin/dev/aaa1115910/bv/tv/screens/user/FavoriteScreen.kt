@@ -44,7 +44,6 @@ import dev.aaa1115910.biliapi.entity.FavoriteFolderMetadata
 import dev.aaa1115910.bv.R
 import dev.aaa1115910.bv.component.videocard.SmallVideoCard
 import dev.aaa1115910.bv.tv.activities.video.VideoInfoActivity
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.ifElse
 import dev.aaa1115910.bv.viewmodel.user.FavoriteViewModel
 import kotlinx.coroutines.Dispatchers
@@ -64,7 +63,7 @@ fun FavoriteScreen(
         targetValue = if (showLargeTitle) 48f else 24f,
         label = "title font size"
     )
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+    val focusRequester = remember { FocusRequester() }
     val defaultFocusRequester = remember { FocusRequester() }
     var focusOnTabs by remember { mutableStateOf(true) }
     val lazyGridState = rememberLazyGridState()
@@ -133,14 +132,14 @@ fun FavoriteScreen(
                     modifier = Modifier
                         .focusRequester(defaultFocusRequester)
                         .onFocusChanged { focusOnTabs = it.hasFocus }
-                        .then(focusRestorerModifiers.parentModifier),
+                        .focusRequester(focusRequester),
                     selectedTabIndex = currentTabIndex,
                     separator = { Spacer(modifier = Modifier.width(12.dp)) },
                 ) {
                     favoriteViewModel.favoriteFolderMetadataList.forEachIndexed { index, folderMetadata ->
                         Tab(
                             modifier = Modifier
-                                .ifElse(index == 0, focusRestorerModifiers.childModifier),
+                                .ifElse(index == 0, Modifier.focusRequester(focusRequester)),
                             selected = currentTabIndex == index,
                             onFocus = {
                                 if (favoriteViewModel.currentFavoriteFolderMetadata != folderMetadata) {

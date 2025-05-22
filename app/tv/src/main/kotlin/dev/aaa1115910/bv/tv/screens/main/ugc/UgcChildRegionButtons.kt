@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,7 +21,6 @@ import androidx.tv.material3.SuggestionChip
 import androidx.tv.material3.Text
 import dev.aaa1115910.biliapi.entity.ugc.UgcTypeV2
 import dev.aaa1115910.bv.ui.theme.BVTheme
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.fInfo
 import dev.aaa1115910.bv.util.getDisplayName
 import dev.aaa1115910.bv.util.ifElse
@@ -54,16 +57,16 @@ fun UgcChildRegionButtonsContent(
     onClickChildRegion: (UgcTypeV2) -> Unit
 ) {
     val context = LocalContext.current
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+    val focusRequester = remember { FocusRequester() }
 
     LazyRow(
-        modifier = modifier.then(focusRestorerModifiers.parentModifier),
+        modifier = modifier.focusRestorer(focusRequester),
         contentPadding = PaddingValues(horizontal = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
     ) {
         itemsIndexed(items = childUgcTypes) { index, ugcType ->
             SuggestionChip(
-                modifier = Modifier.ifElse(index == 0, focusRestorerModifiers.childModifier),
+                modifier = Modifier.ifElse(index == 0, Modifier.focusRequester(focusRequester)),
                 onClick = { onClickChildRegion(ugcType) }
             ) {
                 Text(text = ugcType.getDisplayName(context))

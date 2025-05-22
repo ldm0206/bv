@@ -56,7 +56,7 @@ abstract class AppDatabase : RoomDatabase() {
     }
 }
 
-private object Converters {
+object Converters {
     @TypeConverter
     fun timestampToDate(value: Long?): Date? = value?.let { Date(it) }
 

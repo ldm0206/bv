@@ -17,6 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -29,7 +32,6 @@ import androidx.tv.material3.ButtonDefaults
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import dev.aaa1115910.bv.entity.carddata.VideoCardData
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.ifElse
 
 @Composable
@@ -42,9 +44,9 @@ fun VideosRow(
     onOpenSeasonInfo: (VideoCardData) -> Unit = {},
     onOpenVideoInfo: (VideoCardData) -> Unit = {}
 ) {
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
     val context = LocalContext.current
     val density = LocalDensity.current
+    val focusRequester = remember { FocusRequester() }
     var hasFocus by remember { mutableStateOf(false) }
     val titleColor = if (hasFocus) Color.White else Color.White.copy(alpha = 0.6f)
     val titleFontSize by animateFloatAsState(
@@ -65,7 +67,7 @@ fun VideosRow(
         LazyRow(
             modifier = Modifier
                 .padding(top = 15.dp)
-                .then(focusRestorerModifiers.parentModifier)
+                .focusRestorer(focusRequester)
                 .onGloballyPositioned {
                     rowHeight = with(density) {
                         it.size.height.toDp()
@@ -79,7 +81,7 @@ fun VideosRow(
                 SmallVideoCard(
                     modifier = Modifier
                         .width(200.dp)
-                        .ifElse(index == 0, focusRestorerModifiers.childModifier),
+                        .ifElse(index == 0, Modifier.focusRequester(focusRequester)),
                     data = videoData,
                     onClick = {
                         if (videoData.jumpToSeason) {

@@ -6,14 +6,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.ifElse
 
 @Composable
@@ -24,7 +27,7 @@ fun RadioMenuList(
     onSelectedChanged: (index: Int) -> Unit,
     onFocusBackToParent: () -> Unit
 ) {
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+    val focusRequester = remember { FocusRequester() }
     LazyColumn(
         modifier = modifier
             .onPreviewKeyEvent {
@@ -39,7 +42,7 @@ fun RadioMenuList(
                 if (result) onFocusBackToParent()
                 result
             }
-            .then(focusRestorerModifiers.parentModifier),
+            .focusRestorer(focusRequester),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(vertical = 120.dp, horizontal = 8.dp)
     ) {
@@ -47,7 +50,7 @@ fun RadioMenuList(
             MenuListItem(
                 modifier = Modifier
                     .width(200.dp)
-                    .ifElse(selected == index, focusRestorerModifiers.childModifier),
+                    .ifElse(selected == index, Modifier.focusRequester(focusRequester)),
                 text = item,
                 selected = selected == index,
                 onClick = {

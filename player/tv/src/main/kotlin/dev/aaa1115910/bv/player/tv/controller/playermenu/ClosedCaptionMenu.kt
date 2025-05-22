@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -51,9 +52,8 @@ fun ClosedCaptionMenuList(
     val context = LocalContext.current
     val videoPlayerConfigData = LocalVideoPlayerConfigData.current
     val focusState = LocalMenuFocusStateData.current
-    val focusRestorerModifiers = dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers()
-
-    val focusRequester = remember { FocusRequester() }
+    val parentMenuFocusRequester = remember { FocusRequester() }
+    val parentMenuPositionFocusRequester = remember { FocusRequester() }
     var selectedClosedCaptionMenuItem by remember { mutableStateOf(VideoPlayerClosedCaptionMenuItem.Switch) }
 
     Row(
@@ -73,7 +73,7 @@ fun ClosedCaptionMenuList(
                     onSelectedChanged = { onSubtitleChange(videoPlayerConfigData.availableSubtitleTracks[it]) },
                     onFocusBackToParent = {
                         onFocusStateChange(MenuFocusState.Menu)
-                        focusRequester.requestFocus()
+                        parentMenuFocusRequester.requestFocus()
                     },
                 )
 
@@ -113,7 +113,7 @@ fun ClosedCaptionMenuList(
 
         LazyColumn(
             modifier = Modifier
-                .focusRequester(focusRequester)
+                .focusRequester(parentMenuFocusRequester)
                 .padding(horizontal = 8.dp)
                 .onPreviewKeyEvent {
                     if (it.type == KeyEventType.KeyUp) {
@@ -129,14 +129,17 @@ fun ClosedCaptionMenuList(
                     }
                     false
                 }
-                .then(focusRestorerModifiers.parentModifier),
+                .focusRestorer(parentMenuPositionFocusRequester),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
             itemsIndexed(VideoPlayerClosedCaptionMenuItem.entries) { index, item ->
                 MenuListItem(
                     modifier = Modifier
-                        .ifElse(index == 0, focusRestorerModifiers.childModifier),
+                        .ifElse(
+                            index == 0,
+                            Modifier.focusRequester(parentMenuPositionFocusRequester)
+                        ),
                     text = item.getDisplayName(context),
                     selected = selectedClosedCaptionMenuItem == item,
                     onClick = {},

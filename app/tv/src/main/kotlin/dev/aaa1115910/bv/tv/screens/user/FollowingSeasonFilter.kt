@@ -13,7 +13,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -24,7 +28,6 @@ import androidx.tv.material3.Text
 import dev.aaa1115910.biliapi.entity.season.FollowingSeasonStatus
 import dev.aaa1115910.biliapi.entity.season.FollowingSeasonType
 import dev.aaa1115910.bv.R
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.getDisplayName
 import dev.aaa1115910.bv.util.ifElse
 
@@ -39,8 +42,8 @@ fun FollowingSeasonFilter(
     onSelectedStatusChange: (FollowingSeasonStatus) -> Unit
 ) {
     val context = LocalContext.current
-    val row1FocusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
-    val row2FocusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+    val row1FocusRequester = remember { FocusRequester() }
+    val row2FocusRequester = remember { FocusRequester() }
 
     val filterRowSpace = 8.dp
 
@@ -55,7 +58,7 @@ fun FollowingSeasonFilter(
                 ) {
                     LazyRow(
                         modifier = Modifier
-                            .then(row1FocusRestorerModifiers.parentModifier),
+                            .focusRestorer(row1FocusRequester),
                         horizontalArrangement = Arrangement.spacedBy(filterRowSpace),
                         contentPadding = PaddingValues(horizontal = filterRowSpace)
                     ) {
@@ -64,7 +67,7 @@ fun FollowingSeasonFilter(
                                 modifier = Modifier
                                     .ifElse(
                                         type == selectedType,
-                                        row1FocusRestorerModifiers.childModifier
+                                        Modifier.focusRequester(row1FocusRequester)
                                     ),
                                 selected = type == selectedType,
                                 onClick = { onSelectedTypeChange(type) },
@@ -74,7 +77,7 @@ fun FollowingSeasonFilter(
                     }
                     LazyRow(
                         modifier = Modifier
-                            .then(row2FocusRestorerModifiers.parentModifier),
+                            .focusRestorer(row2FocusRequester),
                         horizontalArrangement = Arrangement.spacedBy(filterRowSpace),
                         contentPadding = PaddingValues(horizontal = filterRowSpace)
                     ) {
@@ -83,7 +86,7 @@ fun FollowingSeasonFilter(
                                 modifier = Modifier
                                     .ifElse(
                                         status == selectedStatus,
-                                        row2FocusRestorerModifiers.childModifier
+                                        Modifier.focusRequester(row2FocusRequester)
                                     ),
                                 selected = status == selectedStatus,
                                 onClick = { onSelectedStatusChange(status) },

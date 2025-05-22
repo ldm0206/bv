@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -34,7 +35,6 @@ import dev.aaa1115910.bv.player.tv.controller.playermenu.component.CheckBoxMenuL
 import dev.aaa1115910.bv.player.tv.controller.playermenu.component.MenuListItem
 import dev.aaa1115910.bv.player.tv.controller.playermenu.component.RadioMenuList
 import dev.aaa1115910.bv.player.tv.controller.playermenu.component.StepLessMenuItem
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.ifElse
 import java.text.NumberFormat
 
@@ -51,9 +51,8 @@ fun DanmakuMenuList(
     val context = LocalContext.current
     val videoPlayerConfigData = LocalVideoPlayerConfigData.current
     val focusState = LocalMenuFocusStateData.current
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
-
-    val focusRequester = remember { FocusRequester() }
+    val parentMenuFocusRequester = remember { FocusRequester() }
+    val parentMenuPositionFocusRequester = remember { FocusRequester() }
     var selectedDanmakuMenuItem by remember { mutableStateOf(VideoPlayerDanmakuMenuItem.Switch) }
 
     Row(
@@ -106,7 +105,7 @@ fun DanmakuMenuList(
                     },
                     onFocusBackToParent = {
                         onFocusStateChange(MenuFocusState.Menu)
-                        focusRequester.requestFocus()
+                        parentMenuFocusRequester.requestFocus()
                     }
                 )
 
@@ -151,14 +150,17 @@ fun DanmakuMenuList(
                     items = listOf("关闭", "开启"),
                     selected = if (videoPlayerConfigData.currentDanmakuMask) 1 else 0,
                     onSelectedChanged = { onDanmakuMaskChange(it == 1) },
-                    onFocusBackToParent = { onFocusStateChange(MenuFocusState.Menu) }
+                    onFocusBackToParent = {
+                        onFocusStateChange(MenuFocusState.Menu)
+                        parentMenuFocusRequester.requestFocus()
+                    }
                 )
             }
         }
 
         LazyColumn(
             modifier = Modifier
-                .focusRequester(focusRequester)
+                .focusRequester(parentMenuFocusRequester)
                 .padding(horizontal = 8.dp)
                 .onPreviewKeyEvent {
                     if (it.type == KeyEventType.KeyUp) {
@@ -174,14 +176,17 @@ fun DanmakuMenuList(
                     }
                     false
                 }
-                .then(focusRestorerModifiers.parentModifier),
+                .focusRestorer(parentMenuPositionFocusRequester),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
             itemsIndexed(VideoPlayerDanmakuMenuItem.entries) { index, item ->
                 MenuListItem(
                     modifier = Modifier
-                        .ifElse(index == 0, focusRestorerModifiers.childModifier),
+                        .ifElse(
+                            index == 0,
+                            Modifier.focusRequester(parentMenuPositionFocusRequester)
+                        ),
                     text = item.getDisplayName(context),
                     selected = selectedDanmakuMenuItem == item,
                     onClick = {},

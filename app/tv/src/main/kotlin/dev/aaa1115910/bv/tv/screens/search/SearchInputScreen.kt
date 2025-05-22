@@ -26,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -38,7 +40,6 @@ import dev.aaa1115910.bv.component.search.SearchKeyword
 import dev.aaa1115910.bv.component.search.SoftKeyboard
 import dev.aaa1115910.bv.tv.activities.search.SearchResultActivity
 import dev.aaa1115910.bv.util.Prefs
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.ifElse
 import dev.aaa1115910.bv.viewmodel.search.SearchInputViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -50,9 +51,9 @@ fun SearchInputScreen(
     searchInputViewModel: SearchInputViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
-    val hotsFocusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
-    val historyFocusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
-    val suggestFocusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+    val hotsFocusRequester = remember { FocusRequester() }
+    val historyFocusRequester = remember { FocusRequester() }
+    val suggestFocusRequester = remember { FocusRequester() }
 
     val searchKeyword = searchInputViewModel.keyword
     val hotwords = searchInputViewModel.hotwords
@@ -159,12 +160,15 @@ fun SearchInputScreen(
                     )
                     LazyColumn(
                         modifier = Modifier
-                            .then(hotsFocusRestorerModifiers.parentModifier)
+                            .focusRestorer(hotsFocusRequester)
                     ) {
                         itemsIndexed(hotwords) { index, hotword ->
                             SearchKeyword(
                                 modifier = Modifier
-                                    .ifElse(index == 0, hotsFocusRestorerModifiers.childModifier),
+                                    .ifElse(
+                                        index == 0,
+                                        Modifier.focusRequester(hotsFocusRequester)
+                                    ),
                                 keyword = hotword.showName,
                                 icon = hotword.icon ?: "",
                                 onClick = { onSearch(hotword.showName) }
@@ -185,14 +189,14 @@ fun SearchInputScreen(
                     )
                     LazyColumn(
                         modifier = Modifier
-                            .then(suggestFocusRestorerModifiers.parentModifier)
+                            .focusRestorer(suggestFocusRequester)
                     ) {
                         itemsIndexed(suggests) { index, suggest ->
                             SearchKeyword(
                                 modifier = Modifier
                                     .ifElse(
                                         index == 0,
-                                        suggestFocusRestorerModifiers.childModifier
+                                        Modifier.focusRequester(suggestFocusRequester)
                                     ),
                                 keyword = suggest,
                                 icon = "",
@@ -216,12 +220,12 @@ fun SearchInputScreen(
                 )
                 LazyColumn(
                     modifier = Modifier
-                        .then(historyFocusRestorerModifiers.parentModifier)
+                        .focusRestorer(historyFocusRequester)
                 ) {
                     itemsIndexed(searchHistories) { index, searchHistory ->
                         SearchKeyword(
                             modifier = Modifier
-                                .ifElse(index == 0, historyFocusRestorerModifiers.childModifier),
+                                .ifElse(index == 0, Modifier.focusRequester(historyFocusRequester)),
                             keyword = searchHistory.keyword,
                             icon = "",
                             onClick = { onSearch(searchHistory.keyword) }

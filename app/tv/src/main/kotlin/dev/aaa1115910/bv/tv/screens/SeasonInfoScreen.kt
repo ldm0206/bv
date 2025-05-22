@@ -56,6 +56,7 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
@@ -94,14 +95,13 @@ import dev.aaa1115910.bv.component.buttons.SeasonInfoButtons
 import dev.aaa1115910.bv.entity.proxy.ProxyArea
 import dev.aaa1115910.bv.player.entity.VideoListPgcEpisode
 import dev.aaa1115910.bv.repository.VideoInfoRepository
+import dev.aaa1115910.bv.tv.activities.video.VideoInfoActivity
+import dev.aaa1115910.bv.tv.util.launchPlayerActivity
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.ImageSize
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.fInfo
 import dev.aaa1115910.bv.util.focusedScale
 import dev.aaa1115910.bv.util.ifElse
-import dev.aaa1115910.bv.tv.activities.video.VideoInfoActivity
-import dev.aaa1115910.bv.tv.util.launchPlayerActivity
 import dev.aaa1115910.bv.util.requestFocus
 import dev.aaa1115910.bv.util.resizedImageUrl
 import dev.aaa1115910.bv.util.swapList
@@ -788,7 +788,7 @@ fun SeasonEpisodeRow(
     lastPlayedTime: Int = 0,
     onClick: (avid: Long, cid: Long, epid: Int, episodeTitle: String, startTime: Int) -> Unit
 ) {
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+    val focusRequester = remember { FocusRequester() }
     var hasFocus by remember { mutableStateOf(false) }
     val titleColor = if (hasFocus) Color.White else Color.White.copy(alpha = 0.6f)
     val titleFontSize by animateFloatAsState(
@@ -813,7 +813,7 @@ fun SeasonEpisodeRow(
         LazyRow(
             modifier = Modifier
                 .padding(top = 15.dp)
-                .then(focusRestorerModifiers.parentModifier),
+                .focusRestorer(focusRequester),
             contentPadding = PaddingValues(horizontal = 50.dp),
             horizontalArrangement = Arrangement.spacedBy(24.dp),
         ) {
@@ -846,7 +846,7 @@ fun SeasonEpisodeRow(
                 val episodeTitle by remember { mutableStateOf(if (episode.longTitle != "") episode.longTitle else episode.title) }
                 SeasonEpisodeButton(
                     modifier = Modifier
-                        .ifElse(index == 0, focusRestorerModifiers.childModifier),
+                        .ifElse(index == 0, Modifier.focusRequester(focusRequester)),
                     partTitle = if (title == "正片") {
                         //如果 title 是数字的话，就会返回 "第 x 集"
                         //如果 title 不是数字的话（例如 SP），就会原样使用 title

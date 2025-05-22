@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -36,7 +37,6 @@ import dev.aaa1115910.bv.player.tv.controller.MenuFocusState
 import dev.aaa1115910.bv.player.tv.controller.playermenu.component.MenuListItem
 import dev.aaa1115910.bv.player.tv.controller.playermenu.component.RadioMenuList
 import dev.aaa1115910.bv.player.tv.controller.playermenu.component.StepLessMenuItem
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.ifElse
 import kotlin.math.roundToInt
 
@@ -53,9 +53,8 @@ fun PictureMenuList(
     val context = LocalContext.current
     val focusState = LocalMenuFocusStateData.current
     val videoPlayerConfigData = LocalVideoPlayerConfigData.current
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
-
-    val focusRequester = remember { FocusRequester() }
+    val parentMenuFocusRequester = remember { FocusRequester() }
+    val parentMenuPositionFocusRequester = remember { FocusRequester() }
     var selectedPictureMenuItem by remember { mutableStateOf(VideoPlayerPictureMenuItem.Resolution) }
     val resolutionList = remember(videoPlayerConfigData.availableResolutions) {
         videoPlayerConfigData.availableResolutions.sortedByDescending { it.code }
@@ -82,7 +81,7 @@ fun PictureMenuList(
                     onSelectedChanged = { onResolutionChange(resolutionList[it]) },
                     onFocusBackToParent = {
                         onFocusStateChange(MenuFocusState.Menu)
-                        focusRequester.requestFocus()
+                        parentMenuFocusRequester.requestFocus()
                     }
                 )
 
@@ -95,7 +94,7 @@ fun PictureMenuList(
                     onSelectedChanged = { onCodecChange(videoPlayerConfigData.availableVideoCodec[it]) },
                     onFocusBackToParent = {
                         onFocusStateChange(MenuFocusState.Menu)
-                        focusRequester.requestFocus()
+                        parentMenuFocusRequester.requestFocus()
                     }
                 )
 
@@ -107,7 +106,7 @@ fun PictureMenuList(
                     onSelectedChanged = { onAspectRatioChange(VideoAspectRatio.entries[it]) },
                     onFocusBackToParent = {
                         onFocusStateChange(MenuFocusState.Menu)
-                        focusRequester.requestFocus()
+                        parentMenuFocusRequester.requestFocus()
                     }
                 )
 
@@ -128,7 +127,7 @@ fun PictureMenuList(
                     onSelectedChanged = { onAudioChange(audioList[it]) },
                     onFocusBackToParent = {
                         onFocusStateChange(MenuFocusState.Menu)
-                        focusRequester.requestFocus()
+                        parentMenuFocusRequester.requestFocus()
                     }
                 )
             }
@@ -136,7 +135,7 @@ fun PictureMenuList(
 
         LazyColumn(
             modifier = Modifier
-                .focusRequester(focusRequester)
+                .focusRequester(parentMenuFocusRequester)
                 .padding(horizontal = 8.dp)
                 .onPreviewKeyEvent {
                     if (it.type == KeyEventType.KeyUp) {
@@ -152,14 +151,17 @@ fun PictureMenuList(
                     }
                     false
                 }
-                .then(focusRestorerModifiers.parentModifier),
+                .focusRestorer(parentMenuPositionFocusRequester),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
             itemsIndexed(VideoPlayerPictureMenuItem.entries.toMutableList()) { index, item ->
                 MenuListItem(
                     modifier = Modifier
-                        .ifElse(index == 0, focusRestorerModifiers.childModifier),
+                        .ifElse(
+                            index == 0,
+                            Modifier.focusRequester(parentMenuPositionFocusRequester)
+                        ),
                     text = item.getDisplayName(context),
                     selected = selectedPictureMenuItem == item,
                     onClick = {},

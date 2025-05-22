@@ -74,6 +74,10 @@ android {
     lint{
         targetSdk = AppConfiguration.targetSdk
     }
+
+    testOptions {
+        targetSdk = AppConfiguration.targetSdk
+    }
 }
 
 ksp {

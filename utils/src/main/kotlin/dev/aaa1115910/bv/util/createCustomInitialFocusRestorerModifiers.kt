@@ -43,6 +43,7 @@ data class FocusRequesterModifiers(
     val childModifier: Modifier
 )
 
+@Deprecated("use Modifier.focusRestorer() instead")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun createCustomInitialFocusRestorerModifiers(): FocusRequesterModifiers {

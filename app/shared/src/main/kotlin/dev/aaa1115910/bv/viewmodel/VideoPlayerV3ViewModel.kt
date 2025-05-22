@@ -254,11 +254,10 @@ class VideoPlayerV3ViewModel(
 
             if (!existDefaultResolution) {
                 val tempList = resolutionList.sortedByDescending { it.code }
-                withContext(Dispatchers.Main) { currentQuality = tempList.first() }
-                tempList.forEach {
-                    if (it <= Prefs.defaultQuality) {
-                        withContext(Dispatchers.Main) { currentQuality = it }
-                    }
+                val currentQuality = tempList.firstOrNull { it.code < Prefs.defaultQuality.code }
+                    ?: tempList.last()
+                withContext(Dispatchers.Main) {
+                    this@VideoPlayerV3ViewModel.currentQuality = currentQuality
                 }
             }
 

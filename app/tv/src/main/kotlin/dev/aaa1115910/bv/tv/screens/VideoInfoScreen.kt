@@ -55,6 +55,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -116,7 +117,6 @@ import dev.aaa1115910.bv.tv.activities.video.VideoInfoActivity
 import dev.aaa1115910.bv.tv.util.launchPlayerActivity
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.Prefs
-import dev.aaa1115910.bv.util.createCustomInitialFocusRestorerModifiers
 import dev.aaa1115910.bv.util.fDebug
 import dev.aaa1115910.bv.util.fInfo
 import dev.aaa1115910.bv.util.fWarn
@@ -1103,7 +1103,7 @@ fun VideoPartRow(
     subtitle: String = "",
     onClick: (cid: Long) -> Unit
 ) {
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+    val focusRequester = remember { FocusRequester() }
     var hasFocus by remember { mutableStateOf(false) }
     var showPartListDialog by remember { mutableStateOf(false) }
     val titleColor = if (hasFocus) Color.White else Color.White.copy(alpha = 0.6f)
@@ -1130,7 +1130,7 @@ fun VideoPartRow(
         LazyRow(
             modifier = Modifier
                 .padding(top = 15.dp)
-                .then(focusRestorerModifiers.parentModifier),
+                .focusRestorer(focusRequester),
             contentPadding = PaddingValues(12.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -1144,7 +1144,7 @@ fun VideoPartRow(
             itemsIndexed(items = pages, key = { _, page -> page.cid }) { index, page ->
                 VideoPartButton(
                     modifier = Modifier
-                        .ifElse(index == 0, focusRestorerModifiers.childModifier),
+                        .ifElse(index == 0, Modifier.focusRequester(focusRequester)),
                     index = index + 1,
                     title = page.title,
                     played = if (page.cid == lastPlayedCid) lastPlayedTime else 0,
@@ -1175,7 +1175,7 @@ fun VideoUgcSeasonRow(
     onClickEp: (avid: Long, cid: Long) -> Unit,
     onClickEpPart: (episode: Episode, cid: Long) -> Unit
 ) {
-    val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+    val focusRequester = remember { FocusRequester() }
     var hasFocus by remember { mutableStateOf(false) }
     var showUgcListDialog by remember { mutableStateOf(false) }
     val titleColor = if (hasFocus) Color.White else Color.White.copy(alpha = 0.6f)
@@ -1200,7 +1200,7 @@ fun VideoUgcSeasonRow(
         LazyRow(
             modifier = Modifier
                 .padding(top = 15.dp)
-                .then(focusRestorerModifiers.parentModifier),
+                .focusRestorer(focusRequester),
             contentPadding = PaddingValues(12.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -1214,7 +1214,7 @@ fun VideoUgcSeasonRow(
             itemsIndexed(items = episodes) { index, episode ->
                 VideoPartButton(
                     modifier = Modifier
-                        .ifElse(index == 0, focusRestorerModifiers.childModifier)
+                        .ifElse(index == 0, Modifier.focusRequester(focusRequester))
                         .onFocusChanged { if (it.hasFocus) focusingEpisode = episode },
                     index = index + 1,
                     title = episode.title,
