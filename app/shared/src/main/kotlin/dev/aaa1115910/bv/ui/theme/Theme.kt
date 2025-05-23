@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -25,23 +24,41 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Surface
 import androidx.tv.material3.Typography
 import androidx.tv.material3.darkColorScheme
+import androidx.tv.material3.lightColorScheme
 import dev.aaa1115910.bv.component.FpsMonitor
+import dev.aaa1115910.bv.entity.ThemeType
 import dev.aaa1115910.bv.util.Prefs
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BVTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    forceDark: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
     val fontScale = LocalDensity.current.fontScale
     val view = LocalView.current
 
-    val colorSchemeTv = darkColorScheme(
+    val themeType = if (view.isInEditMode) ThemeType.Auto
+    else Prefs.themeTypeFlow.collectAsState(Prefs.themeType).value
+
+    val tvLightColorScheme = lightColorScheme()
+    val tvDarkColorScheme = darkColorScheme(
         border = Color.White
     )
-    val colorSchemeCommon = androidx.compose.material3.darkColorScheme()
+    val mobileLightColorScheme = androidx.compose.material3.lightColorScheme()
+    val mobileDarkColorScheme = androidx.compose.material3.darkColorScheme()
+
+    val colorSchemeTv = if (forceDark) tvDarkColorScheme else when (themeType) {
+        ThemeType.Auto -> if (darkTheme) tvDarkColorScheme else tvLightColorScheme
+        ThemeType.Dark -> tvDarkColorScheme
+        ThemeType.Light -> tvLightColorScheme
+    }
+    val colorSchemeCommon = if (forceDark) mobileDarkColorScheme else when (themeType) {
+        ThemeType.Auto -> if (darkTheme) mobileDarkColorScheme else mobileLightColorScheme
+        ThemeType.Dark -> mobileDarkColorScheme
+        ThemeType.Light -> mobileLightColorScheme
+    }
     val typographyTv =
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) android6AndBelowTypographyTv else Typography()
     val typographyCommon =

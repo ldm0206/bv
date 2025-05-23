@@ -8,6 +8,8 @@
 
     <string name="app_name">BV</string>
 
+    <string name="blacklist_user_toast">您已被开发者拉黑</string>
+
     <string name="codec_detail_audio_bitrate_range_title">音频码率范围</string>
     <string name="codec_detail_color_formats_title">颜色格式</string>
     <string name="codec_detail_hs_hardware">硬解</string>
@@ -223,6 +225,8 @@
     <string name="settings_storage_others_cache">其他缓存</string>
     <string name="settings_ui_density_text">更改整个应用的大小缩放</string>
     <string name="settings_ui_density_title">界面缩放</string>
+    <string name="settings_ui_theme_type_text">更改主题样式</string>
+    <string name="settings_ui_theme_type_title">主题</string>
     <string name="settings_version_check_update_button">爷要更新</string>
     <string name="settings_version_current_version">当前版本: %1$s</string>
     <string name="settings_version_latest_version">最新版本: %1$s</string>
@@ -232,6 +236,10 @@
     <string name="sms_login_code">验证码</string>
     <string name="sms_login_phone_number">手机号</string>
     <string name="sms_login_toast_send_sms_first">请先发送验证码</string>
+
+    <string name="theme_type_auto">跟随系统</string>
+    <string name="theme_type_dark">深色</string>
+    <string name="theme_type_light">浅色</string>
 
     <string name="title_activity_anime_timeline">番剧放送时间表</string>
     <string name="title_activity_favorite">个人收藏</string>

@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component.videocard
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -66,7 +67,7 @@ fun SeasonCard(
         shape = ClickableSurfaceDefaults.shape(shape = MaterialTheme.shapes.large),
         border = ClickableSurfaceDefaults.border(
             focusedBorder = Border(
-                border = BorderStroke(width = 3.dp, color = Color.White),
+                border = BorderStroke(width = 3.dp, color = MaterialTheme.colorScheme.border),
                 shape = MaterialTheme.shapes.large
             )
         )
@@ -123,7 +124,8 @@ fun SeasonCard(
                         fontStyle = FontStyle.Italic,
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp,
-                        textAlign = TextAlign.End
+                        textAlign = TextAlign.End,
+                        color = Color.White
                     )
                 }
             }
@@ -152,6 +154,7 @@ fun SeasonCard(
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SeasonCardPreview() {
     BVTheme {

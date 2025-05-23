@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component.search
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -161,6 +162,7 @@ fun SoftKeyboardButton(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SoftKeyboardKeyPreview() {
     BVTheme {
@@ -172,6 +174,7 @@ private fun SoftKeyboardKeyPreview() {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SoftKeyboardPreview() {
     val firstButtonFocusRequester = remember { FocusRequester() }

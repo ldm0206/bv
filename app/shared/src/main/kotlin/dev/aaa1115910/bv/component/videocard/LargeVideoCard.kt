@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component.videocard
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -167,6 +168,7 @@ fun LargeVideoCard(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun LargeVideoCardPreview() {
     val data = VideoCardData(

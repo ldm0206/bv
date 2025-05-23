@@ -1,6 +1,7 @@
 package dev.aaa1115910.bv.tv.screens
 
 import android.app.Activity
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -1465,7 +1466,7 @@ private fun VideoUgcListDialog(
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun VideoPartButtonShortTextPreview() {
     BVTheme {
@@ -1478,7 +1479,7 @@ fun VideoPartButtonShortTextPreview() {
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun VideoPartButtonLongTextPreview() {
     BVTheme {
@@ -1492,7 +1493,8 @@ fun VideoPartButtonLongTextPreview() {
     }
 }
 
-@Preview
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun VideoPartRowPreview() {
     val pages = remember { mutableStateListOf<VideoPage>() }
@@ -1512,7 +1514,7 @@ fun VideoPartRowPreview() {
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun VideoDescriptionPreview() {
     BVTheme {
@@ -1520,7 +1522,7 @@ fun VideoDescriptionPreview() {
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun UpButtonPreview() {
     var followed by remember { mutableStateOf(false) }

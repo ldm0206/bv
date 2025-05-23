@@ -17,6 +17,7 @@ import dev.aaa1115910.biliapi.http.util.generateBuvid
 import dev.aaa1115910.bv.BVApp
 import dev.aaa1115910.bv.BuildConfig
 import dev.aaa1115910.bv.entity.PlayerType
+import dev.aaa1115910.bv.entity.ThemeType
 import dev.aaa1115910.bv.player.entity.Audio
 import dev.aaa1115910.bv.player.entity.DanmakuType
 import dev.aaa1115910.bv.player.entity.Resolution
@@ -24,6 +25,7 @@ import dev.aaa1115910.bv.player.entity.VideoCodec
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.runBlocking
 import java.util.Date
 import java.util.UUID
@@ -296,6 +298,19 @@ object Prefs {
                 value
             )
         }
+
+    var blacklistUser: Boolean
+        get() = runBlocking { dsm.getPreferenceFlow(PrefKeys.prefBlacklistUserRequest).first() }
+        set(value) = runBlocking { dsm.editPreference(PrefKeys.prefBlacklistUserKey, value) }
+
+    var themeType: ThemeType
+        get() = runBlocking {
+            ThemeType.entries[dsm.getPreferenceFlow(PrefKeys.prefThemeTypeRequest).first()]
+        }
+        set(value) = runBlocking { dsm.editPreference(PrefKeys.prefThemeTypeKey, value.ordinal) }
+    val themeTypeFlow: Flow<ThemeType>
+        get() = dsm.getPreferenceFlow(PrefKeys.prefThemeTypeRequest)
+            .transform { ordinal -> emit(ThemeType.entries[ordinal]) }
 }
 
 object PrefKeys {
@@ -339,6 +354,8 @@ object PrefKeys {
     val prefPreferOfficialCdn = booleanPreferencesKey("prefer_official_cdn")
     val prefDefaultDanmakuMask = booleanPreferencesKey("prefer_enable_webmark")
     val prefEnableFfmpegAudioRenderer = booleanPreferencesKey("enable_ffmpeg_audio_renderer")
+    val prefBlacklistUserKey = booleanPreferencesKey("blacklist_user")
+    val prefThemeTypeKey = intPreferencesKey("theme_type")
 
     val prefIsLoginRequest = PreferenceRequest(prefIsLoginKey, false)
     val prefUidRequest = PreferenceRequest(prefUidKey, 0)
@@ -390,4 +407,6 @@ object PrefKeys {
     val prefPreferOfficialCdnRequest = PreferenceRequest(prefPreferOfficialCdn, false)
     val prefDefaultDanmakuMaskRequest = PreferenceRequest(prefDefaultDanmakuMask, false)
     val prefEnableFfmpegEndererRequest = PreferenceRequest(prefEnableFfmpegAudioRenderer, false)
+    val prefBlacklistUserRequest = PreferenceRequest(prefBlacklistUserKey, false)
+    val prefThemeTypeRequest = PreferenceRequest(prefThemeTypeKey, ThemeType.Auto.ordinal)
 }

@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component.settings
 
+import android.content.res.Configuration
 import androidx.compose.foundation.focusable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -64,6 +65,7 @@ private data class SettingsMenuSelectItemData(
 )
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SettingsMenuSelectItemPreview(
     @PreviewParameter(SettingsMenuSelectItemPreviewParameterProvider::class) data: SettingsMenuSelectItemData

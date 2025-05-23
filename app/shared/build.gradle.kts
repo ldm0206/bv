@@ -1,8 +1,11 @@
+import java.net.URI
+
 plugins {
     alias(gradleLibs.plugins.android.library)
     alias(gradleLibs.plugins.compose.compiler)
     alias(gradleLibs.plugins.firebase.crashlytics)
     alias(gradleLibs.plugins.google.ksp)
+    alias(gradleLibs.plugins.google.protobuf)
     alias(gradleLibs.plugins.google.services) apply false
     alias(gradleLibs.plugins.kotlin.android)
     alias(gradleLibs.plugins.kotlin.serialization)
@@ -33,6 +36,11 @@ android {
                 type = "String",
                 name = "APPLICATION_ID",
                 value = "\"${AppConfiguration.appId}\""
+            )
+            buildConfigField(
+                type = "String",
+                name = "BLACKLIST_URL",
+                value = "\"${AppConfiguration.blacklistUrl}\""
             )
         }
     }
@@ -71,7 +79,7 @@ android {
         buildConfig = true
     }
 
-    lint{
+    lint {
         targetSdk = AppConfiguration.targetSdk
     }
 
@@ -146,6 +154,7 @@ dependencies {
     api(libs.logging)
     api(libs.lottie)
     api(libs.material)
+    api(libs.protobuf.kotlin)
     api(libs.qrcode)
     api(libs.rememberPreference)
     api(libs.slf4j.android.mvysny)
@@ -158,4 +167,43 @@ dependencies {
     androidTestImplementation(androidx.compose.ui.test.junit4)
     debugApi(androidx.compose.ui.test.manifest)
     debugApi(androidx.compose.ui.tooling)
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.get()}"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java")
+                create("kotlin")
+            }
+        }
+    }
+}
+
+tasks.register("downloadBlacklist") {
+    val assetsDir = file("src/main/res/raw")
+    val resourceUrl = AppConfiguration.blacklistUrl
+    val outputFile = File(assetsDir, "blacklist.bin")
+
+    if (outputFile.exists()) return@register
+
+    doLast {
+        if (!assetsDir.exists()) {
+            assetsDir.mkdirs()
+        }
+        println("Downloading resource from $resourceUrl to ${outputFile.absolutePath}")
+        URI(resourceUrl).toURL().openStream().use { input ->
+            outputFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+            println("Download complete: ${outputFile.absolutePath}")
+        }
+    }
+}
+
+tasks.named("preBuild").configure {
+    dependsOn("downloadBlacklist")
 }

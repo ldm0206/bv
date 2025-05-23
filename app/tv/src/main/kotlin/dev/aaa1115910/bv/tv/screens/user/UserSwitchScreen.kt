@@ -2,6 +2,7 @@ package dev.aaa1115910.bv.tv.screens.user
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -529,15 +530,15 @@ fun UserItem(
                     modifier = Modifier
                         .size(80.dp),
                     colors = ClickableSurfaceDefaults.colors(
-                        containerColor = Color.DarkGray,
-                        focusedContainerColor = Color.Gray
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
                     ),
                     shape = ClickableSurfaceDefaults.shape(
                         shape = CircleShape
                     ),
                     glow = ClickableSurfaceDefaults.glow(
                         focusedGlow = Glow(
-                            elevationColor = MaterialTheme.colorScheme.inverseSurface,
+                            elevationColor = MaterialTheme.colorScheme.border,
                             elevation = 16.dp
                         )
                     ),
@@ -604,8 +605,8 @@ private fun AddUserItem(
                 .padding(18.dp)
                 .size(80.dp),
             colors = ClickableSurfaceDefaults.colors(
-                containerColor = Color.DarkGray,
-                focusedContainerColor = Color.Gray
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
             ),
             shape = ClickableSurfaceDefaults.shape(
                 shape = CircleShape
@@ -625,7 +626,8 @@ private fun AddUserItem(
                 Icon(
                     modifier = Modifier.size(40.dp),
                     imageVector = Icons.Default.Add,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -647,6 +649,7 @@ private fun AddUserItem(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun UserItemPreview() {
     BVTheme {
@@ -660,6 +663,7 @@ fun UserItemPreview() {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun AddUserItemPreview() {
     BVTheme {
@@ -670,6 +674,7 @@ fun AddUserItemPreview() {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun UserSwitchContentPreview() {
     BVTheme {
@@ -706,6 +711,7 @@ fun UserSwitchContentPreview() {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun UserMenuDialogPreview() {
     BVTheme {
@@ -723,6 +729,7 @@ fun UserMenuDialogPreview() {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun UserAuthDataDialogPreview() {
     BVTheme {

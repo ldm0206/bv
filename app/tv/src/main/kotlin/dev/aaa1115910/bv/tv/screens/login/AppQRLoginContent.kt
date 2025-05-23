@@ -114,7 +114,6 @@ fun AppQRLoginContent(
                             QrLoginState.Error, QrLoginState.Unknown -> stringResource(R.string.login_error)
                         },
                         style = MaterialTheme.typography.displaySmall,
-                        color = Color.White
                     )
                     AnimatedVisibility(
                         visible = listOf(QrLoginState.Expired, QrLoginState.Error)
@@ -123,7 +122,6 @@ fun AppQRLoginContent(
                         Text(
                             text = stringResource(R.string.login_retry),
                             style = MaterialTheme.typography.displaySmall,
-                            color = Color.White,
                             fontSize = 26.sp
                         )
                     }

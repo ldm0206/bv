@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component.pgc
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -314,6 +315,7 @@ private class PgcTypeProvider : PreviewParameterProvider<PgcType> {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun IndexFilterPreview(
     @PreviewParameter(PgcTypeProvider::class) pgcType: PgcType

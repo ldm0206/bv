@@ -20,6 +20,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import androidx.tv.material3.MaterialTheme
 
 /**
  * 获取到焦点时显示白色边框
@@ -32,8 +33,8 @@ fun Modifier.focusedBorder(
     var hasFocus by remember { mutableStateOf(false) }
 
     val animateColor by infiniteTransition.animateColor(
-        initialValue = Color.White.copy(alpha = 1f),
-        targetValue = Color.White.copy(alpha = 0.1f),
+        initialValue = MaterialTheme.colorScheme.border.copy(alpha = 1f),
+        targetValue = MaterialTheme.colorScheme.border.copy(alpha = 0.1f),
         animationSpec = infiniteRepeatable(
             animation = tween(1000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
@@ -41,7 +42,7 @@ fun Modifier.focusedBorder(
         label = "focused border animate color"
     )
     val borderColor = if (hasFocus) {
-        if (animate) animateColor else Color.White
+        if (animate) animateColor else MaterialTheme.colorScheme.border
     } else Color.Transparent
 
     onFocusChanged { hasFocus = it.hasFocus }

@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component.settings
 
+import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
@@ -66,6 +67,7 @@ fun SettingSwitchListItem(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SettingSwitchListItemFocusedAndEnabledPreview() {
     BVTheme {
@@ -80,6 +82,7 @@ fun SettingSwitchListItemFocusedAndEnabledPreview() {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SettingSwitchListItemFocusedAndDisabledPreview() {
     BVTheme {
@@ -94,6 +97,7 @@ fun SettingSwitchListItemFocusedAndDisabledPreview() {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SettingSwitchListItemNotFocusedAndEnabledPreview() {
     BVTheme {
@@ -108,6 +112,7 @@ fun SettingSwitchListItemNotFocusedAndEnabledPreview() {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SettingSwitchListItemNotFocusedAndDisabledPreview() {
     BVTheme {

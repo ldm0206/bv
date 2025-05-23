@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +28,7 @@ fun UpIcon(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun UpIconPreview() {
     BVTheme {

@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component.videocard
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -156,7 +157,8 @@ private fun PlayText(
             Icon(
                 modifier = Modifier,
                 painter = painterResource(id = R.drawable.ic_play_count),
-                contentDescription = null
+                contentDescription = null,
+                tint = Color.White
             )
             Text(
                 text = text,
@@ -181,7 +183,8 @@ private fun DanmakuText(
             Icon(
                 modifier = Modifier,
                 painter = painterResource(id = R.drawable.ic_danmaku_count),
-                contentDescription = null
+                contentDescription = null,
+                tint = Color.White
             )
             Text(
                 text = text,
@@ -311,6 +314,7 @@ private fun CardInfo(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SmallVideoCardWithoutFocusPreview() {
     val data = VideoCardData(
@@ -336,6 +340,7 @@ fun SmallVideoCardWithoutFocusPreview() {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SmallVideoCardWithFocusPreview() {
     val data = VideoCardData(
@@ -361,6 +366,7 @@ fun SmallVideoCardWithFocusPreview() {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SmallVideoCardsPreview() {
     val data = VideoCardData(
@@ -391,7 +397,7 @@ fun SmallVideoCardsPreview() {
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DanmakuTextPreview() {
     BVTheme {
@@ -399,7 +405,7 @@ private fun DanmakuTextPreview() {
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun PlayTextPreview() {
     BVTheme {

@@ -18,6 +18,8 @@ object AppConfiguration {
     val versionCode: Int by lazy { "git rev-list --count HEAD".exec().toInt() }
     const val libVLCVersion = "3.0.18"
     var googleServicesAvailable = true
+    const val blacklistUrl =
+        "https://raw.githubusercontent.com/aaa1115910/bv-blacklist/main/blacklist.bin"
 
     init {
         initConfigurations()

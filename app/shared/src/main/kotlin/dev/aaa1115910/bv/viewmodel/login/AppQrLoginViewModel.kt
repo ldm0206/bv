@@ -14,6 +14,8 @@ import dev.aaa1115910.biliapi.repositories.LoginRepository
 import dev.aaa1115910.bv.BVApp
 import dev.aaa1115910.bv.entity.AuthData
 import dev.aaa1115910.bv.repository.UserRepository
+import dev.aaa1115910.bv.util.BlacklistUtil
+import dev.aaa1115910.bv.util.Prefs
 import dev.aaa1115910.bv.util.fError
 import dev.aaa1115910.bv.util.fInfo
 import dev.aaa1115910.bv.util.timeTask
@@ -105,9 +107,10 @@ class AppQrLoginViewModel(
                         accessToken = qrLoginResult.accessToken!!,
                         refreshToken = qrLoginResult.refreshToken!!
                     )
-                    userRepository.addUser(authData)
 
                     timer.cancel()
+                    BlacklistUtil.checkUid(Prefs.uid)
+                    userRepository.addUser(authData)
                 }
 
                 else -> {

@@ -29,7 +29,9 @@ class VideoInfoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BVTheme {
+            BVTheme(
+                forceDark = true
+            ) {
                 VideoInfoScreen()
             }
         }

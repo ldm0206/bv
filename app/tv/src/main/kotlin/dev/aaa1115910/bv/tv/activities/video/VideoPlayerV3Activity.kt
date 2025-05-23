@@ -40,7 +40,10 @@ class VideoPlayerV3Activity : ComponentActivity() {
             playerIconMoving: String = ""
         ) {
             context.startActivity(
-                Intent(context, dev.aaa1115910.bv.tv.activities.video.VideoPlayerV3Activity::class.java).apply {
+                Intent(
+                    context,
+                    dev.aaa1115910.bv.tv.activities.video.VideoPlayerV3Activity::class.java
+                ).apply {
                     putExtra("avid", avid)
                     putExtra("cid", cid)
                     putExtra("title", title)
@@ -68,7 +71,9 @@ class VideoPlayerV3Activity : ComponentActivity() {
         getParamsFromIntent()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContent {
-            BVTheme {
+            BVTheme(
+                forceDark = true
+            ) {
                 VideoPlayerV3Screen()
             }
         }

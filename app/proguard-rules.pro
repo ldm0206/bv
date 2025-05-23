@@ -113,3 +113,6 @@
 -dontwarn ch.qos.logback.classic.spi.ILoggingEvent
 -dontwarn ch.qos.logback.classic.spi.LogbackServiceProvider
 -dontwarn ch.qos.logback.classic.spi.LoggingEvent
+
+# geetest
+-keep class com.geetest.sdk.** {*;}

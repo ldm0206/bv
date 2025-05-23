@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package dev.aaa1115910.bv;
+
+message BlacklistNano {
+  int32 version = 1;
+  int32 count = 2;
+  repeated int64 uids = 3;
+}

@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ fun DevelopingTipContent(modifier: Modifier = Modifier) {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DevelopingTipPreview() {
     BVTheme {
@@ -51,6 +53,7 @@ private fun DevelopingTipPreview() {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DevelopingTipContentPreview() {
     BVTheme {

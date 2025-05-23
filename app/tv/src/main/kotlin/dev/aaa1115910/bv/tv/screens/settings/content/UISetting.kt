@@ -40,10 +40,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Icon
+import androidx.tv.material3.ListItem
 import androidx.tv.material3.MaterialTheme
+import androidx.tv.material3.RadioButton
 import androidx.tv.material3.Text
 import dev.aaa1115910.bv.R
 import dev.aaa1115910.bv.component.settings.SettingListItem
+import dev.aaa1115910.bv.entity.ThemeType
 import dev.aaa1115910.bv.tv.screens.settings.SettingsMenuNavItem
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.Prefs
@@ -57,7 +60,9 @@ fun UISetting(
     val context = LocalContext.current
 
     var showDensityDialog by remember { mutableStateOf(false) }
+    var showThemeTypeDialog by remember { mutableStateOf(false) }
     val density by Prefs.densityFlow.collectAsState(context.resources.displayMetrics.widthPixels / 960f)
+    val themeType by Prefs.themeTypeFlow.collectAsState(Prefs.themeType)
 
     Box(modifier = modifier) {
         Column(
@@ -82,6 +87,13 @@ fun UISetting(
                         onClick = { showDensityDialog = true }
                     )
                 }
+                item {
+                    SettingListItem(
+                        title = stringResource(R.string.settings_ui_theme_type_title),
+                        supportText = stringResource(R.string.settings_ui_theme_type_text),
+                        onClick = { showThemeTypeDialog = true }
+                    )
+                }
             }
         }
     }
@@ -91,6 +103,13 @@ fun UISetting(
         onHideDialog = { showDensityDialog = false },
         density = density,
         onDensityChange = { Prefs.density = it }
+    )
+
+    ThemeTypeDialog(
+        show = showThemeTypeDialog,
+        onHideDialog = { showThemeTypeDialog = false },
+        themeType = themeType,
+        onThemeTypeChange = { Prefs.themeType = it }
     )
 }
 
@@ -155,6 +174,43 @@ private fun UIDensityDialog(
     }
 }
 
+@Composable
+fun ThemeTypeDialog(
+    modifier: Modifier = Modifier,
+    show: Boolean,
+    onHideDialog: () -> Unit,
+    themeType: ThemeType,
+    onThemeTypeChange: (ThemeType) -> Unit
+) {
+    if (show) {
+        AlertDialog(
+            modifier = modifier,
+            onDismissRequest = { onHideDialog() },
+            title = { Text(text = stringResource(R.string.settings_ui_theme_type_title)) },
+            text = {
+                Column {
+                    ThemeType.entries.forEach {
+                        ListItem(
+                            selected = themeType == it,
+                            onClick = { onThemeTypeChange(it) },
+                            headlineContent = {
+                                Text(text = it.getDisplayName(LocalContext.current))
+                            },
+                            trailingContent = {
+                                RadioButton(
+                                    selected = themeType == it,
+                                    onClick = null
+                                )
+                            }
+                        )
+                    }
+                }
+            },
+            confirmButton = {}
+        )
+    }
+}
+
 @Preview
 @Composable
 fun UIDensityDialogPreview() {
@@ -167,6 +223,22 @@ fun UIDensityDialogPreview() {
             onHideDialog = {},
             density = density,
             onDensityChange = { density = it }
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ThemeTypeDialogPreview() {
+    val show by remember { mutableStateOf(true) }
+    val themeType by remember { mutableStateOf(ThemeType.Auto) }
+
+    BVTheme {
+        ThemeTypeDialog(
+            show = show,
+            onHideDialog = {},
+            themeType = themeType,
+            onThemeTypeChange = {}
         )
     }
 }

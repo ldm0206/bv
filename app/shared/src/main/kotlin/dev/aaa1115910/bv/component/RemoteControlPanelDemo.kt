@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -204,14 +205,15 @@ fun RemoteControlPanelInfo() {
                 .height(borderWidth / 2)
                 .background(contentColor)
         )
-        Spacer(modifier = Modifier
-            .constrainAs(tipLineLR2) {
-                end.linkTo(tipLineLR1.start, (-7).dp)
-                top.linkTo(tipLineLR1.top, (-14).dp)
-            }
-            .width(200.dp)
-            .height(borderWidth / 2)
-            .background(contentColor)
+        Spacer(
+            modifier = Modifier
+                .constrainAs(tipLineLR2) {
+                    end.linkTo(tipLineLR1.start, (-7).dp)
+                    top.linkTo(tipLineLR1.top, (-14).dp)
+                }
+                .width(200.dp)
+                .height(borderWidth / 2)
+                .background(contentColor)
         )
         Text(
             modifier = Modifier
@@ -264,6 +266,7 @@ fun RemoteControlPanelDemo(
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun RemoteControlPanelInfoPreview() {
     BVTheme {
@@ -274,6 +277,7 @@ private fun RemoteControlPanelInfoPreview() {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun RemoteControlPanelDemoPreview() {
     BVTheme {

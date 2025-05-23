@@ -1,6 +1,7 @@
 package dev.aaa1115910.bv.tv.screens
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
@@ -468,7 +469,7 @@ fun SeasonCover(
                     .align(Alignment.BottomCenter)
                     .width(195.dp)
                     .height(coverBottomTipHeight)
-                    .background(Color.Black.copy(alpha = 0.6f)),
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -508,7 +509,7 @@ fun SeasonBaseInfo(
                 style = MaterialTheme.typography.titleLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(text = newEpDesc)
             Text(text = description)
@@ -1075,6 +1076,7 @@ private fun SeasonSelectorContent(
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SeasonInfoPartPreview() {
     BVTheme {
@@ -1098,6 +1100,7 @@ fun SeasonInfoPartPreview() {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SeasonEpisodeRowPreview() {
     val episodes = remember { mutableStateListOf<Episode>() }
@@ -1128,6 +1131,7 @@ fun SeasonEpisodeRowPreview() {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SeasonSelectorPreview() {
     val seasons = listOf(

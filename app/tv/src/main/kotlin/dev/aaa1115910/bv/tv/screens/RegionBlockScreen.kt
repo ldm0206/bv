@@ -1,6 +1,7 @@
 package dev.aaa1115910.bv.tv.screens
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.keyframes
@@ -152,6 +153,7 @@ fun RegionBlockScreen(
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun RegionBlockScreenPreview() {
     BVTheme {

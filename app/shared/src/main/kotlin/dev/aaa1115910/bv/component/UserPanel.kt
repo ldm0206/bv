@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component
 
+import android.content.res.Configuration
 import android.view.KeyEvent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -242,6 +243,7 @@ private fun UserPanelSmallItem(
 
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun UserPanelPreview() {
     BVTheme {

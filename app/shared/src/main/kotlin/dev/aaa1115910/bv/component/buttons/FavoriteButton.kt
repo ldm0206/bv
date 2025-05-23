@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.component.buttons
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -157,6 +158,7 @@ private fun FavoriteDialog(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun FavoriteButtonEnablePreview() {
     BVTheme {
@@ -169,6 +171,7 @@ fun FavoriteButtonEnablePreview() {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun FavoriteButtonDisablePreview() {
     BVTheme {
@@ -181,6 +184,7 @@ fun FavoriteButtonDisablePreview() {
 }
 
 @Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun FavoriteDialogPreview() {
     val userFavoriteFolders = listOf(

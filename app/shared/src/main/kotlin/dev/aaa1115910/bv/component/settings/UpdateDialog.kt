@@ -1,6 +1,7 @@
 package dev.aaa1115910.bv.component.settings
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -271,6 +272,7 @@ private class UpdateStatusProvider : PreviewParameterProvider<UpdateStatus> {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun UpdateDialogPreview(
     @PreviewParameter(UpdateStatusProvider::class) updateStatus: UpdateStatus
