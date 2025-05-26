@@ -207,3 +207,9 @@ tasks.register("downloadBlacklist") {
 tasks.named("preBuild").configure {
     dependsOn("downloadBlacklist")
 }
+
+configurations {
+    implementation {
+        exclude("androidx.media3", "media3-container")
+    }
+}
