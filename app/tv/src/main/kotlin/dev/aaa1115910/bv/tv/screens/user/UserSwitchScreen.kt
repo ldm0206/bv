@@ -3,15 +3,14 @@ package dev.aaa1115910.bv.tv.screens.user
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.BitmapFactory
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +29,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -44,15 +44,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.ImageBitmapConfig
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -68,6 +66,8 @@ import androidx.tv.material3.SurfaceDefaults
 import androidx.tv.material3.Text
 import coil.compose.AsyncImage
 import dev.aaa1115910.bv.R
+import dev.aaa1115910.bv.component.QrImage
+import dev.aaa1115910.bv.entity.BvScheme
 import dev.aaa1115910.bv.entity.db.UserDB
 import dev.aaa1115910.bv.repository.UserRepository
 import dev.aaa1115910.bv.tv.activities.user.LoginActivity
@@ -77,14 +77,10 @@ import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.ifElse
 import dev.aaa1115910.bv.util.requestFocus
 import dev.aaa1115910.bv.viewmodel.UserSwitchViewModel
-import io.github.g0dkar.qrcode.QRCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.getKoin
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 
 @Composable
 fun UserSwitchScreen(
@@ -408,30 +404,39 @@ fun UserAuthDataDialog(
     onHideDialog: () -> Unit,
     userDB: UserDB
 ) {
-    var qrImage by remember { mutableStateOf(ImageBitmap(1, 1, ImageBitmapConfig.Argb8888)) }
-
-    val createQr: suspend () -> Unit = {
-        val output = ByteArrayOutputStream()
-        QRCode(userDB.auth).render().writeImage(output)
-        val input = ByteArrayInputStream(output.toByteArray())
-        val image = BitmapFactory.decodeStream(input).asImageBitmap()
-        withContext(Dispatchers.Main) { qrImage = image }
-    }
+    var qrContent by remember { mutableStateOf("") }
 
     LaunchedEffect(show) {
         if (show) {
-            withContext(Dispatchers.IO) {
-                createQr()
-            }
+            qrContent = BvScheme.QrToken(
+                auth = userDB.auth,
+                uid = userDB.uid,
+                username = userDB.username,
+                avatar = userDB.avatar
+            ).buildUri()
         }
     }
 
+    BackHandler(show) { onHideDialog() }
+
     if (show) {
-        AlertDialog(
-            modifier = modifier,
-            onDismissRequest = onHideDialog,
-            title = { Text(text = userDB.username) },
-            text = {
+        Scaffold(
+            modifier
+                .fillMaxSize(),
+            topBar = {
+                Box(
+                    modifier = Modifier.padding(start = 48.dp, top = 24.dp, bottom = 8.dp)
+                ) {
+                    Text(
+                        text = userDB.username,
+                        fontSize = 48.sp
+                    )
+                }
+            }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier.padding(innerPadding)
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -439,23 +444,36 @@ fun UserAuthDataDialog(
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(140.dp)
-                            .clip(MaterialTheme.shapes.medium)
-                            .background(Color.White),
+                            .weight(4f)
+                            .fillMaxHeight(),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Image(
-                            modifier = Modifier.size(120.dp),
-                            bitmap = qrImage,
-                            contentDescription = null
+                        QrImage(
+                            modifier = Modifier
+                                .size(240.dp),
+                            content = qrContent
                         )
                     }
-                    Text(text = userDB.auth)
+
+                    Box(
+                        modifier = Modifier
+                            .weight(6f)
+                            .padding(end = 60.dp)
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(24.dp)
+                        ) {
+                            Text(
+                                text = "扫码二维码以登录移动端",
+                                style = MaterialTheme.typography.displaySmall
+                            )
+
+                            Text(text = userDB.auth)
+                        }
+                    }
                 }
-            },
-            dismissButton = {},
-            confirmButton = {}
-        )
+            }
+        }
     }
 }
 
@@ -740,7 +758,7 @@ fun UserAuthDataDialogPreview() {
                 uid = 0,
                 username = "Android Studio Official",
                 avatar = "0https://i0.hdslb.com/bfs/article/b6b843d84b84a3ba5526b09ebf538cd4b4c8c3f3.jpg",
-                auth = ""
+                auth = "this is a long auth data string that is used to test the dialog layout and should be long enough to wrap into multiple lines."
             ),
         )
     }

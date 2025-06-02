@@ -8,7 +8,9 @@ import dev.aaa1115910.biliapi.entity.ugc.region.UgcFeedPage
 import dev.aaa1115910.biliapi.entity.ugc.region.UgcRegionData
 import dev.aaa1115910.biliapi.entity.ugc.region.UgcRegionListData
 import dev.aaa1115910.biliapi.http.BiliHttpApi
+import org.koin.core.annotation.Single
 
+@Single
 class UgcRepository(
     private val authRepository: AuthRepository
 ) {

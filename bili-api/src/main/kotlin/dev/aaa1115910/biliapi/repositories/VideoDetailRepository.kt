@@ -23,7 +23,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.koin.core.annotation.Single
 
+@Single
 class VideoDetailRepository(
     private val authRepository: AuthRepository,
     private val channelRepository: ChannelRepository,

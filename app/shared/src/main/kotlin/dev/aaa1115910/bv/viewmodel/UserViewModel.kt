@@ -19,7 +19,9 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 class UserViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {

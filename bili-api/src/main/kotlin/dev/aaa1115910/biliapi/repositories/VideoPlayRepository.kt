@@ -22,8 +22,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Single
 import bilibili.pgc.gateway.player.v2.PlayURLGrpcKt as PgcPlayURLGrpcKt
 
+@Single
 class VideoPlayRepository(
     private val authRepository: AuthRepository,
     private val channelRepository: ChannelRepository

@@ -2,7 +2,9 @@ package dev.aaa1115910.biliapi.repositories
 
 import dev.aaa1115910.biliapi.grpc.utils.generateChannel
 import io.grpc.ManagedChannel
+import org.koin.core.annotation.Single
 
+@Single
 class ChannelRepository {
     // grpc.biliapi.net
     var defaultChannel: ManagedChannel? = null

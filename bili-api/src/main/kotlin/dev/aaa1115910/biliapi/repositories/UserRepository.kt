@@ -22,8 +22,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Single
 import kotlin.math.ceil
 
+@Single
 class UserRepository(
     private val authRepository: AuthRepository,
     private val channelRepository: ChannelRepository

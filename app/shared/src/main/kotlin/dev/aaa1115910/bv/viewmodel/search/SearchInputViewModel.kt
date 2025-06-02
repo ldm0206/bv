@@ -19,8 +19,10 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinViewModel
 import java.util.Date
 
+@KoinViewModel
 class SearchInputViewModel(
     private val searchRepository: SearchRepository,
     private val db: AppDatabase = BVApp.getAppDatabase()

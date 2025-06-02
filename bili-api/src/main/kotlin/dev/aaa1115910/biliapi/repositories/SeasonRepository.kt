@@ -9,7 +9,9 @@ import dev.aaa1115910.biliapi.entity.season.Timeline
 import dev.aaa1115910.biliapi.entity.season.TimelineFilter
 import dev.aaa1115910.biliapi.http.BiliHttpApi
 import dev.aaa1115910.biliapi.http.util.BiliAppConf
+import org.koin.core.annotation.Single
 
+@Single
 class SeasonRepository(
     private val authRepository: AuthRepository
 ) {

@@ -14,7 +14,9 @@ import dev.aaa1115910.bv.util.Prefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 class UserSwitchViewModel(
     private val userRepository: UserRepository,
     private val db: AppDatabase = BVApp.getAppDatabase()

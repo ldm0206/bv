@@ -8,9 +8,11 @@ import dev.aaa1115910.biliapi.entity.login.SmsLoginResult
 import dev.aaa1115910.biliapi.entity.login.WebCookies
 import dev.aaa1115910.biliapi.http.BiliPassportHttpApi
 import io.ktor.util.date.toJvmDate
+import org.koin.core.annotation.Single
 import java.util.Date
 import java.util.UUID
 
+@Single
 class LoginRepository {
     /**
      * 请求扫码登录的二维码，仅支持 Http 接口使用

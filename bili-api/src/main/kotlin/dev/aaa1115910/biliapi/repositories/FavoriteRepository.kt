@@ -5,7 +5,9 @@ import dev.aaa1115910.biliapi.entity.FavoriteFolderData
 import dev.aaa1115910.biliapi.entity.FavoriteFolderMetadata
 import dev.aaa1115910.biliapi.entity.FavoriteItemType
 import dev.aaa1115910.biliapi.http.BiliHttpApi
+import org.koin.core.annotation.Single
 
+@Single
 class FavoriteRepository(
     private val authRepository: AuthRepository
 ) {

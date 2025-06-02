@@ -6,7 +6,9 @@ import bilibili.app.interfaces.v1.cursorV2Req
 import dev.aaa1115910.biliapi.entity.ApiType
 import dev.aaa1115910.biliapi.entity.user.HistoryData
 import dev.aaa1115910.biliapi.http.BiliHttpApi
+import org.koin.core.annotation.Single
 
+@Single
 class HistoryRepository(
     private val authRepository: AuthRepository,
     private val channelRepository: ChannelRepository

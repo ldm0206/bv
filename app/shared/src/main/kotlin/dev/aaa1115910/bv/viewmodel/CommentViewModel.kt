@@ -21,7 +21,9 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 class CommentViewModel(
     private val commentRepository: CommentRepository
 ) : ViewModel() {

@@ -21,8 +21,10 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinViewModel
 import java.util.UUID
 
+@KoinViewModel
 class SeasonViewModel(
     private val videoDetailRepository: VideoDetailRepository,
     private val userRepository: UserRepository

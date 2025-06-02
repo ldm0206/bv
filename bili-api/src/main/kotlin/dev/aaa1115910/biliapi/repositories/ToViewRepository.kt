@@ -1,12 +1,12 @@
 package dev.aaa1115910.biliapi.repositories
 
 import bilibili.app.interfaces.v1.HistoryGrpcKt
-import bilibili.app.interfaces.v1.cursor
-import bilibili.app.interfaces.v1.cursorV2Req
 import dev.aaa1115910.biliapi.entity.ApiType
 import dev.aaa1115910.biliapi.entity.user.ToViewData
 import dev.aaa1115910.biliapi.http.BiliHttpApi
+import org.koin.core.annotation.Single
 
+@Single
 class ToViewRepository(
     private val authRepository: AuthRepository,
     private val channelRepository: ChannelRepository

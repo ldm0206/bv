@@ -1,8 +1,8 @@
 package dev.aaa1115910.bv.viewmodel.home
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import dev.aaa1115910.biliapi.entity.rank.PopularVideoPage
@@ -17,7 +17,9 @@ import dev.aaa1115910.bv.util.toast
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 class PopularViewModel(
     private val recommendVideoRepository: RecommendVideoRepository
 ) : ViewModel() {

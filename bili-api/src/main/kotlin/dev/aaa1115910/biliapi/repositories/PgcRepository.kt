@@ -18,7 +18,9 @@ import dev.aaa1115910.biliapi.entity.pgc.index.SpokenLanguage
 import dev.aaa1115910.biliapi.entity.pgc.index.Style
 import dev.aaa1115910.biliapi.entity.pgc.index.Year
 import dev.aaa1115910.biliapi.http.BiliHttpApi
+import org.koin.core.annotation.Single
 
+@Single
 class PgcRepository {
     suspend fun getCarousel(pgcType: PgcType): CarouselData {
         val initialStateData = BiliHttpApi.getPgcWebInitialStateData(pgcType)

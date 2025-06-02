@@ -52,8 +52,10 @@ import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinViewModel
 import java.net.URI
 
+@KoinViewModel
 class VideoPlayerV3ViewModel(
     private val videoInfoRepository: VideoInfoRepository,
     private val videoPlayRepository: VideoPlayRepository,

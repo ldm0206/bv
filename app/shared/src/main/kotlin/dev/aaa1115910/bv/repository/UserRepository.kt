@@ -13,8 +13,10 @@ import dev.aaa1115910.bv.entity.db.UserDB
 import dev.aaa1115910.bv.util.Prefs
 import dev.aaa1115910.bv.util.fInfo
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.koin.core.annotation.Single
 import java.util.Date
 
+@Single
 class UserRepository(
     private val authRepository: AuthRepository,
     private val db: AppDatabase = BVApp.getAppDatabase()

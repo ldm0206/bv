@@ -56,7 +56,7 @@ fun AboutContent(
                     Text("当前版本")
                 },
                 supportingContent = {
-                    Text(text = BuildConfig.VERSION_NAME)
+                    Text(text = "${BuildConfig.VERSION_NAME}.${BuildConfig.BUILD_TYPE}")
                 }
             )
             ListItem(

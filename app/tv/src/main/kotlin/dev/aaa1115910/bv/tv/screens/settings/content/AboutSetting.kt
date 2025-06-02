@@ -75,7 +75,7 @@ fun AboutSetting(
                 Text(
                     text = stringResource(
                         R.string.settings_version_current_version,
-                        BuildConfig.VERSION_NAME
+                        "${BuildConfig.VERSION_NAME}.${BuildConfig.BUILD_TYPE}"
                     )
                 )
                 Row(

@@ -1,5 +1,8 @@
 package dev.aaa1115910.biliapi.repositories
 
+import org.koin.core.annotation.Single
+
+@Single
 class AuthRepository {
     var sessionData: String? = null
     var biliJct: String? = null

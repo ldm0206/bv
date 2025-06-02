@@ -19,8 +19,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.koin.android.annotation.KoinViewModel
 import java.net.URL
 
+@KoinViewModel
 class SmsLoginViewModel(
     private val userRepository: UserRepository,
     private val loginRepository: LoginRepository

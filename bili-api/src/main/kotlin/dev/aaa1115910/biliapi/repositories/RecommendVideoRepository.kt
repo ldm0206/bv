@@ -9,7 +9,9 @@ import dev.aaa1115910.biliapi.entity.rank.PopularVideoData
 import dev.aaa1115910.biliapi.entity.rank.PopularVideoPage
 import dev.aaa1115910.biliapi.entity.ugc.UgcItem
 import dev.aaa1115910.biliapi.http.BiliHttpApi
+import org.koin.core.annotation.Single
 
+@Single
 class RecommendVideoRepository(
     private val authRepository: AuthRepository,
     private val channelRepository: ChannelRepository
