@@ -8,6 +8,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,6 +33,7 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Done
@@ -59,6 +63,11 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -618,7 +627,7 @@ fun VideoInfoScreen(
                                 lastPlayedCid = lastPlayedCid,
                                 lastPlayedTime = lastPlayedTime,
                                 enablePartListDialog =
-                                (videoDetailViewModel.videoDetail?.pages?.size ?: 0) > 5,
+                                    (videoDetailViewModel.videoDetail?.pages?.size ?: 0) > 5,
                                 onClick = { cid ->
                                     logger.fInfo { "Click video part: [av:${videoDetailViewModel.videoDetail?.aid}, bv:${videoDetailViewModel.videoDetail?.bvid}, cid:$cid]" }
                                     launchPlayerActivity(
@@ -993,10 +1002,22 @@ fun VideoDescriptionDialog(
     onHideDialog: () -> Unit,
     description: String
 ) {
+    val state = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(show) {
+        if (show) {
+            focusRequester.requestFocus()
+        }
+    }
+
     if (show) {
         AlertDialog(
-            modifier = modifier,
+            modifier = modifier
+                .fillMaxWidth(0.8f),
             onDismissRequest = { onHideDialog() },
+            properties = DialogProperties(usePlatformDefaultWidth = false),
             title = {
                 Text(
                     text = stringResource(R.string.video_info_description_title),
@@ -1004,7 +1025,32 @@ fun VideoDescriptionDialog(
                 )
             },
             text = {
-                LazyColumn {
+                LazyColumn(
+                    modifier = Modifier
+                        .heightIn(max = 320.dp)
+                        .focusable()
+                        .focusRequester(focusRequester)
+                        .onKeyEvent { event ->
+                            if (event.type == KeyEventType.KeyDown) {
+                                when (event.key) {
+                                    Key.DirectionUp -> {
+                                        scope.launch { state.animateScrollBy(-state.layoutInfo.viewportSize.height / 3f) }
+                                        true
+                                    }
+
+                                    Key.DirectionDown -> {
+                                        scope.launch { state.animateScrollBy(state.layoutInfo.viewportSize.height / 3f) }
+                                        true
+                                    }
+
+                                    else -> false
+                                }
+                            } else {
+                                false
+                            }
+                        },
+                    state = state
+                ) {
                     item {
                         Text(text = description)
                     }
