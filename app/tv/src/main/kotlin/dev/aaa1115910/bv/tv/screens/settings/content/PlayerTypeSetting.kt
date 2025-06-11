@@ -20,8 +20,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
-import dev.aaa1115910.bv.component.LibVLCDownloaderDialog
-import dev.aaa1115910.bv.component.settings.SettingsMenuSelectItem
+import dev.aaa1115910.bv.tv.component.LibVLCDownloaderDialog
+import dev.aaa1115910.bv.tv.component.settings.SettingsMenuSelectItem
 import dev.aaa1115910.bv.entity.PlayerType
 import dev.aaa1115910.bv.tv.screens.settings.SettingsMenuNavItem
 import dev.aaa1115910.bv.util.Prefs

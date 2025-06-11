@@ -276,9 +276,10 @@ fun ImagePreviewer(
                     },
                 )
                 if (!visible)
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .pointerInput(Unit) { detectTapGestures { } }) { }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .pointerInput(Unit) { detectTapGestures { } }) { }
             }
         }
         ticket.Next()

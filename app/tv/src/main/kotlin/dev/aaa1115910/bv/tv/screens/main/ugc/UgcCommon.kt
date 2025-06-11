@@ -36,8 +36,8 @@ import dev.aaa1115910.biliapi.entity.ugc.UgcItem
 import dev.aaa1115910.biliapi.entity.ugc.UgcTypeV2
 import dev.aaa1115910.biliapi.entity.ugc.region.UgcFeedPage
 import dev.aaa1115910.biliapi.repositories.UgcRepository
-import dev.aaa1115910.bv.component.UgcCarousel
-import dev.aaa1115910.bv.component.videocard.SmallVideoCard
+import dev.aaa1115910.bv.tv.component.UgcCarousel
+import dev.aaa1115910.bv.tv.component.videocard.SmallVideoCard
 import dev.aaa1115910.bv.entity.carddata.VideoCardData
 import dev.aaa1115910.bv.tv.activities.video.VideoInfoActivity
 import dev.aaa1115910.bv.util.fInfo

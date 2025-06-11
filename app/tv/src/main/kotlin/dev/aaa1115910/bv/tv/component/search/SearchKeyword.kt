@@ -1,4 +1,4 @@
-package dev.aaa1115910.bv.component.search
+package dev.aaa1115910.bv.tv.component.search
 
 import android.os.Build
 import androidx.compose.foundation.Image

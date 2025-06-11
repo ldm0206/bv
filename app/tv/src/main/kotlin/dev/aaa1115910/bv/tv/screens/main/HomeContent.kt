@@ -25,8 +25,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import dev.aaa1115910.bv.component.HomeTopNavItem
-import dev.aaa1115910.bv.component.TopNav
+import dev.aaa1115910.bv.tv.component.HomeTopNavItem
+import dev.aaa1115910.bv.tv.component.TopNav
 import dev.aaa1115910.bv.tv.screens.main.home.DynamicsScreen
 import dev.aaa1115910.bv.tv.screens.main.home.PopularScreen
 import dev.aaa1115910.bv.tv.screens.main.home.RecommendScreen

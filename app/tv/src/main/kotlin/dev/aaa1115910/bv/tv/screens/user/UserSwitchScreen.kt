@@ -27,7 +27,6 @@ import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -72,6 +71,7 @@ import dev.aaa1115910.bv.entity.db.UserDB
 import dev.aaa1115910.bv.repository.UserRepository
 import dev.aaa1115910.bv.tv.activities.user.LoginActivity
 import dev.aaa1115910.bv.tv.activities.user.UserLockSettingsActivity
+import dev.aaa1115910.bv.tv.component.TvAlertDialog
 import dev.aaa1115910.bv.tv.screens.user.lock.UnlockSwitchUserContent
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.ifElse
@@ -341,7 +341,7 @@ fun UserMenuDialog(
     }
 
     if (show) {
-        AlertDialog(
+        TvAlertDialog(
             modifier = modifier,
             onDismissRequest = onHideDialog,
             title = { Text(text = username) },
@@ -493,7 +493,7 @@ private fun DeleteConfirmDialog(
     }
 
     if (show) {
-        AlertDialog(
+        TvAlertDialog(
             modifier = modifier,
             onDismissRequest = { onHideDialog() },
             title = { Text(text = stringResource(R.string.delete_account_confirm_dialog_title)) },

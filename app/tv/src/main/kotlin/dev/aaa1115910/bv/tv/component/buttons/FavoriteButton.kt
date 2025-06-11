@@ -1,9 +1,8 @@
-package dev.aaa1115910.bv.component.buttons
+package dev.aaa1115910.bv.tv.component.buttons
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
@@ -15,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
-import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,6 +36,7 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import dev.aaa1115910.biliapi.entity.FavoriteFolderMetadata
 import dev.aaa1115910.bv.R
+import dev.aaa1115910.bv.tv.component.TvAlertDialog
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.swapList
 
@@ -82,7 +81,7 @@ fun FavoriteButton(
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalTvMaterial3Api::class)
+@OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 private fun FavoriteDialog(
     modifier: Modifier = Modifier,
@@ -103,7 +102,7 @@ private fun FavoriteDialog(
     }
 
     if (show) {
-        AlertDialog(
+        TvAlertDialog(
             modifier = modifier,
             onDismissRequest = onHideDialog,
             confirmButton = {},

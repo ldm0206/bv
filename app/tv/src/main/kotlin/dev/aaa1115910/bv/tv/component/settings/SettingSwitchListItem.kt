@@ -1,4 +1,4 @@
-package dev.aaa1115910.bv.component.settings
+package dev.aaa1115910.bv.tv.component.settings
 
 import android.content.res.Configuration
 import androidx.compose.foundation.border

@@ -1,4 +1,4 @@
-package dev.aaa1115910.bv.component.videocard
+package dev.aaa1115910.bv.tv.component.videocard
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
@@ -50,7 +50,7 @@ import androidx.tv.material3.Surface
 import androidx.tv.material3.Text
 import coil.compose.AsyncImage
 import dev.aaa1115910.bv.R
-import dev.aaa1115910.bv.component.UpIcon
+import dev.aaa1115910.bv.tv.component.UpIcon
 import dev.aaa1115910.bv.entity.carddata.VideoCardData
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.ImageSize

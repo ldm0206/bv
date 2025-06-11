@@ -22,8 +22,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import dev.aaa1115910.biliapi.entity.ugc.UgcTypeV2
-import dev.aaa1115910.bv.component.TopNav
-import dev.aaa1115910.bv.component.UgcTopNavItem
+import dev.aaa1115910.bv.tv.component.TopNav
+import dev.aaa1115910.bv.tv.component.UgcTopNavItem
 import dev.aaa1115910.bv.tv.screens.main.ugc.AiContent
 import dev.aaa1115910.bv.tv.screens.main.ugc.AnimalContent
 import dev.aaa1115910.bv.tv.screens.main.ugc.CarContent

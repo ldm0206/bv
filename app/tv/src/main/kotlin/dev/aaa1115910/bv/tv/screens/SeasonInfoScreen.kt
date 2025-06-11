@@ -37,7 +37,6 @@ import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ViewModule
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -92,17 +91,19 @@ import coil.compose.AsyncImage
 import dev.aaa1115910.biliapi.entity.video.season.Episode
 import dev.aaa1115910.biliapi.entity.video.season.PgcSeason
 import dev.aaa1115910.bv.R
-import dev.aaa1115910.bv.component.buttons.SeasonInfoButtons
 import dev.aaa1115910.bv.entity.proxy.ProxyArea
 import dev.aaa1115910.bv.player.entity.VideoListPgcEpisode
 import dev.aaa1115910.bv.repository.VideoInfoRepository
 import dev.aaa1115910.bv.tv.activities.video.VideoInfoActivity
+import dev.aaa1115910.bv.tv.component.TvAlertDialog
+import dev.aaa1115910.bv.tv.component.buttons.SeasonInfoButtons
 import dev.aaa1115910.bv.tv.util.launchPlayerActivity
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.ImageSize
 import dev.aaa1115910.bv.util.fInfo
 import dev.aaa1115910.bv.util.focusedScale
 import dev.aaa1115910.bv.util.ifElse
+import dev.aaa1115910.bv.util.onBackPressed
 import dev.aaa1115910.bv.util.requestFocus
 import dev.aaa1115910.bv.util.resizedImageUrl
 import dev.aaa1115910.bv.util.swapList
@@ -665,6 +666,7 @@ fun SeasonEpisodesDialog(
     val tabCount by remember { mutableIntStateOf(ceil(episodes.size / 20.0).toInt()) }
     val selectedEpisodes = remember { mutableStateListOf<Episode>() }
 
+    val tabFocusRequester = remember { FocusRequester() }
     val tabRowFocusRequester = remember { FocusRequester() }
     val videoListFocusRequester = remember { FocusRequester() }
     val listState = rememberLazyGridState()
@@ -679,12 +681,12 @@ fun SeasonEpisodesDialog(
     }
 
     LaunchedEffect(show) {
-        if (show && tabCount > 1) tabRowFocusRequester.requestFocus(scope)
+        if (show && tabCount > 1) tabFocusRequester.requestFocus(scope)
         if (show && tabCount == 1) videoListFocusRequester.requestFocus(scope)
     }
 
     if (show) {
-        AlertDialog(
+        TvAlertDialog(
             modifier = modifier,
             title = { Text(text = title) },
             onDismissRequest = { onHideDialog() },
@@ -707,14 +709,16 @@ fun SeasonEpisodesDialog(
                                             listState.scrollToItem(0)
                                         }
                                     }
-                                },
+                                }
+                                .focusRestorer()
+                                .focusRequester(tabRowFocusRequester),
                             selectedTabIndex = selectedTabIndex,
                             separator = { Spacer(modifier = Modifier.width(12.dp)) },
                         ) {
                             for (i in 0 until tabCount) {
                                 Tab(
                                     modifier = if (i == 0) Modifier.focusRequester(
-                                        tabRowFocusRequester
+                                        tabFocusRequester
                                     ) else Modifier,
                                     selected = i == selectedTabIndex,
                                     onFocus = { selectedTabIndex = i },
@@ -734,6 +738,10 @@ fun SeasonEpisodesDialog(
                     }
 
                     LazyVerticalGrid(
+                        modifier = Modifier
+                            .onBackPressed {
+                                if (tabCount > 1) tabRowFocusRequester.requestFocus() else onHideDialog()
+                            },
                         state = listState,
                         columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(8.dp),

@@ -1,6 +1,5 @@
-package dev.aaa1115910.bv.component
+package dev.aaa1115910.bv.tv.component
 
-import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -104,7 +103,7 @@ fun LibVLCDownloaderDialog(
     }
 
     if (show) {
-        AlertDialog(
+        TvAlertDialog(
             modifier = modifier,
             title = { Text(text = "LibVLC 下载器") },
             text = { Text(text = text) },

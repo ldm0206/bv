@@ -24,8 +24,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.unit.dp
-import dev.aaa1115910.bv.component.PgcTopNavItem
-import dev.aaa1115910.bv.component.TopNav
+import dev.aaa1115910.bv.tv.component.PgcTopNavItem
+import dev.aaa1115910.bv.tv.component.TopNav
 import dev.aaa1115910.bv.tv.screens.main.pgc.AnimeContent
 import dev.aaa1115910.bv.tv.screens.main.pgc.DocumentaryContent
 import dev.aaa1115910.bv.tv.screens.main.pgc.GuoChuangContent

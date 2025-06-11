@@ -1,4 +1,4 @@
-package dev.aaa1115910.bv.component
+package dev.aaa1115910.bv.tv.component
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope

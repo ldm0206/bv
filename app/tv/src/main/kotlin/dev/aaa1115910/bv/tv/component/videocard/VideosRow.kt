@@ -1,4 +1,4 @@
-package dev.aaa1115910.bv.component.videocard
+package dev.aaa1115910.bv.tv.component.videocard
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement

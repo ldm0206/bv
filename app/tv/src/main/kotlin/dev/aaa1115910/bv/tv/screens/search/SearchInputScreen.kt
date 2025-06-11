@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.tv.screens.search
 
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,8 +37,8 @@ import androidx.compose.ui.unit.sp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import dev.aaa1115910.bv.R
-import dev.aaa1115910.bv.component.search.SearchKeyword
-import dev.aaa1115910.bv.component.search.SoftKeyboard
+import dev.aaa1115910.bv.tv.component.search.SearchKeyword
+import dev.aaa1115910.bv.tv.component.search.SoftKeyboard
 import dev.aaa1115910.bv.tv.activities.search.SearchResultActivity
 import dev.aaa1115910.bv.util.Prefs
 import dev.aaa1115910.bv.util.ifElse
@@ -102,7 +103,8 @@ fun SearchInputScreen(
             Box(
                 modifier = Modifier
                     .width(280.dp)
-                    .fillMaxHeight(),
+                    .fillMaxHeight()
+                    .focusGroup(),
                 contentAlignment = Alignment.TopCenter
             ) {
                 Column(
@@ -151,7 +153,8 @@ fun SearchInputScreen(
                 Column(
                     modifier = Modifier
                         .width(250.dp)
-                        .fillMaxHeight(),
+                        .fillMaxHeight()
+                        .focusGroup(),
                 ) {
                     Text(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -180,7 +183,8 @@ fun SearchInputScreen(
                 Column(
                     modifier = Modifier
                         .width(250.dp)
-                        .fillMaxHeight(),
+                        .fillMaxHeight()
+                        .focusGroup(),
                 ) {
                     Text(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -211,7 +215,8 @@ fun SearchInputScreen(
                 modifier = Modifier
                     .width(250.dp)
                     .fillMaxHeight()
-                    .padding(end = 10.dp),
+                    .padding(end = 10.dp)
+                    .focusGroup(),
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.runtime.Composable
@@ -34,6 +33,7 @@ import androidx.tv.material3.Text
 import dev.aaa1115910.biliapi.repositories.SearchFilterDuration
 import dev.aaa1115910.biliapi.repositories.SearchFilterOrderType
 import dev.aaa1115910.bv.R
+import dev.aaa1115910.bv.tv.component.TvAlertDialog
 import dev.aaa1115910.bv.util.Partition
 import dev.aaa1115910.bv.util.PartitionUtil
 
@@ -65,7 +65,7 @@ fun SearchResultVideoFilter(
     }
 
     if (show) {
-        AlertDialog(
+        TvAlertDialog(
             modifier = modifier
                 .fillMaxWidth(0.8f),
             onDismissRequest = onHideFilter,

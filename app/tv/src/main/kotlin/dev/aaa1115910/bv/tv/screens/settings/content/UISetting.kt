@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.ArrowDropUp
-import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -45,8 +44,9 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.RadioButton
 import androidx.tv.material3.Text
 import dev.aaa1115910.bv.R
-import dev.aaa1115910.bv.component.settings.SettingListItem
 import dev.aaa1115910.bv.entity.ThemeType
+import dev.aaa1115910.bv.tv.component.TvAlertDialog
+import dev.aaa1115910.bv.tv.component.settings.SettingListItem
 import dev.aaa1115910.bv.tv.screens.settings.SettingsMenuNavItem
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.Prefs
@@ -138,7 +138,7 @@ private fun UIDensityDialog(
         )
     ) {
         if (show) {
-            AlertDialog(
+            TvAlertDialog(
                 modifier = modifier,
                 onDismissRequest = { onHideDialog() },
                 title = { Text(text = stringResource(R.string.settings_ui_density_title)) },
@@ -183,7 +183,7 @@ fun ThemeTypeDialog(
     onThemeTypeChange: (ThemeType) -> Unit
 ) {
     if (show) {
-        AlertDialog(
+        TvAlertDialog(
             modifier = modifier,
             onDismissRequest = { onHideDialog() },
             title = { Text(text = stringResource(R.string.settings_ui_theme_type_title)) },

@@ -48,8 +48,8 @@ import dev.aaa1115910.biliapi.entity.ApiType
 import dev.aaa1115910.biliapi.repositories.SearchType
 import dev.aaa1115910.biliapi.repositories.SearchTypeResult
 import dev.aaa1115910.bv.R
-import dev.aaa1115910.bv.component.videocard.SeasonCard
-import dev.aaa1115910.bv.component.videocard.SmallVideoCard
+import dev.aaa1115910.bv.tv.component.videocard.SeasonCard
+import dev.aaa1115910.bv.tv.component.videocard.SmallVideoCard
 import dev.aaa1115910.bv.entity.carddata.SeasonCardData
 import dev.aaa1115910.bv.entity.carddata.VideoCardData
 import dev.aaa1115910.bv.entity.proxy.ProxyArea

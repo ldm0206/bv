@@ -1,4 +1,4 @@
-package dev.aaa1115910.bv.component.videocard
+package dev.aaa1115910.bv.tv.component.videocard
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -120,7 +120,7 @@ fun SeasonCard(
                             .align(Alignment.BottomEnd)
                             .fillMaxWidth()
                             .padding(8.dp, 0.dp),
-                        text = data.rating,
+                        text = data.rating ?: "",
                         fontStyle = FontStyle.Italic,
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp,
@@ -141,7 +141,7 @@ fun SeasonCard(
                 )
                 if (data.subTitle != null) {
                     Text(
-                        text = data.subTitle,
+                        text = data.subTitle ?: "",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 12.sp,
