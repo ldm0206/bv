@@ -377,7 +377,7 @@ data class AppSeasonData(
     data class Style(
         val id: Int,
         val name: String,
-        val url: String
+        val url: String? = null
     )
 
     /**
