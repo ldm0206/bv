@@ -16,7 +16,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -147,12 +148,14 @@ val DEFAULT_PLACEHOLDER_ENTER_TRANSITION = fadeIn(tween(200))
 val DEFAULT_PLACEHOLDER_EXIT_TRANSITION = fadeOut(tween(200))
 
 // 默认的加载占位
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 val DEFAULT_PREVIEWER_PLACEHOLDER_CONTENT = @Composable {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator(color = Color.White.copy(0.2F))
+        LoadingIndicator()
+        //CircularProgressIndicator(color = Color.White.copy(0.2F))
     }
 }
 

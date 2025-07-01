@@ -1,13 +1,11 @@
 package dev.aaa1115910.bv.tv.screens.settings
 
 import android.content.Context
-import android.graphics.BitmapFactory
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
 import android.os.Build
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,32 +31,23 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.tv.material3.ListItem
-import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import dev.aaa1115910.bv.R
+import dev.aaa1115910.bv.component.QrImage
 import dev.aaa1115910.bv.network.HttpServer
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.LogCatcherUtil
 import dev.aaa1115910.bv.util.swapList
 import dev.aaa1115910.bv.util.toast
-import io.github.g0dkar.qrcode.QRCode
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -75,17 +65,11 @@ fun LogsScreen(
     val logs = remember { mutableStateListOf<File>() }
     var currentSelectFile by remember { mutableStateOf<File?>(null) }
 
-    var qrImage by remember { mutableStateOf<ImageBitmap?>(null) }
+    var qrContent by remember { mutableStateOf("") }
 
-    val generateQRCode = {
-        scope.launch(Dispatchers.IO) {
-            qrImage = null
-            val output = ByteArrayOutputStream()
-            val url = "http://$host:$port/api/logs/${currentSelectFile?.name}"
-            QRCode(url).render().writeImage(output)
-            val input = ByteArrayInputStream(output.toByteArray())
-            qrImage = BitmapFactory.decodeStream(input).asImageBitmap()
-        }
+    val updateQRCode = {
+        val url = "http://$host:$port/api/logs/${currentSelectFile?.name}"
+        qrContent = url
     }
 
     @Suppress("DEPRECATION")
@@ -141,12 +125,12 @@ fun LogsScreen(
 
     LogsScreenContent(
         modifier = modifier,
-        qrImage = qrImage,
-        clearQrImage = { qrImage = null },
+        qrContent = qrContent,
+        clearQrContent = { qrContent = "" },
         logs = logs,
         onFocusLogFile = { file ->
             currentSelectFile = file
-            generateQRCode()
+            updateQRCode()
         },
         onClickCreateLog = {
             LogCatcherUtil.logLogcat(manual = true)
@@ -156,11 +140,12 @@ fun LogsScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun LogsScreenContent(
     modifier: Modifier = Modifier,
-    qrImage: ImageBitmap?,
-    clearQrImage: () -> Unit,
+    qrContent: String,
+    clearQrContent: () -> Unit,
     logs: List<File>,
     onFocusLogFile: (File) -> Unit,
     onClickCreateLog: () -> Unit
@@ -208,7 +193,7 @@ fun LogsScreenContent(
                     item {
                         CreateLogItem(
                             modifier = Modifier.focusRequester(focusRequester),
-                            onFocus = clearQrImage,
+                            onFocus = clearQrContent,
                             onClick = onClickCreateLog
                         )
                     }
@@ -239,22 +224,16 @@ fun LogsScreenContent(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                if (qrImage != null) {
-                    Box(
-                        modifier = Modifier
-                            .size(240.dp)
-                            .clip(MaterialTheme.shapes.large)
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Image(
-                            modifier = Modifier.size(200.dp),
-                            bitmap = qrImage,
-                            contentDescription = null
-                        )
-                    }
+                if (qrContent.isNotBlank()) {
+                    QrImage(
+                        modifier = Modifier.size(240.dp),
+                        content = qrContent,
+                        showLoadingWhenContentChanged = false
+                    )
                 } else {
-                    CircularProgressIndicator()
+                    Text(
+                        text = stringResource(R.string.log_qr_code_empty),
+                    )
                 }
             }
         }
@@ -324,6 +303,24 @@ fun LogItemPreview() {
             filename = "logs_manual_3202-11-11_08:16:23.log",
             size = 2145,
             onFocus = {}
+        )
+    }
+}
+
+@Preview(device = "id:tv_1080p")
+@Preview(device = "id:tv_1080p", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun LogsScreenContentPreview() {
+    BVTheme {
+        LogsScreenContent(
+            qrContent = "",
+            clearQrContent = {},
+            logs = listOf(
+                File("logs_manual_3202-11-11_08:16:23.log"),
+                File("logs_crash_3202-11-11_08:16:23.log")
+            ),
+            onFocusLogFile = {},
+            onClickCreateLog = {}
         )
     }
 }

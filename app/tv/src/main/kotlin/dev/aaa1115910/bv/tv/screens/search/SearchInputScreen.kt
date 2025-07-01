@@ -5,6 +5,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,9 +38,9 @@ import androidx.compose.ui.unit.sp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import dev.aaa1115910.bv.R
+import dev.aaa1115910.bv.tv.activities.search.SearchResultActivity
 import dev.aaa1115910.bv.tv.component.search.SearchKeyword
 import dev.aaa1115910.bv.tv.component.search.SoftKeyboard
-import dev.aaa1115910.bv.tv.activities.search.SearchResultActivity
 import dev.aaa1115910.bv.util.Prefs
 import dev.aaa1115910.bv.util.ifElse
 import dev.aaa1115910.bv.viewmodel.search.SearchInputViewModel
@@ -163,7 +164,8 @@ fun SearchInputScreen(
                     )
                     LazyColumn(
                         modifier = Modifier
-                            .focusRestorer(hotsFocusRequester)
+                            .focusRestorer(hotsFocusRequester),
+                        contentPadding = PaddingValues(vertical = 4.dp)
                     ) {
                         itemsIndexed(hotwords) { index, hotword ->
                             SearchKeyword(
@@ -193,7 +195,8 @@ fun SearchInputScreen(
                     )
                     LazyColumn(
                         modifier = Modifier
-                            .focusRestorer(suggestFocusRequester)
+                            .focusRestorer(suggestFocusRequester),
+                        contentPadding = PaddingValues(vertical = 4.dp)
                     ) {
                         itemsIndexed(suggests) { index, suggest ->
                             SearchKeyword(
@@ -225,7 +228,8 @@ fun SearchInputScreen(
                 )
                 LazyColumn(
                     modifier = Modifier
-                        .focusRestorer(historyFocusRequester)
+                        .focusRestorer(historyFocusRequester),
+                    contentPadding = PaddingValues(vertical = 4.dp)
                 ) {
                     itemsIndexed(searchHistories) { index, searchHistory ->
                         SearchKeyword(

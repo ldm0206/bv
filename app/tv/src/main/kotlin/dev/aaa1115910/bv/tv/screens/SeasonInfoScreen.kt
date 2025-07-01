@@ -37,6 +37,8 @@ import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ViewModule
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -116,6 +118,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import kotlin.math.ceil
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SeasonInfoScreen(
     modifier: Modifier = Modifier,
@@ -225,12 +228,20 @@ fun SeasonInfoScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = seasonViewModel.tip
-            )
+            if (seasonViewModel.tip == "Loading") {
+                LoadingIndicator(
+                    modifier = Modifier
+                        .size(120.dp)
+                        .align(Alignment.Center),
+                )
+            } else {
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = seasonViewModel.tip
+                )
+            }
         }
     } else {
         Scaffold(

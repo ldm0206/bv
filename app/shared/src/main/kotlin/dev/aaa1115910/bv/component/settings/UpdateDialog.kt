@@ -32,6 +32,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.FileProvider
+import androidx.tv.material3.MaterialTheme
+import androidx.tv.material3.ProvideTextStyle
 import dev.aaa1115910.bv.BuildConfig
 import dev.aaa1115910.bv.network.GithubApi
 import dev.aaa1115910.bv.network.entity.Release
@@ -186,18 +188,22 @@ private fun UpdateDialogContent(
             .animateContentSize(),
         onDismissRequest = { onHideDialog() },
         title = {
-            text(
-                when (updateStatus) {
-                    UpdateStatus.UpdatingInfo -> "获取更新信息中"
-                    UpdateStatus.Ready -> latestReleaseBuild!!.name
-                    UpdateStatus.Downloading -> "下载中"
-                    UpdateStatus.Installing -> "安装中"
-                    UpdateStatus.NoAvailableUpdate -> "无可用更新"
-                    UpdateStatus.CheckError -> "检查更新失败"
-                    UpdateStatus.DownloadError -> "下载失败"
-                    UpdateStatus.InstallError -> "安装失败"
-                }
-            )
+            ProvideTextStyle(
+                value = MaterialTheme.typography.headlineSmall
+            ) {
+                text(
+                    when (updateStatus) {
+                        UpdateStatus.UpdatingInfo -> "获取更新信息中"
+                        UpdateStatus.Ready -> latestReleaseBuild!!.name
+                        UpdateStatus.Downloading -> "下载中"
+                        UpdateStatus.Installing -> "安装中"
+                        UpdateStatus.NoAvailableUpdate -> "无可用更新"
+                        UpdateStatus.CheckError -> "检查更新失败"
+                        UpdateStatus.DownloadError -> "下载失败"
+                        UpdateStatus.InstallError -> "安装失败"
+                    }
+                )
+            }
         },
         text = {
             when (updateStatus) {

@@ -2,9 +2,11 @@ package dev.aaa1115910.bv.tv.screens
 
 import android.app.Activity
 import android.content.res.Configuration
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,6 +41,8 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.ViewModule
 import androidx.compose.material.icons.rounded.Warning
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -82,6 +86,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.tv.material3.Border
 import androidx.tv.material3.ClickableSurfaceDefaults
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.Glow
@@ -148,6 +153,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.getKoin
 import kotlin.math.ceil
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun VideoInfoScreen(
     modifier: Modifier = Modifier,
@@ -478,19 +484,27 @@ fun VideoInfoScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = tip
-            )
+            if (tip == "Loading") {
+                LoadingIndicator(
+                    modifier = Modifier
+                        .size(120.dp)
+                        .align(Alignment.Center),
+                )
+            } else {
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = tip
+                )
+            }
         }
     } else {
         Scaffold(
-            containerColor = Color.Black
+            modifier = modifier
         ) { innerPadding ->
             Box(
-                modifier.padding(innerPadding)
+                Modifier.padding(innerPadding)
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
@@ -796,7 +810,20 @@ fun VideoInfoData(
                     elevationColor = MaterialTheme.colorScheme.inverseSurface,
                     elevation = 16.dp
                 )
-            )
+            ),
+            border = if (Build.VERSION.SDK_INT < 28) {
+                ClickableSurfaceDefaults.border(
+                    focusedBorder = Border(
+                        border = BorderStroke(
+                            width = 3.dp,
+                            color = MaterialTheme.colorScheme.border
+                        ),
+                        shape = MaterialTheme.shapes.large
+                    )
+                )
+            } else {
+                ClickableSurfaceDefaults.border()
+            }
         ) {
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),

@@ -74,6 +74,7 @@
     <string name="loading" tools:ignore="TypographyEllipsis">加载中...</string>
 
     <string name="log_list_empty">无日志</string>
+    <string name="log_qr_code_empty">请选择左侧日志文件</string>
     <string name="log_save_now_button">手动保存日志</string>
     <string name="log_type_crash">崩溃</string>
     <string name="log_type_manual">手动</string>

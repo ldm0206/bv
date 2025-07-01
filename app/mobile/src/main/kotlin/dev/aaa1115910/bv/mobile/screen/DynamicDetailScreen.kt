@@ -33,10 +33,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -77,10 +78,10 @@ import dev.aaa1115910.bv.mobile.component.home.dynamic.DynamicContent
 import dev.aaa1115910.bv.mobile.component.home.dynamic.DynamicHeader
 import dev.aaa1115910.bv.mobile.component.reply.Comments
 import dev.aaa1115910.bv.mobile.component.reply.Replies
-import dev.aaa1115910.bv.viewmodel.CommentViewModel
-import dev.aaa1115910.bv.viewmodel.DynamicDetailViewModel
 import dev.aaa1115910.bv.util.fInfo
 import dev.aaa1115910.bv.util.swapList
+import dev.aaa1115910.bv.viewmodel.CommentViewModel
+import dev.aaa1115910.bv.viewmodel.DynamicDetailViewModel
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -146,7 +147,10 @@ fun DynamicDetailScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class,
+    ExperimentalMaterial3ExpressiveApi::class
+)
 @Composable
 fun DynamicDetailMobileContent(
     modifier: Modifier = Modifier,
@@ -266,7 +270,7 @@ fun DynamicDetailMobileContent(
                     }
                 )
             } else {
-                CircularProgressIndicator()
+                LoadingIndicator()
             }
         }
 
