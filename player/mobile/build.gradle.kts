@@ -75,9 +75,3 @@ dependencies {
     debugImplementation(androidx.compose.ui.test.manifest)
     debugImplementation(androidx.compose.ui.tooling)
 }
-
-configurations {
-    implementation {
-        exclude("androidx.media3", "media3-container")
-    }
-}

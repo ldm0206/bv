@@ -102,4 +102,20 @@ class SearchInputViewModel(
             loadSearchHistories()
         }
     }
+
+    fun deleteSearchHistory(history: SearchHistoryDB) {
+        logger.fInfo { "Delete search history: ${history.keyword}" }
+        viewModelScope.launch(Dispatchers.IO) {
+            db.searchHistoryDao().delete(history)
+            loadSearchHistories()
+        }
+    }
+
+    fun deleteAllSearchHistories() {
+        logger.fInfo { "Delete all search histories" }
+        viewModelScope.launch(Dispatchers.IO) {
+            db.searchHistoryDao().deleteAll()
+            loadSearchHistories()
+        }
+    }
 }

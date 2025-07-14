@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusRestorer
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.LocalContentColor
@@ -32,6 +36,8 @@ import dev.aaa1115910.biliapi.entity.ugc.UgcTypeV2
 import dev.aaa1115910.bv.BVApp
 import dev.aaa1115910.bv.util.getDisplayName
 import dev.aaa1115910.bv.util.ifElse
+import dev.aaa1115910.bv.util.isKeyDown
+import kotlinx.coroutines.delay
 
 @Composable
 fun TopNav(
@@ -49,6 +55,15 @@ fun TopNav(
         targetValue = if (isLargePadding) 24.dp else 12.dp,
         label = "top nav vertical padding"
     )
+    var tabMoved by remember { mutableStateOf(true) }
+
+    LaunchedEffect(selectedNav) {
+        delay(200)
+        onSelectedChanged(selectedNav)
+        // 别急着向下移动焦点，动画还没结束
+        delay(400)
+        tabMoved = true
+    }
 
     Row(
         modifier = modifier
@@ -57,7 +72,12 @@ fun TopNav(
         horizontalArrangement = Arrangement.Center
     ) {
         TabRow(
-            modifier = Modifier.focusRestorer(focusRequester),
+            modifier = Modifier
+                .focusRestorer(focusRequester)
+                .onPreviewKeyEvent {
+                    if (it.isKeyDown() && it.key == Key.DirectionDown) return@onPreviewKeyEvent !tabMoved
+                    false
+                },
             selectedTabIndex = selectedTabIndex,
             separator = { Spacer(modifier = Modifier.width(12.dp)) },
         ) {
@@ -68,9 +88,9 @@ fun TopNav(
                     topNavItem = tab,
                     selected = index == selectedTabIndex,
                     onFocus = {
+                        tabMoved = tab == selectedNav
                         selectedNav = tab
                         selectedTabIndex = index
-                        onSelectedChanged(tab)
                     },
                     onClick = { onClick(tab) }
                 )

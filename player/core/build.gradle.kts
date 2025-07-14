@@ -72,7 +72,6 @@ dependencies {
     implementation(libs.logging)
     implementation(libs.material)
     implementation(project(":libs:ffmpegDecoder"))
-    implementation(project(":libs:media3Container"))
     implementation(project(":player:shared"))
     testImplementation(libs.kotlin.test)
     androidTestImplementation(androidx.compose.ui.test.junit4)
@@ -82,10 +81,4 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-configurations {
-    implementation {
-        exclude("androidx.media3", "media3-container")
-    }
 }

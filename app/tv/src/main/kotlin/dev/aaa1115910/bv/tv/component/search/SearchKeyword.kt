@@ -23,7 +23,8 @@ import coil.size.Size
 fun SearchKeyword(
     modifier: Modifier = Modifier,
     keyword: String,
-    icon: String,
+    leadingIcon: String,
+    trailingIcon: @Composable() (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -38,14 +39,14 @@ fun SearchKeyword(
         .build()
     val painter = rememberAsyncImagePainter(
         ImageRequest.Builder(context)
-            .data(data = icon)
+            .data(data = leadingIcon)
             .size(Size.ORIGINAL)
             .build(),
         imageLoader = imageLoader,
         contentScale = ContentScale.FillHeight
     )
 
-    if (icon != "" && painter.state is AsyncImagePainter.State.Success) {
+    if (leadingIcon != "" && painter.state is AsyncImagePainter.State.Success) {
         DenseListItem(
             modifier = modifier,
             selected = false,
@@ -63,7 +64,8 @@ fun SearchKeyword(
                     painter = painter,
                     contentDescription = null,
                 )
-            }
+            },
+            trailingContent = trailingIcon
         )
     } else {
         DenseListItem(
@@ -76,7 +78,8 @@ fun SearchKeyword(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-            }
+            },
+            trailingContent = trailingIcon
         )
     }
 }

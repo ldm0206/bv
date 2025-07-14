@@ -24,6 +24,9 @@ interface SearchHistoryDao {
     @Delete
     suspend fun delete(vararg searchHistoryDB: SearchHistoryDB)
 
+    @Query("DELETE FROM search_history")
+    suspend fun deleteAll()
+
     @Update
     suspend fun update(searchHistoryDB: SearchHistoryDB)
 }

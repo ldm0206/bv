@@ -151,7 +151,6 @@ fun VideoPlayerV3Screen(
             },
             onResolutionChange = { resolutionCode, afterChange ->
                 scope.launch(Dispatchers.Default) {
-                    playerViewModel.updateAvailableCodec()
                     playerViewModel.playQuality(resolutionCode)
                     afterChange()
                     playerViewModel.currentQuality = resolutionCode
@@ -177,7 +176,6 @@ fun VideoPlayerV3Screen(
             onAudioChange = { audio, afterChange ->
                 playerViewModel.currentAudio = audio
                 scope.launch(Dispatchers.Default) {
-                    playerViewModel.updateAvailableCodec()
                     playerViewModel.playQuality(audio = audio)
                     afterChange()
                 }

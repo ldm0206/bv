@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,7 +24,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,44 +34,44 @@ import dev.aaa1115910.biliapi.entity.ugc.UgcItem
 import dev.aaa1115910.biliapi.entity.ugc.UgcTypeV2
 import dev.aaa1115910.biliapi.entity.ugc.region.UgcFeedPage
 import dev.aaa1115910.biliapi.repositories.UgcRepository
-import dev.aaa1115910.bv.tv.component.UgcCarousel
-import dev.aaa1115910.bv.tv.component.videocard.SmallVideoCard
 import dev.aaa1115910.bv.entity.carddata.VideoCardData
 import dev.aaa1115910.bv.tv.activities.video.VideoInfoActivity
+import dev.aaa1115910.bv.tv.component.UgcCarousel
+import dev.aaa1115910.bv.tv.component.videocard.SmallVideoCard
 import dev.aaa1115910.bv.util.fInfo
 import dev.aaa1115910.bv.util.toast
+import dev.aaa1115910.bv.viewmodel.ugc.UgcViewModel
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.compose.koinInject
 
 @Composable
 fun UgcRegionScaffold(
     modifier: Modifier = Modifier,
-    state: UgcScaffoldState,
+    lazyListState: LazyListState,
+    ugcViewModel: UgcViewModel,
     childRegionButtons: (@Composable () -> Unit)? = null
 ) {
     val context = LocalContext.current
     var currentFocusedIndex by remember { mutableIntStateOf(0) }
     val shouldLoadMore by remember {
-        derivedStateOf { currentFocusedIndex + 24 > state.ugcItems.size }
+        derivedStateOf { currentFocusedIndex + 24 > ugcViewModel.ugcItems.size }
     }
 
-    LaunchedEffect(Unit) { if (state.ugcItems.isEmpty()) state.initUgcRegionData() }
     LaunchedEffect(shouldLoadMore) {
         if (shouldLoadMore) {
-            state.loadMore()
+            ugcViewModel.loadMore()
             currentFocusedIndex = -100
         }
     }
 
     LazyColumn(
         modifier = modifier,
-        state = state.lazyListState
+        state = lazyListState
     ) {
-        if (state.showCarousel) {
+        if (ugcViewModel.showCarousel) {
             item {
                 Row(
                     modifier = Modifier
@@ -85,7 +83,7 @@ fun UgcRegionScaffold(
                         modifier = Modifier
                             .width(880.dp)
                             .padding(32.dp, 0.dp),
-                        data = state.carouselItems,
+                        data = ugcViewModel.carouselItems,
                         onClick = { item ->
                             VideoInfoActivity.actionStart(
                                 context = context,
@@ -112,7 +110,7 @@ fun UgcRegionScaffold(
         }
 
         gridItems(
-            data = state.ugcItems,
+            data = ugcViewModel.ugcItems,
             columnCount = 4,
             modifier = Modifier
                 .width(880.dp)
@@ -251,30 +249,5 @@ data class UgcScaffoldState(
             }
         }
         updating = false
-    }
-}
-
-@Composable
-fun rememberUgcScaffoldState(
-    context: Context = LocalContext.current,
-    scope: CoroutineScope = rememberCoroutineScope(),
-    lazyListState: LazyListState = rememberLazyListState(),
-    ugcType: UgcTypeV2,
-    ugcRepository: UgcRepository = koinInject()
-): UgcScaffoldState {
-    return remember(
-        context,
-        scope,
-        lazyListState,
-        ugcType,
-        ugcRepository
-    ) {
-        UgcScaffoldState(
-            context = context,
-            scope = scope,
-            lazyListState = lazyListState,
-            ugcType = ugcType,
-            ugcRepository = ugcRepository
-        )
     }
 }

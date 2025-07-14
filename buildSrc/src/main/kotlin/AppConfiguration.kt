@@ -26,12 +26,12 @@ object AppConfiguration {
     }
 
     private fun initConfigurations() {
-        val googleServicesJsonPath = "${System.getProperty("user.dir")}/app/google-services.json"
-        val googleServicesJsonFile = File(googleServicesJsonPath)
+        val googleServicesJsonFile = File("app/google-services.json")
         googleServicesAvailable =
             googleServicesJsonFile.exists() && googleServicesJsonFile.readText().let {
-                it.contains(appId) && it.contains("$appId.r8test") && it.contains("$appId.debug")
+                it.contains(appId) && it.contains("$appId.debug")
             }
+        println("Google Services available: $googleServicesAvailable")
     }
 }
 
