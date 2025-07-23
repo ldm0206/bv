@@ -139,10 +139,12 @@
     <string name="proxy_server_edit_dialog_warning">请谨慎使用代理服务器，因为您的登录凭证将会发送至代理服务器，使用代理服务器所带来的一切后果均由用户自行承担</string>
 
     <string name="region_block_character_painting">:(</string>
+    <string name="region_block_exit_button">退出应用</string>
     <string name="region_block_qr_content">扫码也没有用的！</string>
     <string name="region_block_solution_text">不要在中国大陆地区使用该应用</string>
     <string name="region_block_solution_title">该问题的解决方法就是：</string>
-    <string name="region_block_subtitle">Bug Video 无法在中国大陆地区使用，您可以按任意键退出应用</string>
+    <string name="region_block_subtitle_mobile">Bug Video 无法在中国大陆地区使用</string>
+    <string name="region_block_subtitle_tv">Bug Video 无法在中国大陆地区使用，您可以按任意键退出应用</string>
     <string name="region_block_title">不支持的使用地区</string>
 
     <string name="remote_control_panel_demo_tip_back">退出</string>

@@ -2,7 +2,6 @@ package dev.aaa1115910.bv.component.settings
 
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -184,8 +183,7 @@ private fun UpdateDialogContent(
 ) {
     AlertDialog(
         modifier = modifier
-            .width(400.dp)
-            .animateContentSize(),
+            .width(400.dp),
         onDismissRequest = { onHideDialog() },
         title = {
             ProvideTextStyle(

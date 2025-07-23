@@ -119,7 +119,7 @@ fun RegionBlockScreen(
                         style = MaterialTheme.typography.titleLarge
                     )
                     Text(
-                        text = stringResource(R.string.region_block_subtitle),
+                        text = stringResource(R.string.region_block_subtitle_tv),
                         style = MaterialTheme.typography.titleLarge
                     )
                 }
