@@ -42,9 +42,8 @@ import androidx.tv.material3.Surface
 import androidx.tv.material3.Text
 import dev.aaa1115910.bv.R
 import dev.aaa1115910.bv.ui.theme.BVTheme
-import io.github.g0dkar.qrcode.QRCode
-import io.github.g0dkar.qrcode.render.Colors
 import okhttp3.internal.toHexString
+import qrcode.QRCode
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import kotlin.system.exitProcess
@@ -78,7 +77,7 @@ fun RegionBlockScreen(
         val output = ByteArrayOutputStream()
         finishNumberTarget = 100
         QRCode(context.getString(R.string.region_block_qr_content))
-            .render(darkColor = Colors.css(primaryColorHex))
+            .render()
             .writeImage(output)
         val input = ByteArrayInputStream(output.toByteArray())
         qrImage = BitmapFactory.decodeStream(input).asImageBitmap()

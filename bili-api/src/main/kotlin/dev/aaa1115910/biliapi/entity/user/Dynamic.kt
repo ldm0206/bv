@@ -376,10 +376,11 @@ data class DynamicItem(
             fun fromModuleDynamic(moduleDynamic: dev.aaa1115910.biliapi.http.entity.dynamic.DynamicItem.Modules.Dynamic) =
                 DynamicDrawModule(
                     title = null,
-                    text = moduleDynamic.desc!!.text,
-                    images = moduleDynamic.major!!.draw!!.items
-                        .map(Picture::fromPicture)
-                        .distinctBy { it.url }
+                    text = moduleDynamic.desc?.text ?: "empty text",
+                    images = moduleDynamic.major!!.draw?.items
+                        ?.map(Picture::fromPicture)
+                        ?.distinctBy { it.url }
+                        ?: emptyList()
                 )
 
             fun fromModuleOpusSummaryAndModuleDynamic(
@@ -679,7 +680,7 @@ data class DynamicItem(
                     aid = moduleDynamic.aid,
                     bvid = moduleDynamic.bvid,
                     cover = moduleDynamic.cover,
-                    desc = moduleDynamic.desc,
+                    desc = moduleDynamic.desc ?: "empty description",
                     duration = moduleDynamic.durationText,
                     url = moduleDynamic.jumpUrl,
                     play = moduleDynamic.stat.play,

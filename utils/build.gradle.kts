@@ -59,8 +59,8 @@ dependencies {
     implementation(androidx.compose.tv.foundation)
     implementation(androidx.compose.ui)
     implementation(androidx.core.ktx)
-    implementation(libs.firebase.analytics.ktx)
-    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
     implementation(libs.logging)
     implementation(libs.material)
 }

@@ -11,7 +11,7 @@
 
 [![Workflow Release](https://github.com/ldm0206/bv/actions/workflows/release.yml/badge.svg)](https://github.com/ldm0206/bv/actions/workflows/release.yml)
 [![Workflow Alpha](https://github.com/ldm0206/bv/actions/workflows/alpha.yml/badge.svg)](https://github.com/ldm0206/bv/actions/workflows/alpha.yml)
-[![Android Sdk Require](https://img.shields.io/badge/Android-5.0%2B-informational?logo=android)](https://apilevels.com/#:~:text=Jetpack%20Compose%20requires%20a%20minSdk%20of%2021%20or%20higher)
+[![Android Sdk Require](https://img.shields.io/badge/Android-6.0%2B-informational?logo=android)](https://developer.android.com/jetpack/androidx/versions#version-table)
 [![GitHub](https://img.shields.io/github/license/ldm0206/bv)](https://github.com/ldm0206/bv)
 
 **BV 无法在中国大陆地区内的智能电视上使用，如有相关使用需求请使用 [云视听小电视](https://app.bilibili.com)**
@@ -22,7 +22,7 @@
 
 ---
 BV ~~(Bug Video)~~ 是一款 [哔哩哔哩](https://www.bilibili.com) 的第三方应用，适配 `Android 移动端`
-和 `Android TV`，使用 `Jetpack Compose` 开发，支持 `Android 5.0+`
+和 `Android TV`，使用 `Jetpack Compose` 开发
 
 **都是随心乱写的代码，能跑就行。**
 

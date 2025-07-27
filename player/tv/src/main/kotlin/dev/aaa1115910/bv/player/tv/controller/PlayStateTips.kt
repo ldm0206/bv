@@ -36,9 +36,10 @@ import androidx.tv.material3.Text
 import androidx.tv.material3.darkColorScheme
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerPaymentData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerStateData
-import io.github.g0dkar.qrcode.QRCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import qrcode.QRCode
+import qrcode.color.DefaultColorFunction
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
@@ -152,11 +153,14 @@ fun PaidRequireTip(
         scope.launch(Dispatchers.IO) {
             val output = ByteArrayOutputStream()
             val url = "https://b23.tv/ep$epid"
-            QRCode(url)
-                .render(
-                    darkColor = android.graphics.Color.WHITE,
-                    brightColor = android.graphics.Color.BLACK
+            QRCode(
+                data = url,
+                colorFn = DefaultColorFunction(
+                    foreground = android.graphics.Color.WHITE,
+                    background = android.graphics.Color.TRANSPARENT
                 )
+            )
+                .render()
                 .writeImage(output)
             val input = ByteArrayInputStream(output.toByteArray())
             qrImage = BitmapFactory.decodeStream(input).asImageBitmap()

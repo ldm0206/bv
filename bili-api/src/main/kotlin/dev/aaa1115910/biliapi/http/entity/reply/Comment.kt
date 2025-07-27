@@ -23,7 +23,7 @@ data class CommentData(
     @SerialName("top_replies")
     val topReplies: JsonElement? = null,
     @SerialName("up_selection")
-    val upSelection: UpSelection,
+    val upSelection: UpSelection? = null,
     val upper: Upper,
     val vote: Int
 ) {

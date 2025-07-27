@@ -3,7 +3,6 @@ import java.net.URI
 plugins {
     alias(gradleLibs.plugins.android.library)
     alias(gradleLibs.plugins.compose.compiler)
-    alias(gradleLibs.plugins.firebase.crashlytics)
     alias(gradleLibs.plugins.google.ksp)
     alias(gradleLibs.plugins.google.protobuf)
     alias(gradleLibs.plugins.google.services) apply false
@@ -136,8 +135,8 @@ dependencies {
     api(libs.coil.compose)
     api(libs.coil.gif)
     api(libs.coil.svg)
-    api(libs.firebase.analytics.ktx)
-    api(libs.firebase.crashlytics.ktx)
+    api(libs.firebase.analytics)
+    api(libs.firebase.crashlytics)
     api(libs.geetest.sensebot)
     api(libs.koin.android)
     api(libs.koin.annotations)

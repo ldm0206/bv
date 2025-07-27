@@ -222,7 +222,7 @@ data class DynamicItem(
                 val article: Article? = null,
                 val none: None? = null,
                 @SerialName("ugc_season")
-                val ugcSeason:UgcSeason?=null,
+                val ugcSeason: UgcSeason? = null,
                 val type: String
             ) {
                 @Serializable
@@ -342,7 +342,7 @@ data class DynamicItem(
                     val badge: Archive.Badge,
                     val bvid: String,
                     val cover: String,
-                    val desc: String,
+                    val desc: String? = null,
                     @SerialName("disable_preview")
                     val disablePreview: Int,
                     @SerialName("duration_text")
