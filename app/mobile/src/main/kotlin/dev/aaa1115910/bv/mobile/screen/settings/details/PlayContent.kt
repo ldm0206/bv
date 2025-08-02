@@ -1,15 +1,19 @@
 package dev.aaa1115910.bv.mobile.screen.settings.details
 
-import androidx.compose.foundation.layout.Column
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import de.schnettler.datastore.manager.DataStoreManager
-import dev.aaa1115910.bv.dataStore
-import dev.aaa1115910.bv.mobile.component.preferences.RadioPreferenceItem
-import dev.aaa1115910.bv.mobile.component.preferences.getOrDefault
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import dev.aaa1115910.bv.mobile.component.preferences.items.radioPreference
+import dev.aaa1115910.bv.mobile.component.preferences.preferenceGroups
+import dev.aaa1115910.bv.mobile.theme.BVMobileTheme
 import dev.aaa1115910.bv.player.entity.Audio
 import dev.aaa1115910.bv.player.entity.Resolution
 import dev.aaa1115910.bv.player.entity.VideoCodec
@@ -20,33 +24,49 @@ fun PlayContent(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val dataStoreManager = DataStoreManager(LocalContext.current.dataStore)
-    val prefs by dataStoreManager.preferenceFlow.collectAsState(initial = null)
 
-    Column(
-        modifier = modifier
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(horizontal = 18.dp)
     ) {
-        RadioPreferenceItem(
-            title = "默认画质",
-            items = Resolution.entries.associate { it.code to it.getDisplayName(context) },
-            prefReq = PrefKeys.prefDefaultQualityRequest,
-            summary = Resolution.fromCode(prefs.getOrDefault(PrefKeys.prefDefaultQualityRequest))
-                ?.getDisplayName(context) ?: ""
+        preferenceGroups(
+            "画面" to {
+                radioPreference(
+                    title = "默认画质",
+                    prefReq = PrefKeys.prefDefaultQualityRequest,
+                    values = Resolution.entries.associate { it.code to it.getDisplayName(context) }
+                        .toSortedMap { a, b -> a.compareTo(b) }
+                )
+                radioPreference(
+                    title = "默认视频编码",
+                    prefReq = PrefKeys.prefDefaultVideoCodecRequest,
+                    values = VideoCodec.entries.associate { it.codecId to it.getDisplayName(context) }
+                        .toSortedMap { a, b -> a.compareTo(b) }
+                )
+            },
+            "音频" to {
+                radioPreference(
+                    title = "默认音频",
+                    prefReq = PrefKeys.prefDefaultAudioRequest,
+                    values = Audio.entries.associate { it.code to it.getDisplayName(context) }
+                        .toSortedMap { a, b -> a.compareTo(b) }
+                )
+            }
         )
-        RadioPreferenceItem(
-            title = "默认视频编码",
-            items = listOf(VideoCodec.AVC, VideoCodec.HEVC, VideoCodec.AV1)
-                .associate { it.codecId to it.getDisplayName(context) },
-            prefReq = PrefKeys.prefDefaultVideoCodecRequest,
-            summary = VideoCodec.fromCode(prefs.getOrDefault(PrefKeys.prefDefaultVideoCodecRequest))
-                ?.getDisplayName(context) ?: ""
-        )
-        RadioPreferenceItem(
-            title = "默认音频",
-            items = Audio.entries.associate { it.code to it.getDisplayName(context) },
-            prefReq = PrefKeys.prefDefaultAudioRequest,
-            summary = Audio.fromCode(prefs.getOrDefault(PrefKeys.prefDefaultAudioRequest))
-                ?.getDisplayName(context) ?: ""
-        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun PlayContentPreview() {
+    BVMobileTheme {
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceContainerLow
+        ) {
+            PlayContent(
+                modifier = Modifier.padding(8.dp)
+            )
+        }
     }
 }

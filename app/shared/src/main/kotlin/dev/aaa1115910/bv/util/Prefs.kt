@@ -391,7 +391,11 @@ object PrefKeys {
     val prefBuvid3Request = PreferenceRequest(prefBuvid3Key, "")
     val prefPlayerTypeRequest = PreferenceRequest(prefPlayerTypeKey, PlayerType.Media3.ordinal)
     val prefDensityRequest =
-        PreferenceRequest(prefDensityKey, BVApp.context.resources.displayMetrics.widthPixels / 960f)
+        PreferenceRequest(
+            prefDensityKey,
+            runCatching { BVApp.context.resources.displayMetrics.widthPixels / 960f }
+                .getOrDefault(2f)
+        )
 
     @Suppress("KotlinConstantConditions")
     val prefAlphaRequest = PreferenceRequest(prefAlphaKey, BuildConfig.BUILD_TYPE == "alpha")

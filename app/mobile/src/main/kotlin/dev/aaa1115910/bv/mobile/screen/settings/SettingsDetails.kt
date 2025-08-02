@@ -8,8 +8,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.aaa1115910.bv.mobile.screen.settings.details.AboutContent
@@ -30,7 +32,7 @@ fun SettingsDetails(
         topBar = {
             LargeTopAppBar(
                 title = {
-                    Text(text = selectedSettings?.displayName ?: "NaN")
+                    Text(text = selectedSettings?.title ?: "NaN")
                 },
                 navigationIcon = {
                     if (showNavBack) {
@@ -41,9 +43,13 @@ fun SettingsDetails(
                             )
                         }
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                )
             )
         },
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding))
         val contentModifier = Modifier.padding(top = innerPadding.calculateTopPadding())

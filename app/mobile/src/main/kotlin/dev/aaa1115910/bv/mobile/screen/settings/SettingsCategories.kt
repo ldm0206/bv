@@ -1,32 +1,25 @@
 package dev.aaa1115910.bv.mobile.screen.settings
 
-import android.content.res.Configuration
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.aaa1115910.bv.mobile.component.preferences.items.textPreference
+import dev.aaa1115910.bv.mobile.component.preferences.preferenceGroups
 import dev.aaa1115910.bv.mobile.theme.BVMobileTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,12 +29,8 @@ fun SettingsCategories(
     selectedSettings: MobileSettings?,
     onSelectedSettings: (MobileSettings) -> Unit,
     showNavBack: Boolean,
-    onBack: () -> Unit,
-    singleList: Boolean
+    onBack: () -> Unit
 ) {
-    val containerColor =
-        if (singleList) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surfaceContainer
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -55,94 +44,63 @@ fun SettingsCategories(
                         )
                     }.takeIf { showNavBack }
                 },
-                colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = containerColor
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
             )
         },
-        containerColor = containerColor
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier.padding(innerPadding),
-            contentPadding = PaddingValues(horizontal = 12.dp)
+            contentPadding = PaddingValues(horizontal = 18.dp)
         ) {
-            val settings = listOf(
-                MobileSettings.Play,
-                MobileSettings.Advance,
-                MobileSettings.About,
-                MobileSettings.Debug
+            preferenceGroups(
+                null to {
+                    listOf(
+                        MobileSettings.Play,
+                        MobileSettings.Advance
+                    ).forEach { item ->
+                        textPreference(
+                            title = item.title,
+                            summary = item.summary,
+                            onClick = { onSelectedSettings(item) },
+                            selected = selectedSettings == item
+                        )
+                    }
+                },
+                null to {
+                    textPreference(
+                        title = MobileSettings.About.title,
+                        summary = MobileSettings.About.summary,
+                        onClick = { onSelectedSettings(MobileSettings.About) },
+                        selected = selectedSettings == MobileSettings.About
+                    )
+                },
+                null to {
+                    textPreference(
+                        title = MobileSettings.Debug.title,
+                        summary = MobileSettings.Debug.summary,
+                        onClick = { onSelectedSettings(MobileSettings.Debug) },
+                        selected = selectedSettings == MobileSettings.Debug
+                    )
+                }
             )
-            items(settings) { item ->
-                SettingItem(
-                    modifier = Modifier,
-                    text = item.displayName,
-                    selected = selectedSettings == item,
-                    onClick = {
-                        onSelectedSettings(item)
-                    },
-                    defaultContainerColor = containerColor
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun SettingItem(
-    modifier: Modifier = Modifier,
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit = {},
-    defaultContainerColor: Color = MaterialTheme.colorScheme.surface
-) {
-    val containerColor = if (selected) MaterialTheme.colorScheme.primary else defaultContainerColor
-    val listItemColors = ListItemDefaults.colors(
-        containerColor = containerColor,
-        headlineColor = contentColorFor(containerColor)
-    )
-
-    ListItem(
-        modifier = modifier
-            .clip(MaterialTheme.shapes.medium)
-            .clickable { onClick() },
-        headlineContent = {
-            Text(
-                text = text,
-                //style = MaterialTheme.typography.titleLarge
-            )
-        },
-        colors = listItemColors
-    )
-}
-
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun SettingItemPreview() {
-    BVMobileTheme {
-        Surface {
-            Box(modifier = Modifier.padding(20.dp)) {
-                SettingItem(
-                    text = "Play",
-                    selected = false
-                )
-            }
         }
     }
 }
 
 @Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun SelectedSettingItemPreview() {
+private fun SettingsCategoriesPreview() {
     BVMobileTheme {
         Surface {
-            Box(modifier = Modifier.padding(20.dp)) {
-                SettingItem(
-                    text = "Play",
-                    selected = true
-                )
-            }
+            SettingsCategories(
+                selectedSettings = MobileSettings.Play,
+                onSelectedSettings = {},
+                showNavBack = false,
+                onBack = {},
+            )
         }
     }
 }

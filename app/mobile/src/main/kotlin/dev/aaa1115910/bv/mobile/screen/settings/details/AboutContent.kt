@@ -1,17 +1,18 @@
 package dev.aaa1115910.bv.mobile.screen.settings.details
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ListItem
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,8 +27,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.tv.material3.Surface
 import dev.aaa1115910.bv.BuildConfig
+import dev.aaa1115910.bv.mobile.component.preferences.items.textPreference
+import dev.aaa1115910.bv.mobile.component.preferences.preferenceGroup
 import dev.aaa1115910.bv.mobile.component.settings.UpdateDialog
 import dev.aaa1115910.bv.mobile.theme.BVMobileTheme
 
@@ -38,40 +40,33 @@ fun AboutContent(
     val context = LocalContext.current
     var showUpdateDialog by remember { mutableStateOf(false) }
 
-    Column(
+    LazyColumn(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        contentPadding = PaddingValues(horizontal = 18.dp)
     ) {
-        Column {
+        item {
             AppIcon(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 24.dp)
             )
-            ListItem(
-                modifier = Modifier
-                    .clickable { showUpdateDialog = true },
-                headlineContent = {
-                    Text("当前版本")
-                },
-                supportingContent = {
-                    Text(text = "${BuildConfig.VERSION_NAME}.${BuildConfig.BUILD_TYPE}")
-                }
+        }
+
+        preferenceGroup {
+            textPreference(
+                title = "当前版本",
+                summary = "${BuildConfig.VERSION_NAME}.${BuildConfig.BUILD_TYPE}",
+                onClick = { showUpdateDialog = true }
             )
-            ListItem(
-                modifier = Modifier
-                    .clickable {
-                        val url = "https://github.com/aaa1115910/bv"
-                        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-                        context.startActivity(intent)
-                    },
-                headlineContent = {
-                    Text("项目地址")
-                },
-                supportingContent = {
-                    Text(text = "https://github.com/aaa1115910/bv")
-                },
+            textPreference(
+                title = "项目地址",
+                summary = "https://github.com/aaa1115910/bv",
+                onClick = {
+                    val url = "https://github.com/aaa1115910/bv"
+                    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                    context.startActivity(intent)
+                }
             )
         }
     }
@@ -83,7 +78,7 @@ fun AboutContent(
 }
 
 @Composable
-fun AppIcon(modifier: Modifier = Modifier) {
+private fun AppIcon(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -104,19 +99,29 @@ fun AppIcon(modifier: Modifier = Modifier) {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun AppIconPreview() {
     BVMobileTheme {
-        AppIcon()
+        Surface {
+            AppIcon()
+        }
     }
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(device = "spec:width=1280dp,height=800dp,dpi=240")
+@Preview(
+    device = "spec:width=1280dp,height=800dp,dpi=240",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun AboutContentPreview() {
     BVMobileTheme {
-        Surface {
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceContainerLow
+        ) {
             AboutContent(
                 modifier = Modifier.fillMaxSize()
             )
