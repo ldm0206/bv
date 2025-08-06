@@ -359,10 +359,12 @@ object BiliHttpApi {
     suspend fun getDynamicDetail(
         timezoneOffset: Int = -480,
         id: String,
+        features: String? = null,
         sessData: String = ""
     ): BiliResponse<DynamicDetailData> = client.get("/x/polymer/web-dynamic/v1/detail") {
         parameter("timezone_offset", timezoneOffset)
         parameter("id", id)
+        features?.let { parameter("features", it) }
         header("Cookie", "SESSDATA=$sessData;")
     }.body()
 

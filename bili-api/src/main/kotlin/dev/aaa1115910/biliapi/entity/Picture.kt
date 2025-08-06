@@ -26,6 +26,15 @@ data class Picture(
             )
         }
 
+        fun fromPicture(picture: dev.aaa1115910.biliapi.http.entity.dynamic.DynamicItem.Modules.Dynamic.Major.Opus.Pic): Picture {
+            return Picture(
+                url = picture.url,
+                width = picture.width,
+                height = picture.height,
+                key = UUID.randomUUID().toString()
+            )
+        }
+
         fun fromPicture(picture: bilibili.main.community.reply.v1.Picture): Picture {
             return Picture(
                 url = picture.imgSrc,

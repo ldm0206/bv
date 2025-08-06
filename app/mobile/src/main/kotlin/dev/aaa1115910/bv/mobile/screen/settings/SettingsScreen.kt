@@ -2,6 +2,10 @@ package dev.aaa1115910.bv.mobile.screen.settings
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
@@ -53,6 +57,8 @@ fun SettingsScreen() {
         listPane = {
             AnimatedPane(
                 modifier = Modifier.preferredWidth(360.dp),
+                enterTransition = fadeIn() + slideInHorizontally(),
+                exitTransition = fadeOut() + slideOutHorizontally()
             ) {
                 SettingsCategories(
                     selectedSettings = if (singlePart) null else selectedSettings
@@ -69,7 +75,11 @@ fun SettingsScreen() {
             }
         },
         detailPane = {
-            AnimatedPane(modifier = Modifier) {
+            AnimatedPane(
+                modifier = Modifier,
+                enterTransition = fadeIn() + slideInHorizontally { it / 2 },
+                exitTransition = fadeOut() + slideOutHorizontally { it / 2 }
+            ) {
                 SettingsDetails(
                     selectedSettings = selectedSettings ?: MobileSettings.Play,
                     showNavBack = scaffoldNavigator.canNavigateBack(),
