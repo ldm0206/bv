@@ -716,7 +716,7 @@ data class DynamicVideoData(
             }
 
         fun fromDynamicData(data: bilibili.app.dynamic.v2.DynVideoReply) = DynamicVideoData(
-            videos = data.dynamicList.listList.map { DynamicVideo.fromDynamicVideoItem(it) },
+            videos = data.dynamicList.listList.mapNotNull { DynamicVideo.fromDynamicVideoItem(it) },
             hasMore = data.dynamicList.hasMore,
             historyOffset = data.dynamicList.historyOffset,
             updateBaseline = data.dynamicList.updateBaseline
@@ -777,7 +777,7 @@ data class DynamicVideo(
             )
         }
 
-        fun fromDynamicVideoItem(item: bilibili.app.dynamic.v2.DynamicItem): DynamicVideo {
+        fun fromDynamicVideoItem(item: bilibili.app.dynamic.v2.DynamicItem): DynamicVideo? {
             val author =
                 item.modulesList.first { it.moduleType == DynModuleType.module_author }.moduleAuthor.author
             val dynamic =
@@ -838,7 +838,10 @@ data class DynamicVideo(
                     )
                 }
 
-                else -> TODO("还没写")
+                else -> {
+                    println("unsupported dynamic moduleItemCase: ${dynamic.moduleItemCase}")
+                    return null
+                }
             }
         }
     }

@@ -33,6 +33,7 @@ class SearchInputViewModel(
     val hotwords = mutableStateListOf<Hotword>()
     val suggests = mutableStateListOf<String>()
     val searchHistories = mutableStateListOf<SearchHistoryDB>()
+    val matchedSearchHistories = mutableStateListOf<SearchHistoryDB>()
 
     init {
         updateHotwords()
@@ -75,6 +76,7 @@ class SearchInputViewModel(
                 logger.info { it.stackTraceToString() }
             }
         }
+        updateMatchedSearchHistories()
     }
 
     private fun loadSearchHistories() {
@@ -83,6 +85,21 @@ class SearchInputViewModel(
             runCatching {
                 searchHistories.swapListWithMainContext(db.searchHistoryDao().getHistories(20))
                 logger.fInfo { "Load search histories finish, size: ${searchHistories.size}" }
+            }
+        }
+    }
+
+    private fun updateMatchedSearchHistories() {
+        logger.fInfo { "Update matched search histories with '$keyword'" }
+        viewModelScope.launch(Dispatchers.IO) {
+            runCatching {
+                if (keyword.isEmpty()) {
+                    matchedSearchHistories.clear()
+                } else {
+                    val matchedHistories = db.searchHistoryDao().findHistories(keyword, 20)
+                    matchedSearchHistories.swapListWithMainContext(matchedHistories)
+                }
+                logger.fInfo { "Update matched search histories finish, size: ${matchedSearchHistories.size}" }
             }
         }
     }

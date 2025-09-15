@@ -93,6 +93,7 @@ import dev.aaa1115910.bv.mobile.activities.SettingsActivity
 import dev.aaa1115910.bv.mobile.component.home.UserDialog
 import dev.aaa1115910.bv.mobile.screen.home.DynamicScreen
 import dev.aaa1115910.bv.mobile.screen.home.HomeScreen
+import dev.aaa1115910.bv.mobile.screen.home.SearchScreen
 import dev.aaa1115910.bv.util.fInfo
 import dev.aaa1115910.bv.util.swapList
 import dev.aaa1115910.bv.viewmodel.UserSwitchViewModel
@@ -263,7 +264,7 @@ fun MobileMainScreen(
                 }
 
                 composable(MobileMainScreenNav.Search.name) {
-                    DevelopingTipContent()
+                    SearchScreen()
                 }
                 composable(MobileMainScreenNav.Zone.name) {
                     DevelopingTipContent()

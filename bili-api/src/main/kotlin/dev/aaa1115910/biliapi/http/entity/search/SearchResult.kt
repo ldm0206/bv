@@ -26,7 +26,7 @@ data class SearchResultData(
     @SerialName("rqt_type")
     val rqtType: String,
     @SerialName("cost_time")
-    val costTime: SearchCost,
+    val costTime: SearchCost? = null,
     @SerialName("exp_list")
     val expList: JsonElement? = null,
     @SerialName("egg_hit")

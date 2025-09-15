@@ -3,7 +3,7 @@ activity = "1.10.1"
 compose = "1.8.3"
 compose-constraintlayout = "1.1.1"
 compose-material-icons = "1.7.8"
-compose-material3 = "1.4.0-alpha18"
+compose-material3 = "1.5.0-alpha03"
 compose-material3-adaptive = "1.1.0"
 #noinspection GradleDependency https://issuetracker.google.com/issues/361611808
 compose-tv = "1.1.0-alpha01"

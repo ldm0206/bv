@@ -5,6 +5,7 @@ import dev.aaa1115910.biliapi.entity.season.FollowingSeasonStatus
 import dev.aaa1115910.biliapi.entity.season.FollowingSeasonType
 import dev.aaa1115910.biliapi.http.entity.user.FollowAction
 import dev.aaa1115910.biliapi.http.entity.user.FollowActionSource
+import dev.aaa1115910.biliapi.http.util.generateBuvid
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
@@ -263,7 +264,8 @@ internal class BiliHttpApiTest {
             val response = BiliHttpApi.getVideoMoreInfo(
                 avid = 170001,
                 cid = 279786,
-                sessData = SESSDATA
+                sessData = SESSDATA,
+                buvid3 = generateBuvid()
             ).getResponseData()
             println("lastPlayTime: ${response.lastPlayTime}")
             println("lastPlayCid: ${response.lastPlayCid}")

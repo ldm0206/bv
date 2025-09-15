@@ -15,6 +15,7 @@ import dev.aaa1115910.biliapi.repositories.SearchTypeResult
 import dev.aaa1115910.bv.R
 import dev.aaa1115910.bv.util.Partition
 import dev.aaa1115910.bv.util.Prefs
+import dev.aaa1115910.bv.util.fException
 import dev.aaa1115910.bv.util.fInfo
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +46,6 @@ class SearchResultViewModel(
 
     private var updating = false
     val hasMore = true
-    private var page = SearchTypePage()
 
     var enableProxySearchResult = false
 
@@ -78,6 +78,12 @@ class SearchResultViewModel(
 
         updating = true
         viewModelScope.launch(Dispatchers.IO) {
+            val page = when (searchType) {
+                SearchType.Video -> videoSearchResult.page
+                SearchType.MediaBangumi -> mediaBangumiSearchResult.page
+                SearchType.MediaFt -> mediaFtSearchResult.page
+                SearchType.BiliUser -> biliUserSearchResult.page
+            }
             logger.fInfo { "Load search result: [keyword=$keyword, type=$searchType, page=${page}]" }
             runCatching {
                 val searchResultResponse = searchRepository.searchType(
@@ -92,21 +98,33 @@ class SearchResultViewModel(
                 )
                 withContext(Dispatchers.Main) {
                     when (searchType) {
-                        SearchType.Video -> videoSearchResult =
-                            videoSearchResult.appendSearchResultData(searchResultResponse)
+                        SearchType.Video -> {
+                            videoSearchResult =
+                                videoSearchResult.appendSearchResultData(searchResultResponse)
+                            videoSearchResult.page = searchResultResponse.page
+                        }
 
-                        SearchType.MediaBangumi -> mediaBangumiSearchResult =
-                            mediaBangumiSearchResult.appendSearchResultData(searchResultResponse)
+                        SearchType.MediaBangumi -> {
+                            mediaBangumiSearchResult =
+                                mediaBangumiSearchResult.appendSearchResultData(searchResultResponse)
+                            mediaBangumiSearchResult.page = searchResultResponse.page
+                        }
 
-                        SearchType.MediaFt -> mediaFtSearchResult =
-                            mediaFtSearchResult.appendSearchResultData(searchResultResponse)
+                        SearchType.MediaFt -> {
+                            mediaFtSearchResult =
+                                mediaFtSearchResult.appendSearchResultData(searchResultResponse)
+                            mediaFtSearchResult.page = searchResultResponse.page
+                        }
 
-                        SearchType.BiliUser -> biliUserSearchResult =
-                            biliUserSearchResult.appendSearchResultData(searchResultResponse)
+                        SearchType.BiliUser -> {
+                            biliUserSearchResult =
+                                biliUserSearchResult.appendSearchResultData(searchResultResponse)
+                            biliUserSearchResult.page = searchResultResponse.page
+                        }
                     }
                 }
-
-                page = searchResultResponse.page
+            }.onFailure {
+                logger.fException(it) { "Load search result failed [searchType=$searchType, keyword=$keyword, page=$page]" }
             }
             updating = false
         }

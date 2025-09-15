@@ -1,6 +1,7 @@
 package dev.aaa1115910.bv.entity.carddata
 
 import dev.aaa1115910.bv.util.formatHourMinSec
+import java.text.SimpleDateFormat
 
 data class VideoCardData(
     val avid: Long,
@@ -15,7 +16,9 @@ data class VideoCardData(
     val time: Long? = null,
     var timeString: String = "",
     val jumpToSeason: Boolean = false,
-    val epId: Int? = null
+    val epId: Int? = null,
+    val pubTime: Int? = null,
+    var pubTimeString: String = "",
 ) {
     init {
         play?.let {
@@ -26,6 +29,10 @@ data class VideoCardData(
         }
         time?.let {
             timeString = if (it > 0) it.formatHourMinSec() else ""
+        }
+        pubTime?.let {
+            pubTimeString =
+                if (it > 0) SimpleDateFormat("yyyy-MM-dd").format(java.util.Date(it * 1000L)) else ""
         }
     }
 }

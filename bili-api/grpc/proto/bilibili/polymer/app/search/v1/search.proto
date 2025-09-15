@@ -1902,6 +1902,38 @@ message SearchVideoCard {
   repeated ReasonStyle new_rec_tags_v2 = 18;
   //
   repeated ReasonStyle badges_v2 = 19;
+  //
+  //Feedback feedback = 20;
+  //
+  //TimeLine time_line = 21;
+  //
+  string face = 22;
+  //
+  int32 ptime = 23;
+  //
+  string view_content = 24;
+  //
+  int32 icon_type = 25;
+  //
+  //FoldingTimeLine folding_time_line = 26;
+  //
+  //LabelStyle charging_label = 27;
+  //
+  //CardLayout card_layout = 28;
+  //
+  string author_prefix = 29;
+  //
+  repeated string highlight_tags = 30;
+  //
+  ReasonStyle cover_badge = 31;
+  //
+  //ShortOGVInfo short_ogv_info = 32;
+  //
+  int64 translation_status = 33;
+  //
+  string translated_title = 34;
+  //
+  repeated ReasonStyle quality_tags = 35;
 }
 
 //
