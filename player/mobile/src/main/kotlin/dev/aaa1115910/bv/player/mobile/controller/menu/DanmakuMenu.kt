@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -54,13 +55,14 @@ fun DanmakuMenu(
                             contentDescription = null
                         )
                     }
-                }
+                },
+                windowInsets = WindowInsets(0, 0, 0, 0)
             )
         }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
                 .fillMaxSize(),
             contentPadding = PaddingValues(vertical = 12.dp, horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -155,7 +157,7 @@ private fun EnabledDanmakuTypeButton(
 
     FilterChip(
         modifier = modifier,
-        label = { Text(text = danmakuType.getDisplayName(context).replace("弹幕","")) },
+        label = { Text(text = danmakuType.getDisplayName(context).replace("弹幕", "")) },
         selected = selected,
         onClick = { onEnabledStateChange(!selected) }
     )

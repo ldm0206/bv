@@ -2,6 +2,7 @@ package dev.aaa1115910.bv.player.mobile.controller.menu
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -79,13 +80,14 @@ fun VideoListMenu(
                             contentDescription = null
                         )
                     }
-                }
+                },
+                windowInsets = WindowInsets(0, 0, 0, 0)
             )
         }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
                 .fillMaxSize(),
             contentPadding = PaddingValues(vertical = 12.dp, horizontal = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally

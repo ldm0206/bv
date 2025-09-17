@@ -1,10 +1,12 @@
 package dev.aaa1115910.bv.player.mobile.controller.menu
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,6 +40,7 @@ import dev.aaa1115910.bv.player.entity.VideoCodec
 import dev.aaa1115910.bv.player.entity.VideoPlayerConfigData
 import dev.aaa1115910.bv.player.mobile.MaterialDarkTheme
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashMenu(
@@ -59,13 +62,14 @@ fun DashMenu(
                             contentDescription = null
                         )
                     }
-                }
+                },
+                windowInsets = WindowInsets(0, 0, 0, 0)
             )
         }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
                 .padding(horizontal = 18.dp),
             contentPadding = PaddingValues(bottom = 32.dp)
         ) {

@@ -1,5 +1,6 @@
 package dev.aaa1115910.bv.player.mobile.controller.menu
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -31,13 +32,14 @@ fun MoreMenu(
                             contentDescription = null
                         )
                     }
-                }
+                },
+                windowInsets = WindowInsets(0, 0, 0, 0)
             )
         }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
         ) {
 
         }

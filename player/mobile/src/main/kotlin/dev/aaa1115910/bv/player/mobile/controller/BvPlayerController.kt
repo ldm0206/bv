@@ -153,7 +153,9 @@ fun BvPlayerController(
                 onCloseMenu = { isMenuOpen = false }
             ) {
                 Box(
-                    modifier = Modifier.clip(RoundedCornerShape(0.dp))
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(0.dp))
                 ) {
                     content()
                 }
