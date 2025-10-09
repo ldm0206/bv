@@ -51,7 +51,9 @@ data class SeasonDetail(
                 publish = Publish.fromPublish(seasonData.publish),
                 newEpDesc = seasonData.newEp.desc,
                 seasons = seasonData.seasons.map { PgcSeason.fromSeason(it) },
-                episodes = seasonData.episodes.map { Episode.fromEpisode(it) }
+                episodes = seasonData.episodes.map { Episode.fromEpisode(it) },
+                sections = seasonData.section.map { Section.fromSection(it) }
+                    .filter { it.episodes.isNotEmpty() }    // 过滤掉跳转别的 pgc 的视频后可能出现空列表
             )
         }
 

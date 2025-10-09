@@ -577,13 +577,18 @@ fun VideoInfoScreen(
                                     videoInfoRepository.videoList.addAll(partVideoList)
                                 }
 
+                                val lastPlayedPage =
+                                    videoDetailViewModel.videoDetail!!.pages.find { it.cid == lastPlayedCid }
+                                val playPage = lastPlayedPage
+                                    ?: videoDetailViewModel.videoDetail!!.pages.first()
+
                                 launchPlayerActivity(
                                     context = context,
                                     avid = videoDetailViewModel.videoDetail!!.aid,
-                                    cid = videoDetailViewModel.videoDetail!!.pages.first().cid,
+                                    cid = playPage.cid,
                                     title = videoDetailViewModel.videoDetail!!.title,
-                                    partTitle = videoDetailViewModel.videoDetail!!.pages.first().title,
-                                    played = if (videoDetailViewModel.videoDetail!!.cid == lastPlayedCid) lastPlayedTime * 1000 else 0,
+                                    partTitle = playPage.title,
+                                    played = if (playPage.cid == lastPlayedCid) lastPlayedTime * 1000 else 0,
                                     fromSeason = false,
                                     isVerticalVideo = containsVerticalScreenVideo,
                                     playerIconIdle = videoDetailViewModel.videoDetail!!.playerIcon?.idle

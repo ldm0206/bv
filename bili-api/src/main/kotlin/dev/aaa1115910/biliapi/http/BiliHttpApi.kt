@@ -843,12 +843,14 @@ object BiliHttpApi {
         mid: Long,
         lastAvid: Long,
         order: String = "pubdate",
+        ts: Long,
         accessKey: String
     ): BiliResponse<AppSpaceVideoData> =
         client.get("https://app.bilibili.com/x/v2/space/archive/cursor") {
             parameter("vmid", mid)
             parameter("aid", lastAvid)
             parameter("order", order)
+            parameter("ts", ts)
             parameter("access_key", accessKey)
         }.body()
 
