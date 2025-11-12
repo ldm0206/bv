@@ -5,11 +5,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Fullscreen
+import androidx.compose.material.icons.rounded.Pause
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerSeekData
@@ -69,6 +74,7 @@ private fun TopControllers(
             .background(Color.Black.copy(alpha = 0.6f))
     ) {
         Row(
+            modifier = Modifier.padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
@@ -102,20 +108,35 @@ private fun BottomControllers(
         modifier = modifier
             .background(Color.Black.copy(alpha = 0.6f))
     ) {
-        ConstraintLayout {
+        ConstraintLayout(
+            modifier = Modifier.padding(horizontal = 8.dp)
+        ) {
             val (playButton, seekSlider, positionText, fullscreenButton) = createRefs()
 
-            PlayPauseButton(
+            IconButton(
                 modifier = Modifier
                     .constrainAs(playButton) {
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
                         bottom.linkTo(parent.bottom)
                     },
-                isPlaying = videoPlayerStateData.isPlaying,
-                onPlay = onPlay,
-                onPause = onPause
-            )
+                onClick = { if (videoPlayerStateData.isPlaying) onPause() else onPlay() },
+                colors = IconButtonDefaults.iconButtonColors(
+                    contentColor = Color.White
+                )
+            ) {
+                if (videoPlayerStateData.isPlaying) {
+                    Icon(
+                        imageVector = Icons.Rounded.Pause,
+                        contentDescription = null,
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Rounded.PlayArrow,
+                        contentDescription = null,
+                    )
+                }
+            }
 
             VideoSeekBar(
                 modifier = Modifier.constrainAs(seekSlider) {
@@ -128,6 +149,7 @@ private fun BottomControllers(
                 duration = videoPlayerSeekData.duration,
                 position = videoPlayerSeekData.position,
                 bufferedPercentage = videoPlayerSeekData.bufferedPercentage,
+                playing = videoPlayerStateData.isPlaying,
                 onPositionChange = { newPosition, isPressing ->
                     if (!isPressing) onSeekToPosition(newPosition)
                 }

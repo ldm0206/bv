@@ -19,8 +19,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
@@ -56,6 +59,7 @@ import dev.aaa1115910.bv.player.entity.DanmakuType
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerConfigData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerSeekData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerStateData
+import dev.aaa1115910.bv.player.entity.PlayMode
 import dev.aaa1115910.bv.player.entity.Resolution
 import dev.aaa1115910.bv.player.entity.VideoCodec
 import dev.aaa1115910.bv.player.entity.VideoListItem
@@ -90,6 +94,7 @@ fun BvPlayerController(
     onDanmakuOpacityChange: (Float) -> Unit,
     onDanmakuScaleChange: (Float) -> Unit,
     onDanmakuAreaChange: (Float) -> Unit,
+    onPlayModeChange: (PlayMode) -> Unit,
     onPlayNewVideo: (VideoListItem) -> Unit,
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -187,6 +192,7 @@ fun BvPlayerController(
                 onDanmakuOpacityChange = onDanmakuOpacityChange,
                 onDanmakuScaleChange = onDanmakuScaleChange,
                 onDanmakuAreaChange = onDanmakuAreaChange,
+                onPlayModeChange = onPlayModeChange,
                 onPlayNewVideo = onPlayNewVideo
             )
         }
@@ -210,6 +216,7 @@ private fun BvPlayerControllerSettings(
     onDanmakuOpacityChange: (Float) -> Unit,
     onDanmakuScaleChange: (Float) -> Unit,
     onDanmakuAreaChange: (Float) -> Unit,
+    onPlayModeChange: (PlayMode) -> Unit,
     onPlayNewVideo: (VideoListItem) -> Unit
 ) {
     MaterialDarkTheme {
@@ -260,7 +267,8 @@ private fun BvPlayerControllerSettings(
 
                 MenuType.More -> {
                     MoreMenu(
-                        onClose = onCloseMenu
+                        onClose = onCloseMenu,
+                        onPlayModeChange = onPlayModeChange
                     )
                 }
             }
@@ -322,6 +330,7 @@ fun BvPlayerControllerVideoContent(
         Log.i("BvPlayerController", "Screen tap")
         if (isMenuOpen) {
             onCloseMenu()
+            showBaseUi = true
         } else {
             if (!is2xPlaying) showBaseUi = !showBaseUi
         }
@@ -412,6 +421,10 @@ fun BvPlayerControllerVideoContent(
     ) {
         content()
 
+        if (videoPlayerStateData.isBuffering && !videoPlayerStateData.isError) {
+            BufferingTip(modifier = Modifier.align(Alignment.Center))
+        }
+
         SeekMoveTip(
             show = isMovingSeek,
             startTime = moveStartTime,
@@ -488,7 +501,10 @@ fun BvPlayerControllerVideoContent(
                         showBaseUi = false
                         onOpenListMenu()
                     },
-                    onOpenMoreMenu = onOpenMoreMenu
+                    onOpenMoreMenu = {
+                        showBaseUi = false
+                        onOpenMoreMenu()
+                    }
                 )
             } else {
                 MiniControllers(
@@ -647,6 +663,16 @@ fun Modifier.detectPlayerGestures(
         }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun BufferingTip(
+    modifier: Modifier = Modifier
+) {
+    LoadingIndicator(
+        modifier = modifier.size(120.dp)
+    )
+}
+
 @Preview(device = "spec:width=1920px,height=1080px")
 @Composable
 private fun BvPlayerControllerPreview() {
@@ -684,6 +710,7 @@ private fun BvPlayerControllerPreview() {
                 onDanmakuOpacityChange = {},
                 onDanmakuAreaChange = {},
                 onDanmakuScaleChange = {},
+                onPlayModeChange = {},
                 onPlayNewVideo = {}
             ) {
                 Box(

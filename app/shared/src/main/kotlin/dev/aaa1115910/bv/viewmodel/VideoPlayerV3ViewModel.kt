@@ -33,10 +33,12 @@ import dev.aaa1115910.bv.entity.proxy.ProxyArea
 import dev.aaa1115910.bv.player.AbstractVideoPlayer
 import dev.aaa1115910.bv.player.entity.Audio
 import dev.aaa1115910.bv.player.entity.DanmakuType
+import dev.aaa1115910.bv.player.entity.PlayMode
 import dev.aaa1115910.bv.player.entity.RequestState
 import dev.aaa1115910.bv.player.entity.Resolution
 import dev.aaa1115910.bv.player.entity.VideoAspectRatio
 import dev.aaa1115910.bv.player.entity.VideoCodec
+import dev.aaa1115910.bv.player.entity.VideoListItemData
 import dev.aaa1115910.bv.repository.VideoInfoRepository
 import dev.aaa1115910.bv.util.Prefs
 import dev.aaa1115910.bv.util.fException
@@ -101,6 +103,8 @@ class VideoPlayerV3ViewModel(
     var currentSubtitleFontSize by mutableStateOf(Prefs.defaultSubtitleFontSize)
     var currentSubtitleBackgroundOpacity by mutableFloatStateOf(Prefs.defaultSubtitleBackgroundOpacity)
     var currentSubtitleBottomPadding by mutableStateOf(Prefs.defaultSubtitleBottomPadding)
+
+    var currentPlayMode by mutableStateOf(Prefs.defaultPlayMode)
 
     var title by mutableStateOf("")
     var partTitle by mutableStateOf("")
@@ -622,6 +626,72 @@ class VideoPlayerV3ViewModel(
             logger.fInfo { "Load video shot success" }
         }.onFailure {
             logger.fWarn { "Load video shot failed: ${it.stackTraceToString()}" }
+        }
+    }
+
+    fun playNextVideo() {
+        logger.fInfo { "Video finished" }
+        when (currentPlayMode) {
+            PlayMode.Single -> {
+                logger.info { "Play mode: $currentPlayMode, do nothing" }
+            }
+
+            PlayMode.Sequential -> {
+                logger.info { "Play mode: $currentPlayMode, play next video in list" }
+                playNextVideoInList()
+            }
+
+            PlayMode.SingleLoop -> {
+                logger.info { "Play mode: $currentPlayMode, replay current video" }
+                danmakuPlayer?.seekTo(0L)
+                danmakuPlayer?.pause()
+                videoPlayer?.seekTo(0L)
+            }
+
+            PlayMode.ListLoop -> {
+                logger.info { "Play mode: $currentPlayMode, play next video in list or loop to first" }
+                playNextVideoInList(loop = true)
+            }
+        }
+    }
+
+    private fun playNextVideoInList(loop: Boolean = false) {
+        val currentIndex = availableVideoList
+            .indexOfFirst {
+                when (it) {
+                    is VideoListItemData -> it.cid == currentCid
+                    else -> false
+                }
+            }
+        if (currentIndex + 1 < availableVideoList.size) {
+            val nextVideos = availableVideoList.subList(
+                currentIndex + 1,
+                availableVideoList.size
+            )
+            val nextVideo =
+                nextVideos.firstOrNull { it is VideoListItemData }!! as VideoListItemData
+            logger.info { "Play next video: $nextVideo" }
+            partTitle = nextVideo.title
+            loadPlayUrl(
+                avid = nextVideo.aid,
+                cid = nextVideo.cid,
+                epid = nextVideo.epid,
+                seasonId = nextVideo.seasonId,
+                continuePlayNext = true
+            )
+        } else if (loop) {
+            //loop to first
+            val firstVideo =
+                availableVideoList.firstOrNull { it is VideoListItemData }!! as VideoListItemData
+            logger.info { "Loop to first video: $firstVideo" }
+            partTitle = firstVideo.title
+            loadPlayUrl(
+                avid = firstVideo.aid,
+                cid = firstVideo.cid,
+                epid = firstVideo.epid,
+                seasonId = firstVideo.seasonId,
+                continuePlayNext = true
+            )
         }
     }
 }

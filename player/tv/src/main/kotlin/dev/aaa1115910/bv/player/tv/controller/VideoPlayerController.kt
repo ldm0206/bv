@@ -38,6 +38,7 @@ import dev.aaa1115910.bv.player.entity.LocalVideoPlayerDebugInfoData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerHistoryData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerSeekData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerStateData
+import dev.aaa1115910.bv.player.entity.PlayMode
 import dev.aaa1115910.bv.player.entity.Resolution
 import dev.aaa1115910.bv.player.entity.VideoAspectRatio
 import dev.aaa1115910.bv.player.entity.VideoCodec
@@ -78,6 +79,7 @@ fun VideoPlayerController(
     onSubtitleSizeChange: (TextUnit) -> Unit,
     onSubtitleBackgroundOpacityChange: (Float) -> Unit,
     onSubtitleBottomPadding: (Dp) -> Unit,
+    onPlayModeChange: (PlayMode) -> Unit,
 
     onRequestFocus: () -> Unit,
     content: @Composable BoxScope.() -> Unit
@@ -358,7 +360,8 @@ fun VideoPlayerController(
             onSubtitleChange = onSubtitleChange,
             onSubtitleSizeChange = onSubtitleSizeChange,
             onSubtitleBackgroundOpacityChange = onSubtitleBackgroundOpacityChange,
-            onSubtitleBottomPadding = onSubtitleBottomPadding
+            onSubtitleBottomPadding = onSubtitleBottomPadding,
+            onPlayModeChange = onPlayModeChange
         )
     }
 }

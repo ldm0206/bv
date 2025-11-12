@@ -87,6 +87,7 @@ data class VideoPlayerConfigData(
     val currentSubtitleFontSize: TextUnit = 24.sp,
     val currentSubtitleBackgroundOpacity: Float = 0.4f,
     val currentSubtitleBottomPadding: Dp = 12.dp,
+    val currentPlayMode: PlayMode = PlayMode.Sequential,
     val incognitoMode: Boolean = false,
 )
 

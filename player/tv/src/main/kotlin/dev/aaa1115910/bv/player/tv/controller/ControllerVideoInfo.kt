@@ -39,10 +39,12 @@ import androidx.tv.material3.Text
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerClockData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerSeekData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerSeekThumbData
+import dev.aaa1115910.bv.player.entity.LocalVideoPlayerStateData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerVideoInfoData
 import dev.aaa1115910.bv.player.entity.VideoPlayerClockData
 import dev.aaa1115910.bv.player.entity.VideoPlayerSeekData
 import dev.aaa1115910.bv.player.entity.VideoPlayerSeekThumbData
+import dev.aaa1115910.bv.player.entity.VideoPlayerStateData
 import dev.aaa1115910.bv.player.entity.VideoPlayerVideoInfoData
 import dev.aaa1115910.bv.player.seekbar.SeekMoveState
 import dev.aaa1115910.bv.player.tv.VideoSeekBar
@@ -58,6 +60,7 @@ fun ControllerVideoInfo(
     val videoPlayerSeekData = LocalVideoPlayerSeekData.current
     val videoPlayerSeekThumbData = LocalVideoPlayerSeekThumbData.current
     val videoPlayerVideoInfoData = LocalVideoPlayerVideoInfoData.current
+    val videoPlayerStateData = LocalVideoPlayerStateData.current
 
     var seekHideTimer: CountDownTimer? by remember { mutableStateOf(null) }
     val setCloseInfoTimer: () -> Unit = {
@@ -107,6 +110,7 @@ fun ControllerVideoInfo(
         ) {
             ControllerVideoInfoBottom(
                 seekData = videoPlayerSeekData,
+                stateData = videoPlayerStateData,
                 partTitle = videoPlayerVideoInfoData.partTitle,
                 idleIcon = videoPlayerSeekThumbData.idleIcon,
                 movingIcon = videoPlayerSeekThumbData.movingIcon
@@ -157,9 +161,14 @@ fun ControllerVideoInfoBottom(
     modifier: Modifier = Modifier,
     partTitle: String,
     seekData: VideoPlayerSeekData,
+    stateData: VideoPlayerStateData,
     idleIcon: String,
     movingIcon: String
 ) {
+    var waving by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit, stateData.isPlaying) { waving = stateData.isPlaying }
+
     Column(
         modifier = modifier
             .clip(
@@ -205,7 +214,8 @@ fun ControllerVideoInfoBottom(
             bufferedPercentage = seekData.bufferedPercentage,
             moveState = SeekMoveState.Idle,
             idleIcon = idleIcon,
-            movingIcon = movingIcon
+            movingIcon = movingIcon,
+            playing = waving
         )
     }
 }

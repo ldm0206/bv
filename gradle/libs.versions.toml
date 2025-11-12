@@ -19,12 +19,14 @@ ktor-jsoup = "2.3.0"
 logging = "7.0.7"
 lottie = "6.6.7"
 material = "1.12.0"
+material-symbols-compose = "1.0.1"
 protobuf = "4.31.1"
 qrcode = "4.5.0"
 rememberPreference = "1.1.1"
 slf4j-android-mvysny = "2.0.13"
 slf4j-simple = "2.0.17"
 vlc = "3.6.0-eap5"
+zxing = "3.5.3"
 
 [libraries]
 # https://google.github.io/accompanist/
@@ -102,6 +104,10 @@ lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" 
 # https://github.com/material-components/material-components-android
 material = { module = "com.google.android.material:material", version.ref = "material" }
 
+# https://github.com/1552980358/material-symbols-compose
+material-symbols-compose-annotation = { module = "com.github.1552980358.material-symbols-compose:annotation", version.ref = "material-symbols-compose" }
+material-symbols-compose-ksp = { module = "com.github.1552980358.material-symbols-compose:ksp", version.ref = "material-symbols-compose" }
+
 # https://github.com/g0dkar/qrcode-kotlin
 qrcode = { module = "io.github.g0dkar:qrcode-kotlin-android", version.ref = "qrcode" }
 
@@ -116,3 +122,6 @@ slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j-simple"
 
 # https://code.videolan.org/videolan/vlc-android
 vlc-android-all = { module = "org.videolan.android:libvlc-all", version.ref = "vlc" }
+
+# https://github.com/zxing/zxing
+zxing = { module = "com.google.zxing:core", version.ref = "zxing" }

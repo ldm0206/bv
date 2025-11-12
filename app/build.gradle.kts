@@ -109,15 +109,12 @@ android {
             }
         }
     }
-    // https://issuetracker.google.com/issues/260059413
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
+
     buildFeatures {
         compose = true
         //buildConfig = true
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -167,7 +164,7 @@ composeCompiler {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(AppConfiguration.jdk))
     }
 }
 

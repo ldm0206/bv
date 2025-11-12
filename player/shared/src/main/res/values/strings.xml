@@ -6,6 +6,11 @@
     <string name="audio_dolby_atoms">Dolby Atoms</string>
     <string name="audio_hi_res">Hi-Res</string>
 
+    <string name="play_mode_sequential">顺序播放</string>
+    <string name="play_mode_sequential_loop">列表循环</string>
+    <string name="play_mode_single">单集播放</string>
+    <string name="play_mode_single_loop">单集循环</string>
+
     <string name="resolution_1080p">1080P 高清</string>
     <string name="resolution_1080p_60">1080P60 高帧率</string>
     <string name="resolution_1080p_60_short">1080P60</string>
@@ -49,8 +54,10 @@
     <string name="video_player_menu_danmaku_type_cross">滚动弹幕</string>
     <string name="video_player_menu_danmaku_type_top">顶部弹幕</string>
     <string name="video_player_menu_nav_danmaku">弹幕设置</string>
+    <string name="video_player_menu_nav_others">其它设置</string>
     <string name="video_player_menu_nav_picture">画面音频</string>
     <string name="video_player_menu_nav_subtitle">字幕设置</string>
+    <string name="video_player_menu_others_play_mode">播放模式</string>
     <string name="video_player_menu_picture_aspect_ratio">画面比例</string>
     <string name="video_player_menu_picture_audio">音频编码</string>
     <string name="video_player_menu_picture_codec">视频编码</string>

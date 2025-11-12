@@ -24,6 +24,7 @@ import androidx.tv.material3.MaterialTheme
 import dev.aaa1115910.biliapi.entity.video.VideoShot
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerSeekData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerSeekThumbData
+import dev.aaa1115910.bv.player.entity.LocalVideoPlayerStateData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerVideoShotData
 import dev.aaa1115910.bv.player.seekbar.SeekMoveState
 import dev.aaa1115910.bv.player.tv.VideoSeekBar
@@ -38,6 +39,7 @@ fun SeekController(
     val videoPlayerVideoShotData = LocalVideoPlayerVideoShotData.current
     val videoPlayerSeekData = LocalVideoPlayerSeekData.current
     val videoPlayerSeekThumbData = LocalVideoPlayerSeekThumbData.current
+    val videoPlayerStateData = LocalVideoPlayerStateData.current
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -55,7 +57,8 @@ fun SeekController(
                 moveState = moveState,
                 idleIcon = videoPlayerSeekThumbData.idleIcon,
                 movingIcon = videoPlayerSeekThumbData.movingIcon,
-                videoShot = videoPlayerVideoShotData.videoShot
+                videoShot = videoPlayerVideoShotData.videoShot,
+                playing = videoPlayerStateData.isPlaying
             )
         }
     }
@@ -69,7 +72,8 @@ private fun SeekController(
     moveState: SeekMoveState,
     idleIcon: String,
     movingIcon: String,
-    videoShot: VideoShot? = null
+    videoShot: VideoShot? = null,
+    playing: Boolean
 ) {
     Column(
         modifier = modifier,
@@ -106,7 +110,8 @@ private fun SeekController(
                 moveState = moveState,
                 idleIcon = idleIcon,
                 movingIcon = movingIcon,
-                showPosition = true
+                showPosition = true,
+                playing = playing
             )
         }
     }
@@ -129,7 +134,8 @@ private fun VideoProgressSeekPreview(@PreviewParameter(VideoProgressProvider::cl
                 imageWidth = 0,
                 imageHeight = 0,
                 images = emptyList()
-            )
+            ),
+            playing = true
         )
     }
 }

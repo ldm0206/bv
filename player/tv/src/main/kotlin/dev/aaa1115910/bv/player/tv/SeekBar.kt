@@ -31,6 +31,7 @@ fun VideoSeekBar(
     idleIcon: String = "",
     movingIcon: String = "",
     moveState: SeekMoveState = SeekMoveState.Idle,
+    playing: Boolean = true,
     showPosition: Boolean = false
 ) {
     VideoSeekBar(
@@ -38,6 +39,8 @@ fun VideoSeekBar(
         duration = duration,
         position = position,
         bufferedPercentage = bufferedPercentage,
+        playing = playing,
+        useDefaultThumb = idleIcon.isBlank(),
         showPosition = showPosition,
         thumb = { thumbModifier ->
             SeekBarThumb(
@@ -57,6 +60,8 @@ private fun VideoSeekBar(
     position: Long,
     bufferedPercentage: Int,
     colors: SliderColors = SliderDefaults.colors(),
+    playing: Boolean = true,
+    useDefaultThumb: Boolean = false,
     showPosition: Boolean = false,
     thumb: (@Composable (Modifier) -> Unit)? = null
 ) {
@@ -81,6 +86,8 @@ private fun VideoSeekBar(
                 duration = duration,
                 position = position,
                 bufferedPercentage = bufferedPercentage,
+                waving = playing,
+                showThumb = useDefaultThumb,
                 colors = colors
             )
             thumb?.invoke(

@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,12 +41,12 @@ import androidx.compose.ui.unit.sp
 import androidx.tv.material3.ListItem
 import androidx.tv.material3.Text
 import dev.aaa1115910.bv.R
-import dev.aaa1115910.bv.component.QrImage
 import dev.aaa1115910.bv.network.HttpServer
 import dev.aaa1115910.bv.ui.theme.BVTheme
 import dev.aaa1115910.bv.util.LogCatcherUtil
 import dev.aaa1115910.bv.util.swapList
 import dev.aaa1115910.bv.util.toast
+import dev.aaa1115910.m3qrcode.MaterialShapeQr
 import java.io.File
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -225,10 +224,9 @@ fun LogsScreenContent(
                 contentAlignment = Alignment.Center
             ) {
                 if (qrContent.isNotBlank()) {
-                    QrImage(
+                    MaterialShapeQr(
                         modifier = Modifier.size(240.dp),
-                        content = qrContent,
-                        showLoadingWhenContentChanged = false
+                        content = qrContent
                     )
                 } else {
                     Text(

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SliderColors
 import androidx.compose.material3.SliderDefaults
@@ -53,6 +54,7 @@ fun VideoSeekBar(
     duration: Long,
     position: Long,
     bufferedPercentage: Int,
+    playing: Boolean,
     colors: SliderColors = SliderDefaults.colors(),
     thumb: (@Composable (Modifier, SeekMoveState?) -> Unit)? = null,
     onPositionChange: ((position: Long, pressing: Boolean) -> Unit)? = null
@@ -119,6 +121,8 @@ fun VideoSeekBar(
             duration = duration,
             position = if (pressing) previewPosition else position,
             bufferedPercentage = bufferedPercentage,
+            waving = playing,
+            showThumb = thumb == null,
             colors = colors
         )
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -140,12 +144,17 @@ private fun DraggableSeekPreview() {
     var duration by remember { mutableLongStateOf(100000L) }
     var position by remember { mutableLongStateOf(50000L) }
     var bufferedPercentage by remember { mutableIntStateOf(66) }
+    var playing by remember { mutableStateOf(true) }
 
     MaterialTheme {
         Column(
             modifier = Modifier.safeContentPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Button(onClick = { playing = !playing }) {
+                Text(if (playing) "Pause" else "Play")
+            }
+            Text("${position.formatHourMinSec()}/${duration.formatHourMinSec()}")
             Box(
                 modifier = if (view.isInEditMode) Modifier
                 else Modifier.fillMaxSize(),
@@ -174,12 +183,12 @@ private fun DraggableSeekPreview() {
                             ) { }
                         }
                     },
+                    playing = playing,
                     onPositionChange = { newPosition, pressing ->
                         if (!pressing) position = newPosition
                     }
                 )
             }
-            Text("${position.formatHourMinSec()}/${duration.formatHourMinSec()}")
         }
     }
 }

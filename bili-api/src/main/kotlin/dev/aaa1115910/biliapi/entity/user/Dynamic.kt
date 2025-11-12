@@ -380,8 +380,8 @@ data class DynamicItem(
                     text = moduleDynamic.desc?.text
                         ?: moduleDynamic.major?.opus?.summary?.text
                         ?: "empty text",
-                    images = (moduleDynamic.major!!.draw?.items?.map(Picture::fromPicture)
-                        ?: moduleDynamic.major.opus?.pics?.map(Picture::fromPicture))
+                    images = (moduleDynamic.major?.draw?.items?.map(Picture::fromPicture)
+                        ?: moduleDynamic.major?.opus?.pics?.map(Picture::fromPicture))
                         ?.distinctBy { it.url }
                         ?: emptyList()
                 )

@@ -45,6 +45,7 @@ import dev.aaa1115910.biliapi.entity.video.SubtitleType
 import dev.aaa1115910.bv.player.entity.Audio
 import dev.aaa1115910.bv.player.entity.DanmakuType
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerConfigData
+import dev.aaa1115910.bv.player.entity.PlayMode
 import dev.aaa1115910.bv.player.entity.Resolution
 import dev.aaa1115910.bv.player.entity.VideoAspectRatio
 import dev.aaa1115910.bv.player.entity.VideoCodec
@@ -53,6 +54,7 @@ import dev.aaa1115910.bv.player.entity.VideoPlayerMenuNavItem
 import dev.aaa1115910.bv.player.tv.controller.playermenu.ClosedCaptionMenuList
 import dev.aaa1115910.bv.player.tv.controller.playermenu.DanmakuMenuList
 import dev.aaa1115910.bv.player.tv.controller.playermenu.MenuNavList
+import dev.aaa1115910.bv.player.tv.controller.playermenu.OthersMenuList
 import dev.aaa1115910.bv.player.tv.controller.playermenu.PictureMenuList
 import dev.aaa1115910.bv.util.requestFocus
 import dev.aaa1115910.bv.util.swapList
@@ -75,7 +77,8 @@ fun MenuController(
     onSubtitleChange: (Subtitle) -> Unit,
     onSubtitleSizeChange: (TextUnit) -> Unit,
     onSubtitleBackgroundOpacityChange: (Float) -> Unit,
-    onSubtitleBottomPadding: (Dp) -> Unit
+    onSubtitleBottomPadding: (Dp) -> Unit,
+    onPlayModeChange: (PlayMode) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val defaultFocusRequester = remember { FocusRequester() }
@@ -111,7 +114,8 @@ fun MenuController(
                 onSubtitleChange = onSubtitleChange,
                 onSubtitleSizeChange = onSubtitleSizeChange,
                 onSubtitleBackgroundOpacityChange = onSubtitleBackgroundOpacityChange,
-                onSubtitleBottomPadding = onSubtitleBottomPadding
+                onSubtitleBottomPadding = onSubtitleBottomPadding,
+                onPlayModeChange = onPlayModeChange
             )
         }
     }
@@ -134,7 +138,8 @@ fun MenuController(
     onSubtitleChange: (Subtitle) -> Unit,
     onSubtitleSizeChange: (TextUnit) -> Unit,
     onSubtitleBackgroundOpacityChange: (Float) -> Unit,
-    onSubtitleBottomPadding: (Dp) -> Unit
+    onSubtitleBottomPadding: (Dp) -> Unit,
+    onPlayModeChange: (PlayMode) -> Unit
 ) {
     var selectedNavItem by remember { mutableStateOf(VideoPlayerMenuNavItem.Picture) }
     var focusState by remember { mutableStateOf(MenuFocusState.MenuNav) }
@@ -171,7 +176,8 @@ fun MenuController(
                     onSubtitleChange = onSubtitleChange,
                     onSubtitleSizeChange = onSubtitleSizeChange,
                     onSubtitleBackgroundOpacityChange = onSubtitleBackgroundOpacityChange,
-                    onSubtitleBottomPadding = onSubtitleBottomPadding
+                    onSubtitleBottomPadding = onSubtitleBottomPadding,
+                    onPlayModeChange = onPlayModeChange
                 )
                 MenuNavList(
                     modifier = Modifier
@@ -213,6 +219,7 @@ private fun MenuList(
     onSubtitleSizeChange: (TextUnit) -> Unit,
     onSubtitleBackgroundOpacityChange: (Float) -> Unit,
     onSubtitleBottomPadding: (Dp) -> Unit,
+    onPlayModeChange: (PlayMode) -> Unit,
     onFocusStateChange: (MenuFocusState) -> Unit
 ) {
     Box(
@@ -251,6 +258,13 @@ private fun MenuList(
                     onFocusStateChange = onFocusStateChange
                 )
             }
+
+            VideoPlayerMenuNavItem.Others -> {
+                OthersMenuList(
+                    onPlayModeChange = onPlayModeChange,
+                    onFocusStateChange = onFocusStateChange
+                )
+            }
         }
     }
 }
@@ -278,6 +292,8 @@ fun MenuControllerPreview() {
     var currentSubtitleFontSize by remember { mutableStateOf(24.sp) }
     var currentSubtitleBackgroundOpacity by remember { mutableFloatStateOf(0.4f) }
     var currentSubtitleBottomPadding by remember { mutableStateOf(8.dp) }
+
+    var currentPlayMode by remember { mutableStateOf(PlayMode.Sequential) }
 
     LaunchedEffect(Unit) {
         currentSubtitleList.apply {
@@ -353,7 +369,9 @@ fun MenuControllerPreview() {
                         availableSubtitleTracks = currentSubtitleList,
                         currentSubtitleFontSize = currentSubtitleFontSize,
                         currentSubtitleBackgroundOpacity = currentSubtitleBackgroundOpacity,
-                        currentSubtitleBottomPadding = currentSubtitleBottomPadding
+                        currentSubtitleBottomPadding = currentSubtitleBottomPadding,
+
+                        currentPlayMode = currentPlayMode
                     )
                 ) {
                     MenuController(
@@ -382,7 +400,8 @@ fun MenuControllerPreview() {
                         onSubtitleBackgroundOpacityChange = {
                             currentSubtitleBackgroundOpacity = it
                         },
-                        onSubtitleBottomPadding = { currentSubtitleBottomPadding = it }
+                        onSubtitleBottomPadding = { currentSubtitleBottomPadding = it },
+                        onPlayModeChange = { currentPlayMode = it }
                     )
                 }
             }

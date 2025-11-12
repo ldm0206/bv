@@ -1,12 +1,8 @@
 package dev.aaa1115910.bv.viewmodel.login
 
-import android.graphics.BitmapFactory
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.ImageBitmapConfig
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.aaa1115910.biliapi.entity.login.QrLoginState
@@ -26,9 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.annotation.KoinViewModel
-import qrcode.QRCode
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.util.Timer
 
 @KoinViewModel
@@ -39,7 +32,6 @@ class AppQrLoginViewModel(
     var state by mutableStateOf(QrLoginState.Ready)
     private val logger = KotlinLogging.logger { }
     var loginUrl by mutableStateOf("")
-    var qrImage by mutableStateOf(ImageBitmap(1, 1, ImageBitmapConfig.Argb8888))
     private var key = ""
 
     private var timer = Timer()
@@ -55,7 +47,6 @@ class AppQrLoginViewModel(
                 key = qrLoginData.key
                 logger.fInfo { "Get login request code url" }
                 logger.info { qrLoginData.url }
-                withContext(Dispatchers.Main) { generateQRImage() }
                 runCatching { timer.cancel() }
                 timer = timeTask(1000, 1000, "check qr login result") {
                     viewModelScope.launch {
@@ -130,13 +121,5 @@ class AppQrLoginViewModel(
             }
             logger.fError { "Check qr state failed: ${it.stackTraceToString()}" }
         }
-    }
-
-    private fun generateQRImage() {
-        val output = ByteArrayOutputStream()
-        QRCode(loginUrl).render().writeImage(output)
-        val input = ByteArrayInputStream(output.toByteArray())
-        qrImage = BitmapFactory.decodeStream(input).asImageBitmap()
-        logger.fInfo { "Generated qr image" }
     }
 }

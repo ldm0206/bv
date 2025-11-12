@@ -51,6 +51,7 @@ import dev.aaa1115910.bv.player.entity.LocalVideoPlayerLogsData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerSeekData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerStateData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerVideoInfoData
+import dev.aaa1115910.bv.player.entity.PlayMode
 import dev.aaa1115910.bv.player.entity.RequestState
 import dev.aaa1115910.bv.player.entity.Resolution
 import dev.aaa1115910.bv.player.entity.VideoAspectRatio
@@ -99,6 +100,7 @@ fun BvPlayer(
     onSubtitleSizeChange: (TextUnit) -> Unit,
     onSubtitleBackgroundOpacityChange: (Float) -> Unit,
     onSubtitleBottomPadding: (Dp) -> Unit,
+    onPlayModeChange: (PlayMode) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val logger = KotlinLogging.logger("BvPlayer")
@@ -627,6 +629,10 @@ fun BvPlayer(
             onSubtitleBottomPadding = { padding ->
                 logger.info { "On subtitle bottom padding change: $padding" }
                 onSubtitleBottomPadding(padding)
+            },
+            onPlayModeChange = { playMode ->
+                logger.info { "On play mode change: $playMode" }
+                onPlayModeChange(playMode)
             },
             onRequestFocus = { focusRequester.requestFocus() },
         ) {

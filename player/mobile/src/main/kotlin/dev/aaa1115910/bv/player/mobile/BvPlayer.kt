@@ -39,6 +39,7 @@ import dev.aaa1115910.bv.player.entity.LocalVideoPlayerLogsData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerSeekData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerStateData
 import dev.aaa1115910.bv.player.entity.LocalVideoPlayerVideoInfoData
+import dev.aaa1115910.bv.player.entity.PlayMode
 import dev.aaa1115910.bv.player.entity.Resolution
 import dev.aaa1115910.bv.player.entity.VideoAspectRatio
 import dev.aaa1115910.bv.player.entity.VideoCodec
@@ -72,6 +73,7 @@ fun BvPlayer(
     onDanmakuOpacityChange: (Float) -> Unit,
     onDanmakuScaleChange: (Float) -> Unit,
     onDanmakuAreaChange: (Float) -> Unit,
+    onPlayModeChange: (PlayMode) -> Unit,
     onLoadNextVideo: () -> Unit,
     onLoadNewVideo: (VideoListItem) -> Unit,
     videoPlayer: AbstractVideoPlayer,
@@ -354,9 +356,9 @@ fun BvPlayer(
                 videoPlayer.speed = speed
                 mDanmakuPlayer?.updatePlaySpeed(speed)
             },
-            onToggleDanmaku = {
-                //toggleDanmakuEnabled(videoPlayerConfigData.currentDanmakuEnabled)
-                onToggleDanmaku(videoPlayerConfigData.currentDanmakuEnabled)
+            onToggleDanmaku = { enabled ->
+                toggleDanmakuEnabled(enabled)
+                onToggleDanmaku(enabled)
             },
             onEnabledDanmakuTypesChange = { enabledDanmakuTypes ->
                 onEnabledDanmakuTypesChange(enabledDanmakuTypes)
@@ -368,6 +370,7 @@ fun BvPlayer(
                 updateDanmakuConfig()
             },
             onDanmakuAreaChange = onDanmakuAreaChange,
+            onPlayModeChange = onPlayModeChange,
             onPlayNewVideo = {
                 //if (!Prefs.incognitoMode) sendHeartbeat()
                 onLoadNewVideo(it)
@@ -379,14 +382,12 @@ fun BvPlayer(
                     .align(Alignment.Center),
                 videoPlayer = videoPlayer, playerListener = videoPlayerListener
             )
-            if (videoPlayerConfigData.currentDanmakuEnabled) {
-                AkDanmakuPlayer(
-                    modifier = Modifier
-                        .alpha(videoPlayerConfigData.currentDanmakuOpacity)
-                        .fillMaxHeight(videoPlayerConfigData.currentDanmakuArea),
-                    danmakuPlayer = mDanmakuPlayer
-                )
-            }
+            AkDanmakuPlayer(
+                modifier = Modifier
+                    .alpha(videoPlayerConfigData.currentDanmakuOpacity)
+                    .fillMaxHeight(videoPlayerConfigData.currentDanmakuArea),
+                danmakuPlayer = mDanmakuPlayer
+            )
         }
     }
 }
