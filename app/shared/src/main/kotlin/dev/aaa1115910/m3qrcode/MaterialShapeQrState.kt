@@ -6,7 +6,7 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.RectF
-import android.graphics.drawable.VectorDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
@@ -37,15 +37,15 @@ import kotlin.random.Random
 
 internal data class MaterialShapeQrState(
     private val context: Context,
-    private val arrayOf1x1Shapes: List<VectorDrawable>,
-    private val arrayOf1x1SemiCircleShapes: List<VectorDrawable>,
-    private val arrayOf2x2Shapes: List<VectorDrawable>,
-    private val arrayOf3x3Shapes: List<VectorDrawable>,
-    private val arrayOf7x7Shapes: List<VectorDrawable>,
-    private val arrayOfHorizontalBarShapes: List<VectorDrawable>,
-    private val arrayOfHorizontalHalfCapsuleBarShapes: List<VectorDrawable>,
-    private val arrayOfVerticalBarShapes: List<VectorDrawable>,
-    private val arrayOfFinderPatternCenterShapes: List<VectorDrawable>,
+    private val arrayOf1x1Shapes: List<Drawable>,
+    private val arrayOf1x1SemiCircleShapes: List<Drawable>,
+    private val arrayOf2x2Shapes: List<Drawable>,
+    private val arrayOf3x3Shapes: List<Drawable>,
+    private val arrayOf7x7Shapes: List<Drawable>,
+    private val arrayOfHorizontalBarShapes: List<Drawable>,
+    private val arrayOfHorizontalHalfCapsuleBarShapes: List<Drawable>,
+    private val arrayOfVerticalBarShapes: List<Drawable>,
+    private val arrayOfFinderPatternCenterShapes: List<Drawable>,
     private val foregroundColorPrimary: Int,
     private val foregroundColorSecondary: Int,
     private val foregroundColorAccent: Int,
@@ -116,7 +116,7 @@ internal data class MaterialShapeQrState(
         }
     }
 
-    fun randomSquare(shapeSize: Int): VectorDrawable {
+    fun randomSquare(shapeSize: Int): Drawable {
         return when (shapeSize) {
             1 -> arrayOf1x1Shapes.random()
             2 -> arrayOf2x2Shapes.random()
@@ -126,23 +126,23 @@ internal data class MaterialShapeQrState(
         }
     }
 
-    fun randomHorizontalBar(barWidth: Int): VectorDrawable {
+    fun randomHorizontalBar(barWidth: Int): Drawable {
         return arrayOfHorizontalBarShapes[barWidth - 2]
     }
 
-    fun randomHorizontalHalfCapsuleBar(barWidth: Int): VectorDrawable {
+    fun randomHorizontalHalfCapsuleBar(barWidth: Int): Drawable {
         return arrayOfHorizontalHalfCapsuleBarShapes[barWidth - 2]
     }
 
-    fun randomVerticalBar(barHeight: Int): VectorDrawable {
+    fun randomVerticalBar(barHeight: Int): Drawable {
         return arrayOfVerticalBarShapes[barHeight - 2]
     }
 
-    fun getSemiCircle(): VectorDrawable {
+    fun getSemiCircle(): Drawable {
         return arrayOf1x1SemiCircleShapes.first()
     }
 
-    fun nextFinderPatternCenter(): VectorDrawable {
+    fun nextFinderPatternCenter(): Drawable {
         val vectorDrawableArr = arrayOfFinderPatternCenterShapes
         val index = finderPatternCenterShapeIndex
         finderPatternCenterShapeIndex = index + 1
@@ -307,7 +307,7 @@ internal data class MaterialShapeQrState(
         width: Int,
         height: Int,
         list: MutableList<MaterialShapeRenderer>,
-        vectorDrawable: VectorDrawable,
+        vectorDrawable: Drawable,
         foregroundColor: Int,
         rendererConfigs: (MaterialShapeRenderer) -> Unit
     ) {
@@ -332,7 +332,7 @@ internal data class MaterialShapeQrState(
         width: Int,
         height: Int,
         list: MutableList<MaterialShapeRenderer>,
-        vectorDrawable: VectorDrawable,
+        vectorDrawable: Drawable,
         rendererConfigs: (MaterialShapeRenderer) -> Unit
     ) {
         createRendererForShape(
@@ -594,22 +594,21 @@ internal fun rememberMaterialShapeQrState(
         }
     }
 
-    val arrayOf1x1Shapes = remember { mutableStateListOf<VectorDrawable>() }
-    val arrayOf1x1SemiCircleShapes = remember { mutableStateListOf<VectorDrawable>() }
-    val arrayOf2x2Shapes = remember { mutableStateListOf<VectorDrawable>() }
-    val arrayOf3x3Shapes = remember { mutableStateListOf<VectorDrawable>() }
-    val arrayOf7x7Shapes = remember { mutableStateListOf<VectorDrawable>() }
+    val arrayOf1x1Shapes = remember { mutableStateListOf<Drawable>() }
+    val arrayOf1x1SemiCircleShapes = remember { mutableStateListOf<Drawable>() }
+    val arrayOf2x2Shapes = remember { mutableStateListOf<Drawable>() }
+    val arrayOf3x3Shapes = remember { mutableStateListOf<Drawable>() }
+    val arrayOf7x7Shapes = remember { mutableStateListOf<Drawable>() }
 
-    val arrayOfHorizontalBarShapes = remember { mutableStateListOf<VectorDrawable>() }
-    val arrayOfHorizontalHalfCapsuleBarShapes = remember { mutableStateListOf<VectorDrawable>() }
-    val arrayOfVerticalBarShapes = remember { mutableStateListOf<VectorDrawable>() }
-    val arrayOfFinderPatternCenterShapes = remember { mutableStateListOf<VectorDrawable>() }
+    val arrayOfHorizontalBarShapes = remember { mutableStateListOf<Drawable>() }
+    val arrayOfHorizontalHalfCapsuleBarShapes = remember { mutableStateListOf<Drawable>() }
+    val arrayOfVerticalBarShapes = remember { mutableStateListOf<Drawable>() }
+    val arrayOfFinderPatternCenterShapes = remember { mutableStateListOf<Drawable>() }
 
     val colorMap = remember { mutableStateMapOf<String, Int>() }
 
-    fun loadVectorDrawable(resId: Int): VectorDrawable {
-        val drawable = AppCompatResources.getDrawable(context, resId)
-        return drawable as VectorDrawable
+    fun loadVectorDrawable(resId: Int): Drawable {
+        return AppCompatResources.getDrawable(context, resId)!!
     }
 
     fun loadDrawables() {

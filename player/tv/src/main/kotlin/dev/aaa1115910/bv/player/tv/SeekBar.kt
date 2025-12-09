@@ -86,8 +86,6 @@ private fun VideoSeekBar(
                 duration = duration,
                 position = position,
                 bufferedPercentage = bufferedPercentage,
-                waving = playing,
-                showThumb = useDefaultThumb,
                 colors = colors
             )
             thumb?.invoke(

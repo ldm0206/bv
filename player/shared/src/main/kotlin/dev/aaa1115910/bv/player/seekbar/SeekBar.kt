@@ -35,7 +35,7 @@ import kotlin.math.max
 import kotlin.math.sin
 
 @Composable
-fun SeekBar(
+fun WavySeekBar(
     modifier: Modifier = Modifier,
     duration: Long,
     position: Long,
@@ -73,7 +73,7 @@ fun SeekBar(
     }
 
     val ampPx by animateFloatAsState(
-        targetValue = if (waving) 8f else 0f,
+        targetValue = if (waving) 6f else 0f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioNoBouncy,
             stiffness = Spring.StiffnessVeryLow
@@ -177,6 +177,58 @@ fun SeekBar(
                 )
             }
         }
+    }
+}
+
+
+@Composable
+fun SeekBar(
+    modifier: Modifier = Modifier,
+    duration: Long,
+    position: Long,
+    bufferedPercentage: Int,
+    colors: SliderColors = SliderDefaults.colors(),
+) {
+    val trackWidth = 10f
+    Canvas(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(trackWidth.dp)
+    ) {
+        drawLine(
+            color = colors.inactiveTrackColor,
+            start = Offset(0f, center.y),
+            end = Offset(size.width - 0f, center.y),
+            strokeWidth = trackWidth,
+            cap = StrokeCap.Round
+        )
+        drawLine(
+            color = colors.disabledActiveTrackColor,
+            start = Offset(0f, center.y),
+            end = Offset(size.width * bufferedPercentage / 100, center.y),
+            strokeWidth = trackWidth,
+            cap = StrokeCap.Round
+        )
+        drawLine(
+            color = colors.activeTrackColor,
+            start = Offset(0f, center.y),
+            end = Offset(size.width * (position / duration.toFloat()), center.y),
+            strokeWidth = trackWidth,
+            cap = StrokeCap.Round
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun WavySeekPreview() {
+    MaterialTheme {
+        WavySeekBar(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            duration = 1000,
+            position = 300,
+            bufferedPercentage = 50
+        )
     }
 }
 

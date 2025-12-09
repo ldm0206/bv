@@ -4,10 +4,11 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
-import android.graphics.drawable.VectorDrawable
-import kotlin.math.cos
+import android.graphics.drawable.Drawable
+import android.os.Build
 import androidx.core.graphics.withRotation
 import androidx.core.graphics.withSave
+import kotlin.math.cos
 
 class MaterialShapeRenderer {
     var animationStyle: EntryAnimationStyle
@@ -17,7 +18,7 @@ class MaterialShapeRenderer {
     var isMotionPaused: Boolean = false
     var paint: Paint
     var skipStartProgress: Float = 0f
-    var srcImgSvg: VectorDrawable
+    var srcImgSvg: Drawable
     var startDelay: Long = 0
 
     companion object {
@@ -34,7 +35,7 @@ class MaterialShapeRenderer {
         }
     }
 
-    constructor(srcImgSvg: VectorDrawable, destRect: RectF, paint: Paint) {
+    constructor(srcImgSvg: Drawable, destRect: RectF, paint: Paint) {
         this.srcImgSvg = srcImgSvg
         this.destRect = destRect
         this.paint = paint
@@ -60,12 +61,15 @@ class MaterialShapeRenderer {
 
     private fun draw(canvas: Canvas, rectF: RectF, paint: Paint) {
         canvas.withRotation(initialRotation * 90.0f, rectF.centerX(), rectF.centerY()) {
-            val vectorDrawable = srcImgSvg
+            val vectorDrawable = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                runCatching { srcImgSvg.constantState!!.newDrawable().mutate() }
+                    .getOrDefault(srcImgSvg)
+            } else srcImgSvg
             val rect = Rect()
             rectF.round(rect)
             vectorDrawable.bounds = rect
-            srcImgSvg.setColorFilter(paint.colorFilter)
-            srcImgSvg.draw(this)
+            vectorDrawable.colorFilter = paint.colorFilter
+            vectorDrawable.draw(this)
         }
     }
 
